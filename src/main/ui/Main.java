@@ -11,6 +11,7 @@ public class Main {
         System.out.println("some more text here");
     }*/
 
+
     public static void main(String[] args) {
         /*print1();
         print2();
@@ -35,8 +36,7 @@ public class Main {
         do {
             userInput.optionsMessage();
             userInput.userSelection(memory);
-        }
-        while(!userInput.checkExit());
+        } while (!userInput.checkExit());
 
     }
 }

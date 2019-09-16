@@ -30,11 +30,11 @@ public class Messages {
     //move method to Memory class
     public void printList(Memory memory) {
         System.out.println("-------------------------------------");
-        if(memory.isTaskListEmpty()) {
+        if (memory.isTaskListEmpty()) {
             System.out.println("No tasks found.");
         } else {
-            for(int i=0; i< (memory.getTaskListSize()); i++) {
-                System.out.println((i+1) + " : " +(memory.getTask(i)).getTaskContent());
+            for (int i = 0; i < (memory.getTaskListSize()); i++) {
+                System.out.println((i + 1) + " : " + (memory.getTask(i)).getTaskContent());
             }
         }
         System.out.println("-------------------------------------");

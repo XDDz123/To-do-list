@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Memory {
 
-    private ArrayList<Task> taskList  = new ArrayList<Task>();
+    private ArrayList<Task> taskList  = new ArrayList<>();
 
     public void storeTask(Task temp) {
         taskList.add(temp);
@@ -20,7 +20,7 @@ public class Memory {
 
 
     public void deleteTask(int index) {
-        taskList.remove(index-1);
+        taskList.remove(index - 1);
     }
 
     public void clearTaskList() {

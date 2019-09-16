@@ -1,4 +1,5 @@
 package ui;
+
 import java.util.*;
 
 public class UserInput extends Messages {
@@ -40,19 +41,15 @@ public class UserInput extends Messages {
         Scanner keyboard = new Scanner(System.in);
         String temp = keyboard.nextLine();
 
-        if((temp.equals("1"))) {
+        if ((temp.equals("1"))) {
             selectEnterTask(memory);
-        }
-        else if((temp.equals("2"))) {
+        } else if ((temp.equals("2"))) {
             selectPrintAllTasks(memory);
-        }
-        else if((temp.equals("3"))) {
+        } else if ((temp.equals("3"))) {
             selectToDeleteTask(memory, keyboard);
-        }
-        else if((temp.equals("4"))) {
+        } else if ((temp.equals("4"))) {
             selectDeleteAllTasks(memory);
-        }
-        else {
+        } else {
             selectNotAnOption();
         }
     }
@@ -71,10 +68,10 @@ public class UserInput extends Messages {
     }
 
     public void selectToDeleteTask(Memory memory, Scanner keyboard) {
-        Integer temp;
+        int temp;
         selectTaskMessage(memory);
 
-        if(keyboard.hasNextInt()) {
+        if (keyboard.hasNextInt()) {
             temp = keyboard.nextInt();
 
             if (temp > (memory.getTaskList()).size()) {
@@ -82,8 +79,7 @@ public class UserInput extends Messages {
             } else {
                 memory.deleteTask(temp);
             }
-        }
-        else {
+        } else {
             notInteger();
         }
 
@@ -91,12 +87,12 @@ public class UserInput extends Messages {
         continueMessage();
     }
 
-    public void selectDeleteAllTasks(Memory memory){
+    public void selectDeleteAllTasks(Memory memory) {
         memory.clearTaskList();
         printList(memory);
     }
 
-    public void selectNotAnOption(){
+    public void selectNotAnOption() {
         notAnOption();
         continueMessage();
     }
