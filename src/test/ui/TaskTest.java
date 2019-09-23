@@ -1,0 +1,86 @@
+package ui;
+
+import ui.model.Task;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.time.MonthDay;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+//Unit test for Task
+public class TaskTest {
+    private Task task;
+
+    @BeforeEach
+    public void runBefore() {
+        task = new Task();
+    }
+
+    @Test
+    public void setContentTest() {
+        task.setContent("this is a test!");
+        assertEquals(task.getTaskContent(), "this is a test!");
+    }
+
+    @Test
+    public void setContentTestEmpty() {
+        task.setContent("");
+        assertEquals(task.getTaskContent(), "");
+    }
+
+    @Test
+    public void getTaskContentTest() {
+        assertEquals(task.getTaskContent(), "empty task");
+    }
+
+    @Test
+    public void setUrgencyTest() {
+        task.setUrgency("high");
+        assertEquals(task.getUrgency(), "high");
+    }
+
+    @Test
+    public void getUrgencyTest() {
+        assertEquals(task.getUrgency(), "unassigned");
+    }
+
+    @Test
+    public void setDueDateTest() {
+        MonthDay monthDay = MonthDay.of(1,2);
+        task.setDueDate(monthDay);
+        assertEquals(task.getDueDateObj(), monthDay);
+    }
+
+    @Test
+    public void getDueDateObjTest() {
+        assertEquals(task.getDueDateObj(), MonthDay.now());
+    }
+
+    @Test
+    public void getDueDateTest() {
+        MonthDay monthDay = MonthDay.now();
+        assertEquals(task.getDueDate(), monthDay.getMonthValue() + "/" + monthDay.getDayOfMonth());
+    }
+
+    @Test
+    public void getStatusTest() {
+        assertFalse(task.getStatus());
+    }
+
+    @Test
+    public void setStatusTest() {
+        task.setStatus(true);
+        assertTrue(task.getStatus());
+    }
+
+    @Test
+    public void printTaskTest() {
+        MonthDay monthDay = MonthDay.now();
+        assertEquals(task.printTask(),  "empty task"+ "  " + "Due: " + monthDay.getMonthValue() + "/" + monthDay.getDayOfMonth() + "  " + "Urgency: " + "unassigned" + "  "
+                + "Completed: " + false);
+    }
+}
