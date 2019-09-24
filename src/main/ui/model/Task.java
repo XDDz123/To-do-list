@@ -18,14 +18,14 @@ public class Task {
         taskStatus = false;
     }
 
-    //EFFECTS: Changes this task's task content to given content.
     //MODIFIES: this
+    //EFFECTS: Changes this task's task content to given content.
     public void setContent(String taskContent) {
         this.taskContent = taskContent;
     }
 
-    //EFFECTS: Sets this task's urgency to given urgency.
     //MODIFIES: this
+    //EFFECTS: Sets this task's urgency to given urgency.
     public void setUrgency(String taskUrgency) {
         this.taskUrgency = taskUrgency;
     }
@@ -40,8 +40,8 @@ public class Task {
         return taskContent;
     }
 
-    //EFFECTS: Sets the due date of this task in the form of month and day.
     //MODIFIES: this
+    //EFFECTS: Sets the due date of this task in the form of month and day.
     public void setDueDate(MonthDay taskDueDate) {
         this.taskDueDate = taskDueDate;
     }
@@ -61,8 +61,8 @@ public class Task {
         return taskStatus;
     }
 
-    //EFFECTS: Sets the completion status of this task (true/false) to the give status (true/false).
     //MODIFIES: this
+    //EFFECTS: Sets the completion status of this task (true/false) to the give status (true/false).
     public void setStatus(boolean taskStatus) {
         this.taskStatus = taskStatus;
     }

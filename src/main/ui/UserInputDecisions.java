@@ -3,10 +3,9 @@ package ui;
 import ui.model.Task;
 import ui.model.TaskList;
 
-import java.time.MonthDay;
 import java.util.*;
 
-public class UserInputDecisions extends TaskBehavior {
+public class UserInputDecisions extends SetTaskInputDecisions {
 
     //EFFECTS: Checks if keyboard input is equal to "exit".
     public Boolean checkExit() {
@@ -24,47 +23,47 @@ public class UserInputDecisions extends TaskBehavior {
     //         else output error message for not an option
     public void userSelection(TaskList taskList) {
         Scanner keyboard = new Scanner(System.in);
-        String temp = keyboard.nextLine();
+        String input = keyboard.nextLine();
 
-        if ((temp.equals("1"))) {
+        if ((input.equals("1"))) {
             selectEnterTask(taskList);
-        } else if ((temp.equals("2"))) {
+        } else if ((input.equals("2"))) {
             selectViewTasksBy(taskList);
-        } else if ((temp.equals("3"))) {
+        } else if ((input.equals("3"))) {
             selectToDeleteTask(taskList, keyboard);
-        } else if ((temp.equals("4"))) {
+        } else if ((input.equals("4"))) {
             selectDeleteAllTasks(taskList);
-        } else if ((temp.equals("5"))) {
+        } else if ((input.equals("5"))) {
             selectModifyTask(taskList, keyboard);
-        } else if ((temp.equals("6"))) {
+        } else if ((input.equals("6"))) {
             sortTaskList(taskList);
         } else {
             selectNotAnOption();
         }
     }
 
+    //MODIFIES: taskList
     //EFFECTS: Sorts the current list of tasks chronologically by due dates (starts from most recently due).
     //         Prints out sorted list of tasks.
-    //MODIFIES: taskList
     public void sortTaskList(TaskList taskList) {
         taskList.sortByDueDate();
         printList(taskList);
     }
 
-    //EFFECTS: Check if user input is valid and that the user is selecting a task that exists in the list of tasks.
     //MODIFIES: taskList.get(index)
+    //EFFECTS: Check if user input is valid and that the user is selecting a task that exists in the list of tasks.
     public void selectModifyTask(TaskList taskList, Scanner keyboard) {
-        int temp;
+        int input;
         selectTaskMessage(taskList);
 
         if (keyboard.hasNextInt()) {
-            temp = keyboard.nextInt();
-            if (! (temp == 0)) {
-                if (temp > (taskList.getTaskList()).size()) {
+            input = keyboard.nextInt();
+            if (! (input == 0)) {
+                if (input > (taskList.getTaskList()).size()) {
                     outOfBoundsError();
                     selectModifyTask(taskList, keyboard);
                 } else {
-                    modifyTask(taskList, temp);
+                    modifyTask(taskList, input);
                 }
             }
         } else {
@@ -74,6 +73,7 @@ public class UserInputDecisions extends TaskBehavior {
     }
 
 
+    //MODIFIES: taskList.get(index)
     //EFFECTS: Prompts user to select which part of a task to modify and modifies the corresponding task according to
     //         user input after checking whether user input is a valid option. If user input is:
     //         (1) set task as complete
@@ -82,25 +82,24 @@ public class UserInputDecisions extends TaskBehavior {
     //         (4) change the content of this task
     //         (5) returns to menu to prompt the user to reselect which task to modify
     //         else output not an option error message and restarts the method
-    //MODIFIES: taskList.get(index)
     public void modifyTask(TaskList taskList, int index) {
         modifyTaskMessage();
         Scanner keyboard = new Scanner(System.in);
-        String temp = keyboard.nextLine();
+        String input = keyboard.nextLine();
 
-        if ((temp.equals("1"))) {
+        if ((input.equals("1"))) {
             //set complete
             taskList.getTask(index).setStatus(true);
-        } else if ((temp.equals("2"))) {
+        } else if ((input.equals("2"))) {
             //change due date
             taskList.getTask(index).setDueDate(setMonthAndDay(taskList.getTask(index).getDueDateObj()));
-        } else if ((temp.equals("3"))) {
+        } else if ((input.equals("3"))) {
             //change urgency
-            taskList.getTask(index).setUrgency(setUrgencyBehavior(taskList.getTask(index).getUrgency()));
-        } else if ((temp.equals("4"))) {
+            taskList.getTask(index).setUrgency(setUrgencyDecision(taskList.getTask(index).getUrgency()));
+        } else if ((input.equals("4"))) {
             //change content
-            taskList.getTask(index).setContent(setTaskContentBehavior());
-        } else if ((temp.equals("5"))) {
+            taskList.getTask(index).setContent(setTaskContentDecisions());
+        } else if ((input.equals("5"))) {
             //return to prev
             selectModifyTask(taskList, keyboard);
         } else {
@@ -109,14 +108,14 @@ public class UserInputDecisions extends TaskBehavior {
         }
     }
 
+    //MODIFIES: taskList
     //EFFECTS: Creates new task and prompts the user to assign or enter task content, task urgency, and task due date.
     //         Adds this new task to the list of tasks.
-    //MODIFIES: taskList
     public void selectEnterTask(TaskList taskList) {
         Scanner keyboard = new Scanner(System.in);
         Task task = new Task();
-        task.setContent(setTaskContentBehavior());
-        task.setUrgency(setUrgencyBehavior(task.getUrgency()));
+        task.setContent(setTaskContentDecisions());
+        task.setUrgency(setUrgencyDecision(task.getUrgency()));
         useDefaultDateMessage();
         if ((keyboard.nextLine()).equalsIgnoreCase("y")) {
             task.setDueDate(setMonthAndDay(task.getDueDateObj()));
@@ -132,10 +131,10 @@ public class UserInputDecisions extends TaskBehavior {
         selectViewTasksByMessage();
 
         Scanner keyboard = new Scanner(System.in);
-        String temp = keyboard.nextLine();
-        if (temp.equals("1")) {
+        String input = keyboard.nextLine();
+        if (input.equals("1")) {
             printList(taskList);
-        } else if (temp.equals("2")) {
+        } else if (input.equals("2")) {
             selectViewTaskByUrgency(taskList);
         } else {
             notAnOptionError();
@@ -149,29 +148,29 @@ public class UserInputDecisions extends TaskBehavior {
     public void selectViewTaskByUrgency(TaskList taskList) {
         Scanner keyboard = new Scanner(System.in);
         selectUrgencyMessage();
-        String temp = keyboard.nextLine();
-        if (temp.equalsIgnoreCase("high") || temp.equalsIgnoreCase("mid") || temp.equalsIgnoreCase("low")) {
-            printList(taskList.getTaskByUrgency(temp));
+        String input = keyboard.nextLine();
+        if (input.equalsIgnoreCase("high") || input.equalsIgnoreCase("mid") || input.equalsIgnoreCase("low")) {
+            printList(taskList.getTaskByUrgency(input));
         } else {
             notAnOptionError();
             selectViewTaskByUrgency(taskList);
         }
     }
 
+    //MODIFIES: taskList
     //EFFECTS: Prompts the user to enter a number to select which task from the task list to delete.
     //         Check if user input is valid and that the user is selecting a task that exists in the list of tasks.
-    //MODIFIES: taskList
     public void selectToDeleteTask(TaskList taskList, Scanner keyboard) {
-        int temp;
+        int input;
         selectTaskMessage(taskList);
 
         if (keyboard.hasNextInt()) {
-            temp = keyboard.nextInt();
+            input = keyboard.nextInt();
 
-            if (temp > (taskList.getTaskList()).size()) {
+            if (input > (taskList.getTaskList()).size()) {
                 outOfBoundsError();
             } else {
-                taskList.deleteTask(temp);
+                taskList.deleteTask(input);
             }
         } else {
             notIntegerError();
@@ -180,8 +179,8 @@ public class UserInputDecisions extends TaskBehavior {
         printList(taskList);
     }
 
-    //EFFECTS: removes all tasks from the current list of tasks
     //MODIFIES: taskList
+    //EFFECTS: removes all tasks from the current list of tasks
     public void selectDeleteAllTasks(TaskList taskList) {
         taskList.clearTaskList();
         printList(taskList);

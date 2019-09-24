@@ -5,7 +5,7 @@ import java.time.MonthDay;
 import java.time.Year;
 import java.util.Scanner;
 
-public class TaskBehavior extends Messages {
+public class SetTaskInputDecisions extends Messages {
 
     private final String high = "high";
     private final String mid = "mid";
@@ -13,38 +13,37 @@ public class TaskBehavior extends Messages {
     private String taskUrgencyTemp = "unassigned";
     private  MonthDay taskDueDateTemp;
 
+    //MODIFIES: this
     //EFFECTS: Checks the validity of the user input and returns a task urgency based on user input:
     //         (1) high
     //         (2) mid
     //         (3) low
     //         else displays error message and restarts the method.
-    //MODIFIES: this
-
-    public String setUrgencyBehavior(String taskUrgency) {
+    public String setUrgencyDecision(String taskUrgency) {
         setUrgencyMessage();
         Scanner keyboard = new Scanner(System.in);
 
         if (keyboard.hasNextInt()) {
-            int selection = keyboard.nextInt();
+            int input = keyboard.nextInt();
 
-            if (selection == 1) {
+            if (input == 1) {
                 return taskUrgencyTemp = high;
-            } else if (selection == 2) {
+            } else if (input == 2) {
                 return taskUrgencyTemp = mid;
-            } else if (selection == 3) {
+            } else if (input == 3) {
                 return taskUrgencyTemp = low;
             } else {
-                return setUrgencyHelper(taskUrgency);
+                return setUrgencyError(taskUrgency);
             }
         } else {
-            return setUrgencyHelper(taskUrgency);
+            return setUrgencyError(taskUrgency);
         }
     }
 
     //EFFECTS: Displays error message and starts the method that prompts the user to set urgency.
-    public String setUrgencyHelper(String taskUrgency) {
+    public String setUrgencyError(String taskUrgency) {
         urgencyError();
-        setUrgencyBehavior(taskUrgency);
+        setUrgencyDecision(taskUrgency);
         return taskUrgencyTemp;
     }
 
@@ -54,8 +53,8 @@ public class TaskBehavior extends Messages {
         return setDay(setMonth(taskDueDate));
     }
 
-    //EFFECTS: Checks the validity of the user input and returns a MonthDay with modified month based on user input.
     //MODIFIES: this
+    //EFFECTS: Checks the validity of the user input and returns a MonthDay with modified month based on user input.
     public MonthDay setMonth(MonthDay taskDueDate) {
         enterMonthMessage();
         Scanner keyboard = new Scanner(System.in);
@@ -75,8 +74,8 @@ public class TaskBehavior extends Messages {
         }
     }
 
-    //EFFECTS: Checks the validity of the user input and returns a MonthDay with modified day based on user input:
     //MODIFIES: this
+    //EFFECTS: Checks the validity of the user input and returns a MonthDay with modified day based on user input:
     public MonthDay setDay(MonthDay taskDueDate) {
         enterDayMessage();
         Scanner keyboard = new Scanner(System.in);
@@ -96,9 +95,9 @@ public class TaskBehavior extends Messages {
         }
     }
 
+    //MODIFIES: this
     //EFFECTS: Takes the system/machine time and checks whether the current year is a leap year, if so return true,
     //         returns false otherwise.
-    //MODIFIES: this
     private boolean checkLeapYear() {
         Year year = Year.now();
         return year.isLeap();
@@ -130,7 +129,7 @@ public class TaskBehavior extends Messages {
 
     //EFFECTS: Prompts the user to enter the task content of a task.
     //         Returns the user input.
-    public String setTaskContentBehavior() {
+    public String setTaskContentDecisions() {
         taskMessage();
         Scanner keyboard = new Scanner(System.in);
         return keyboard.nextLine();
