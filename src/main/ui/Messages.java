@@ -1,6 +1,6 @@
 package ui;
 
-import ui.model.TaskList;
+import model.TaskList;
 
 public class Messages {
 

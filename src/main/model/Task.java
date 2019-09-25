@@ -1,4 +1,4 @@
-package ui.model;
+package model;
 
 import java.time.MonthDay;
 

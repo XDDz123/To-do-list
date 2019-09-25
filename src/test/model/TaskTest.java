@@ -1,6 +1,6 @@
-package ui;
+package model;
 
-import ui.model.Task;
+import model.Task;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

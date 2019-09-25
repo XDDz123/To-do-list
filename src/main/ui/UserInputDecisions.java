@@ -1,7 +1,7 @@
 package ui;
 
-import ui.model.Task;
-import ui.model.TaskList;
+import model.Task;
+import model.TaskList;
 
 import java.util.*;
 
