@@ -62,7 +62,7 @@ public class TaskListTest {
     }
 
     @Test
-    public void isTaskListEmpty() {
+    public void isTaskListEmptyTest() {
         assertFalse(taskList.isTaskListEmpty());
         taskList.clearTaskList();
         assertTrue(taskList.isTaskListEmpty());
