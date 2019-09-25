@@ -1,8 +1,5 @@
 package model;
 
-import model.Task;
-import model.TaskList;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -73,7 +70,7 @@ public class TaskListTest {
         assertEquals(taskList.getTaskListSize(), 1);
     }
 
-    public void runBeforeGetTaskByAndSort() {
+    public void runBeforeGetTaskByAndSortAndPrint() {
         task.setUrgency("high");
         task1 = new Task();
         task2 = new Task();
@@ -103,7 +100,7 @@ public class TaskListTest {
 
     @Test
     public void getTaskByUrgencyTestHigh() {
-        runBeforeGetTaskByAndSort();
+        runBeforeGetTaskByAndSortAndPrint();
         taskList1.storeTask(task);
         taskList1.storeTask(task1);
         assertEquals(taskList.getTaskByUrgency("high").getTaskList(), taskList1.getTaskList());
@@ -111,20 +108,20 @@ public class TaskListTest {
 
     @Test
     public void getTaskByUrgencyTestMid() {
-        runBeforeGetTaskByAndSort();
+        runBeforeGetTaskByAndSortAndPrint();
         taskList2.storeTask(task2);
         assertEquals(taskList.getTaskByUrgency("mid").getTaskList(), taskList2.getTaskList());
     }
 
     @Test
     public void getTaskByUrgencyTestLow() {
-        runBeforeGetTaskByAndSort();
+        runBeforeGetTaskByAndSortAndPrint();
         assertEquals(taskList.getTaskByUrgency("low").getTaskList(), taskList3.getTaskList());
     }
 
     @Test
     public void sortByDueDateTest() {
-        runBeforeGetTaskByAndSort();
+        runBeforeGetTaskByAndSortAndPrint();
         TaskList taskList5 = new TaskList();
         taskList5.storeTask(task);
         taskList5.storeTask(task2);
@@ -133,5 +130,22 @@ public class TaskListTest {
         taskList5.storeTask(task3);
         taskList.sortByDueDate();
         assertEquals(taskList.getTaskList(), taskList5.getTaskList());
+    }
+
+    @Test
+    public void printTaskListTest() {
+        runBeforeGetTaskByAndSortAndPrint();
+        assertEquals(taskList.printTaskList(),
+                "1 : empty task  Due: 1/2  Urgency: high  Completed: false\n" +
+                "2 : empty task  Due: 3/4  Urgency: high  Completed: false\n" +
+                "3 : empty task  Due: 2/3  Urgency: mid  Completed: false\n" +
+                "4 : empty task  Due: 6/7  Urgency: unassigned  Completed: false\n" +
+                "5 : empty task  Due: 5/6  Urgency: unassigned  Completed: false");
+    }
+
+    @Test
+    public void printTaskListTestEmpty() {
+        taskList.clearTaskList();
+        assertEquals(taskList.printTaskList(), "No tasks found.");
     }
 }

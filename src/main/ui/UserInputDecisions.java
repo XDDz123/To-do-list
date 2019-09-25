@@ -167,10 +167,12 @@ public class UserInputDecisions extends SetTaskInputDecisions {
         if (keyboard.hasNextInt()) {
             input = keyboard.nextInt();
 
-            if (input > (taskList.getTaskList()).size()) {
-                outOfBoundsError();
-            } else {
-                taskList.deleteTask(input);
+            if (!(input == 0)) {
+                if (input > (taskList.getTaskList()).size()) {
+                    outOfBoundsError();
+                } else {
+                    taskList.deleteTask(input);
+                }
             }
         } else {
             notIntegerError();

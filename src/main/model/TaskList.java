@@ -51,14 +51,18 @@ public class TaskList {
         return taskList.size();
     }
 
-    //EFFECTS: Prints "No tasks found." if current task list is empty, prints all tasks in the current task list ow.
-    public void printTaskList() {
+    //EFFECTS: Returns "No tasks found." if current task list is empty, returns all tasks in the current task list ow.
+    public String printTaskList() {
+        String taskListPrint = "";
+
         if (isTaskListEmpty()) {
-            System.out.println("No tasks found.");
+            return "No tasks found.";
         } else {
             for (int i = 0; i < (getTaskListSize()); i++) {
-                System.out.println((i + 1) + " : " + (taskList.get(i)).printTask());
+                taskListPrint = taskListPrint + (i + 1) + " : " + (taskList.get(i)).printTask() + "\n";
             }
+            //substring to -1 removes the last line break
+            return taskListPrint.substring(0, taskListPrint.length() - 1);
         }
     }
 

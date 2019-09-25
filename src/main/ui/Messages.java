@@ -94,7 +94,7 @@ public class Messages {
     //EFFECTS: Prints the current task list in the following format.
     public void printList(TaskList taskList) {
         System.out.println("-------------------------------------------------------------------------------");
-        taskList.printTaskList();
+        System.out.println(taskList.printTaskList());
         System.out.println("-------------------------------------------------------------------------------");
     }
 

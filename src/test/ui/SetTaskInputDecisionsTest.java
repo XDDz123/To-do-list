@@ -113,13 +113,4 @@ public class SetTaskInputDecisionsTest {
         assertTrue(taskBehavior.checkDay(31, monthDay));
         assertFalse(taskBehavior.checkDay(32, monthDay));
     }
-
-
-
-
-
-
-
-
-
 }
