@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.MonthDay;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TaskListTest {
     private TaskList taskList;
@@ -60,6 +59,13 @@ public class TaskListTest {
     public void clearTaskListTest() {
         taskList.clearTaskList();
         assertTrue(taskList.getTaskList().isEmpty());
+    }
+
+    @Test
+    public void isTaskListEmpty() {
+        assertFalse(taskList.isTaskListEmpty());
+        taskList.clearTaskList();
+        assertTrue(taskList.isTaskListEmpty());
     }
 
     @Test
