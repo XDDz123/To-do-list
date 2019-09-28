@@ -1,5 +1,6 @@
 package ui;
 
+import io.SaveAndLoad;
 import model.TaskList;
 
 public class Messages {
@@ -19,14 +20,33 @@ public class Messages {
         System.out.println("-------------------------------------------------------------------------------");
         System.out.println("Type in '1' to enter a new task.");
         System.out.println("Type in '2' to see all entered tasks.");
-        System.out.println("Type in '3' to delete a task.");
-        System.out.println("Type in '4' to delete all entered tasks.");
-        System.out.println("Type in '5' to modify a task.");
+        System.out.println("Type in '3' to delete a task or all tasks.");
+        System.out.println("Type in '4' to modify a task.");
+        System.out.println("Type in '5' to sort tasks by urgency.");
+        System.out.println("Type in '6' to save list or clear previous save.");
     }
 
     //EFFECTS: Prints the following.
     public void continueMessage() {
         System.out.println("Press enter to continue or type 'exit' to exit");
+    }
+
+    //EFFECTS: Prints the following.
+    public void selectDeleteTaskMessage() {
+        System.out.println("Type in '1' to delete a task.");
+        System.out.println("Type in '2' to delete all entered tasks.");
+        System.out.println("Type in '0' to return to the previous menu.");
+    }
+
+    //EFFECTS: Prints the following.
+    public void saveAndClearSaveMessage() {
+        System.out.println("Type in '1' to save current list of tasks.");
+        System.out.println("Type in '2' to clear the previous save.");
+        System.out.println("Type in '0' to return to the previous menu.");
+    }
+
+    public void savedMessage() {
+        System.out.println("Tasks saved successfully.");
     }
 
     //EFFECTS: Prints the following.
@@ -88,7 +108,7 @@ public class Messages {
         System.out.println("Type in '2' to change task due date.");
         System.out.println("Type in '3' to change task urgency.");
         System.out.println("Type in '4' to change task content.");
-        System.out.println("Type in '5' to return to previous menu.");
+        System.out.println("Type in '0' to return to the previous menu.");
     }
 
     //EFFECTS: Prints the current task list in the following format.
@@ -102,7 +122,7 @@ public class Messages {
     public void selectTaskMessage(TaskList taskList) {
         System.out.println("Select task by entering number");
         printList(taskList);
-        System.out.println("Enter '0' to return to previous menu.");
+        System.out.println("Type in '0' to return to the previous menu.");
         System.out.println("Selection: ");
     }
 

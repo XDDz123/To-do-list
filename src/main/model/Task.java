@@ -36,7 +36,7 @@ public class Task {
     }
 
     //EFFECTS: Returns the task content of this task.
-    public String getTaskContent() {
+    public String getContent() {
         return taskContent;
     }
 
@@ -69,7 +69,7 @@ public class Task {
 
     //EFFECTS: Prints the properties of this task in the following format.
     public String printTask() {
-        return getTaskContent() + "  " + "Due: " + getDueDate() + "  " + "Urgency: " + getUrgency() + "  "
+        return getContent() + "  " + "Due: " + getDueDate() + "  " + "Urgency: " + getUrgency() + "  "
                + "Completed: " + getStatus();
     }
 }

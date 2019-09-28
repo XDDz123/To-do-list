@@ -1,7 +1,5 @@
 package model;
 
-import model.Task;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,18 +21,18 @@ public class TaskTest {
     @Test
     public void setContentTest() {
         task.setContent("this is a test!");
-        assertEquals(task.getTaskContent(), "this is a test!");
+        assertEquals(task.getContent(), "this is a test!");
     }
 
     @Test
     public void setContentTestEmpty() {
         task.setContent("");
-        assertEquals(task.getTaskContent(), "");
+        assertEquals(task.getContent(), "");
     }
 
     @Test
-    public void getTaskContentTest() {
-        assertEquals(task.getTaskContent(), "empty task");
+    public void getContentTest() {
+        assertEquals(task.getContent(), "empty task");
     }
 
     @Test

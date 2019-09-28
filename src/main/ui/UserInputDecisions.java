@@ -1,11 +1,18 @@
 package ui;
 
+import io.Loadable;
+import io.Savable;
+import io.SaveAndLoad;
 import model.Task;
 import model.TaskList;
 
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.*;
 
 public class UserInputDecisions extends SetTaskInputDecisions {
+
+    private String fileName = "save.txt";
 
     //EFFECTS: Checks if keyboard input is equal to "exit".
     public Boolean checkExit() {
@@ -21,7 +28,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //         (4) delete all entered tasks
     //         (5) modify a task
     //         else output error message for not an option
-    public void userSelection(TaskList taskList) {
+    public void userSelection(TaskList taskList) throws IOException {
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
 
@@ -30,15 +37,60 @@ public class UserInputDecisions extends SetTaskInputDecisions {
         } else if ((input.equals("2"))) {
             selectViewTasksBy(taskList);
         } else if ((input.equals("3"))) {
-            selectToDeleteTask(taskList, keyboard);
+            selectDeleteTasks(taskList, keyboard);
         } else if ((input.equals("4"))) {
-            selectDeleteAllTasks(taskList);
-        } else if ((input.equals("5"))) {
             selectModifyTask(taskList, keyboard);
-        } else if ((input.equals("6"))) {
+        } else if ((input.equals("5"))) {
             sortTaskList(taskList);
+        } else if ((input.equals("6"))) {
+            saveAndClearSave(taskList);
         } else {
             selectNotAnOption();
+        }
+    }
+
+    //MODIFIES: save.txt
+    //EFFECTS: Prompts the user to select either:
+    //        (1) save current list of task to file
+    //        (2) clear/format the current save file
+    //        (0) close current menu
+    //        to make adjustments to the save file
+    public void saveAndClearSave(TaskList taskList) throws IOException {
+        Savable saveTasks = new SaveAndLoad();
+        Scanner selection = new Scanner(System.in);
+        saveAndClearSaveMessage();
+        String input = selection.nextLine();
+
+        if (!input.equals("0")) {
+            if (input.equals("1")) {
+                saveTasks.save(taskList, fileName);
+            } else if (input.equals("2")) {
+                ((SaveAndLoad) saveTasks).clearSave(fileName);
+            } else {
+                notAnOptionError();
+            }
+        }
+    }
+
+    //MODIFIES: taskList
+    //EFFECTS: Prompts the user to select between:
+    //         (1) delete a task from the current list of tasks
+    //         (2) delete all tasks from the current list of tasks
+    //         (0) close current menu
+    //         to delete task(s) from the current list of tasks
+    public void selectDeleteTasks(TaskList taskList, Scanner keyboard) {
+        Scanner selection = new Scanner(System.in);
+        selectDeleteTaskMessage();
+        String input = selection.nextLine();
+
+        if (!input.equals("0")) {
+            if (input.equals("1")) {
+                selectToDeleteTask(taskList, keyboard);
+            } else if (input.equals("2")) {
+                selectDeleteAllTasks(taskList);
+            } else {
+                notAnOptionError();
+            }
         }
     }
 
@@ -99,7 +151,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
         } else if ((input.equals("4"))) {
             //change content
             taskList.getTask(index).setContent(setTaskContentDecisions());
-        } else if ((input.equals("5"))) {
+        } else if ((input.equals("0"))) {
             //return to prev
             selectModifyTask(taskList, keyboard);
         } else {
@@ -194,10 +246,17 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     }
 
     //EFFECTS: Displays welcome message and runs the program while the user does not exit.
-    public void run() {
+    public void run() throws IOException {
         welcomeMessage();
 
         TaskList taskList = new TaskList();
+        Loadable loadTasks = new SaveAndLoad();
+
+        try {
+            loadTasks.load(taskList, fileName);
+        } catch (NoSuchFileException e) {
+            System.out.println("File not found!");
+        }
 
         do {
             optionsMessage();
