@@ -251,6 +251,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
 
         TaskList taskList = new TaskList();
         Loadable loadTasks = new SaveAndLoad();
+        Savable saveTasks = new SaveAndLoad();
 
         try {
             loadTasks.load(taskList, fileName);
@@ -262,5 +263,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
             optionsMessage();
             userSelection(taskList);
         } while (!checkExit());
+
+        saveTasks.save(taskList, fileName);
     }
 }

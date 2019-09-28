@@ -1,6 +1,5 @@
 package ui;
 
-import io.SaveAndLoad;
 import model.TaskList;
 
 public class Messages {
@@ -8,7 +7,7 @@ public class Messages {
     //EFFECTS: Prints the following.
     public void welcomeMessage() {
         System.out.println("Type in 'exit' to exit this program.");
-        System.out.println("No data will be saved after this session. Feature coming in a future update.");
+        System.out.println("Your data will be automatically saved after this session.");
         System.out.println("  ");
         System.out.println("  ");
     }
