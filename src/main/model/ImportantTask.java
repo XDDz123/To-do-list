@@ -18,6 +18,7 @@ public class ImportantTask extends RegularTask {
         timeLeft = "tbd";
     }
 
+    //
     public void setImportance(String taskImportance) {
         this.taskImportance = taskImportance;
     }
