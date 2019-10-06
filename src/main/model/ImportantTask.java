@@ -9,7 +9,6 @@ public class ImportantTask extends RegularTask {
     private String timeLeft;
     private MonthDay dueDate;
     private MonthDay currentDate;
-    private int currentYear = Year.now().getValue();
     private String taskImportance;
 
     public ImportantTask(String taskContent, MonthDay taskDueDate, String taskUrgency, String taskImportance) {
@@ -18,7 +17,6 @@ public class ImportantTask extends RegularTask {
         timeLeft = "tbd";
     }
 
-    //
     public void setImportance(String taskImportance) {
         this.taskImportance = taskImportance;
     }
@@ -45,7 +43,16 @@ public class ImportantTask extends RegularTask {
         dueDate = super.getDueDateObj();
     }
 
-    private String computeTimeLeft() {
+    public MonthDay getCurrentDate() {
+        return currentDate;
+    }
+
+    public MonthDay getDueDateTemp() {
+        return dueDate;
+    }
+
+    public String computeTimeLeft() {
+        int currentYear = Year.now().getValue();
 
         setCurrentDateAndDueDate();
 

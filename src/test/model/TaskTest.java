@@ -3,19 +3,18 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+
 import java.time.MonthDay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-//Unit test for RegularTask
 public class TaskTest {
-    private RegularTask task;
+    private Task task;
     private String taskContent = "empty task";
     private MonthDay taskDueDate = MonthDay.now();
     private String taskUrgency = "unassigned";
-    private String taskImportance = "important";
 
     @BeforeEach
     public void runBefore() {
@@ -40,17 +39,6 @@ public class TaskTest {
     }
 
     @Test
-    public void setUrgencyTest() {
-        task.setUrgency("high");
-        assertEquals(task.getUrgency(), "high");
-    }
-
-    @Test
-    public void getUrgencyTest() {
-        assertEquals(task.getUrgency(), "unassigned");
-    }
-
-    @Test
     public void setDueDateTest() {
         MonthDay monthDay = MonthDay.of(1,2);
         task.setDueDate(monthDay);
@@ -66,5 +54,11 @@ public class TaskTest {
     public void getDueDateTest() {
         MonthDay monthDay = MonthDay.now();
         assertEquals(task.getDueDate(), monthDay.getMonthValue() + "/" + monthDay.getDayOfMonth());
+    }
+
+    @Test
+    public void printTaskContentAndDateTest() {
+        assertEquals(task.printTaskContentAndDate(), "empty task"  + "  " + "Due: " + MonthDay.now().getMonthValue()
+                + "/" + MonthDay.now().getDayOfMonth() + "  ");
     }
 }

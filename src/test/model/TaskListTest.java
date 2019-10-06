@@ -18,7 +18,7 @@ public class TaskListTest {
     private RegularTask task3;
     private RegularTask task4;
 
-    private String taskContent = "empty RegularTask";
+    private String taskContent = "empty task";
     private MonthDay taskDueDate = MonthDay.now();
     private String taskUrgency = "unassigned";
     private String taskImportance = "important";
@@ -137,16 +137,16 @@ public class TaskListTest {
         assertEquals(taskList.getTaskList(), taskList5.getTaskList());
     }
 
-/*    @Test
+    @Test
     public void printTaskListTest() {
         runBeforeGetTaskByAndSortAndPrint();
         assertEquals(taskList.printTaskList(),
-                "1 : empty task  Due: 1/2  Urgency: high  Completed: false\n" +
-                "2 : empty task  Due: 3/4  Urgency: high  Completed: false\n" +
-                "3 : empty task  Due: 2/3  Urgency: mid  Completed: false\n" +
-                "4 : empty task  Due: 6/7  Urgency: unassigned  Completed: false\n" +
-                "5 : empty task  Due: 5/6  Urgency: unassigned  Completed: false");
-    }*/
+                "1 : empty task  Due: 1/2  Urgency: high\n" +
+                "2 : empty task  Due: 3/4  Urgency: high\n" +
+                "3 : empty task  Due: 2/3  Urgency: mid\n" +
+                "4 : empty task  Due: 6/7  Urgency: unassigned\n" +
+                "5 : empty task  Due: 5/6  Urgency: unassigned");
+    }
 
     @Test
     public void printTaskListTestEmpty() {
