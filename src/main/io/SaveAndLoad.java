@@ -38,19 +38,24 @@ public class SaveAndLoad implements Loadable, Savable {
 
             if (checkFirstElement(partsOfLine, "*")) {
                 setIncompleteTaskField(partsOfLine);
-
-                if (Integer.parseInt(partsOfLine.get(partsOfLine.size() - 1)) == Year.now().getValue()) {
-                    if (taskDueDate.isBefore(MonthDay.now())) {
-                        setImportantTaskToPastDue(taskList);
-                    } else {
-                        createImportantTaskFromLoad(partsOfLine, taskList);
-                    }
-                }
+                checkImportantTaskLoad(partsOfLine, taskList);
             } else if (checkFirstElement(partsOfLine, "@")) {
                 createRegularTaskFromLoad(partsOfLine, taskList);
             } else if (checkFirstElement(partsOfLine, "#")) {
                 createCompletedTaskFromLoad(partsOfLine, taskList);
             }
+        }
+    }
+
+    public void checkImportantTaskLoad(ArrayList<String> partsOfLine, TaskList taskList) {
+        if (Integer.parseInt(partsOfLine.get(partsOfLine.size() - 1)) == Year.now().getValue()) {
+            if (taskDueDate.isBefore(MonthDay.now())) {
+                setImportantTaskToPastDue(taskList);
+            } else {
+                createImportantTaskFromLoad(partsOfLine, taskList);
+            }
+        } else {
+            createImportantTaskFromLoad(partsOfLine, taskList);
         }
     }
 
