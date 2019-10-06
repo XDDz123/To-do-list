@@ -45,9 +45,10 @@ public abstract class Task {
         return taskDueDate;
     }
 
-    //EFFECTS: Prints the properties of this task in the following format.
+    //EFFECTS: abstract method for printing information store in the task
     public abstract String printTask();
 
+    //EFFECTS: Prints the task content and due date in the following format
     public String printTaskContentAndDate() {
         return getContent() + "  " + "Due: " + getDueDate() + "  ";
     }

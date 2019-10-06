@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.MonthDay;
+import java.time.Year;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -17,7 +18,7 @@ public class SetTaskInputDecisionsTest {
         taskBehavior = new SetTaskInputDecisions();
         MonthDay monthDay;
         monthDay = MonthDay.of(1,1);
-        monthDay.atYear(2019);
+        monthDay.atYear(Year.now().getValue());
     }
 
 

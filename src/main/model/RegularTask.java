@@ -6,7 +6,7 @@ public class RegularTask extends Task {
 
     private String taskUrgency;
 
-    //EFFECTS: Constructs a new task.
+    //EFFECTS: Constructs a new regular task.
     //MODIFIES: this
     public RegularTask(String taskContent, MonthDay taskDueDate, String taskUrgency) {
         super(taskContent, taskDueDate);

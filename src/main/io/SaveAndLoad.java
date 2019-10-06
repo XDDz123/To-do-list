@@ -41,7 +41,7 @@ public class SaveAndLoad implements Loadable, Savable {
                 checkImportantTaskLoad(partsOfLine, taskList);
             } else if (checkFirstElement(partsOfLine, "@")) {
                 createRegularTaskFromLoad(partsOfLine, taskList);
-            } else if (checkFirstElement(partsOfLine, "#")) {
+            } else {
                 createCompletedTaskFromLoad(partsOfLine, taskList);
             }
         }
@@ -55,7 +55,8 @@ public class SaveAndLoad implements Loadable, Savable {
                 createImportantTaskFromLoad(partsOfLine, taskList);
             }
         } else {
-            createImportantTaskFromLoad(partsOfLine, taskList);
+            ImportantTask importantTask = createImportantTaskFromLoad(partsOfLine, taskList);
+            importantTask.changeTimeLeft("1 year " + importantTask.getTimeLeft());
         }
     }
 
@@ -77,12 +78,13 @@ public class SaveAndLoad implements Loadable, Savable {
         taskList.storeTask(regularTask);
     }
 
-    public void createImportantTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
+    public ImportantTask createImportantTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
         taskImportance = partsOfLine.get(5);
         ImportantTask importantTask;
         importantTask = new ImportantTask(taskContent, taskDueDate, taskUrgency, taskImportance);
         importantTask.setTimeLeft();
         taskList.storeTask(importantTask);
+        return importantTask;
     }
 
     public void setImportantTaskToPastDue(TaskList taskList) {
@@ -123,7 +125,7 @@ public class SaveAndLoad implements Loadable, Savable {
                 }
             } else if (taskList.getTask(i) instanceof RegularTask) {
                 writer.println(formatRegularTaskInfo(taskList, i));
-            } else if (taskList.getTask(i) instanceof CompletedTask) {
+            } else {
                 writer.println(formatCompletedTaskInfo(taskList, i));
             }
         }

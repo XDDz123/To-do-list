@@ -1,5 +1,8 @@
 package io;
 
+import model.CompletedTask;
+import model.Task;
+import model.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -41,5 +44,12 @@ public class SaveAndLoadTest {
         ArrayList<String> partsOfLine = new ArrayList<>();
         partsOfLine.add("*");
         assertTrue(saveAndLoad.checkFirstElement(partsOfLine, "*"));
+    }
+
+    @Test
+    public void setImportantTaskToPastDue() {
+        TaskList taskList = new TaskList();
+        saveAndLoad.setImportantTaskToPastDue(taskList);
+        assertEquals(((CompletedTask) taskList.getTask(1)).getCompletionStatus(), "past due.");
     }
 }

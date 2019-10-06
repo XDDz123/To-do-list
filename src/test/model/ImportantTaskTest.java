@@ -32,16 +32,22 @@ public class ImportantTaskTest {
     }
 
     @Test
-    public void setTimeLeft() {
+    public void setTimeLeftTest() {
         importantTask.setTimeLeft();
         assertEquals(importantTask.getTimeLeft(), "due today");
     }
 
     @Test
-    public void getTimeLeft() {
+    public void getTimeLeftTest() {
         assertEquals(importantTask.getTimeLeft(), "tbd");
         importantTask.setTimeLeft();
         assertEquals(importantTask.getTimeLeft(), "due today");
+    }
+
+    @Test
+    public void changeTimeLeftTest() {
+        importantTask.changeTimeLeft("1 day");
+        assertEquals(importantTask.getTimeLeft(), "1 day");
     }
 
     @Test
