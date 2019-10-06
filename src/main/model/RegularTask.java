@@ -25,6 +25,7 @@ public class RegularTask extends Task {
     }
 
     //EFFECTS: Prints the properties of this task in the following format.
+    @Override
     public String printTask() {
         return super.printTaskContentAndDate() + "Urgency: " + getUrgency();
     }

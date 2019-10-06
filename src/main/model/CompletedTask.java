@@ -17,6 +17,7 @@ public class CompletedTask extends Task {
         return completionStatus;
     }
 
+    @Override
     public String printTask() {
         return super.printTaskContentAndDate() + "Completed on: " + getCompletionStatus();
     }

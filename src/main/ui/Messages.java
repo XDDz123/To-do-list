@@ -148,6 +148,11 @@ public class Messages {
         System.out.println("Selection: ");
     }
 
+    //EFFECTS: Prints the current task list and the following text.
+    public void cantModifyCompletedTaskError() {
+        System.out.println("Error! Completed tasks can not be modified.");
+    }
+
     //EFFECTS: Prints the following.
     public void outOfBoundsError() {
         System.out.println("Selection out of bounds!");

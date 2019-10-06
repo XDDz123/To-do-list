@@ -141,6 +141,12 @@ public class SetTaskInputDecisions extends Messages {
         return keyboard.nextLine();
     }
 
+    //EFFECTS: Prompts the user to set the level of importance of a task
+    //         Returns the selected level of importance
+    //         (1) Extreme Importance
+    //         (2) High Importance
+    //         (3) Medium Importance
+    //         else displays error message and restarts the method.
     public String setImportanceDecision(String taskImportance) {
         setImportanceMessage();
 
@@ -163,6 +169,7 @@ public class SetTaskInputDecisions extends Messages {
         }
     }
 
+    //EFFECTS: Displays error message and starts the method that prompts the user to set importance.
     public String setImportanceError(String taskImportance) {
         notAnOptionTryAgainError();
         setImportanceDecision(taskImportance);

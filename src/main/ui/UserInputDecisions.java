@@ -24,10 +24,11 @@ public class UserInputDecisions extends SetTaskInputDecisions {
 
     //EFFECTS: Takes in user selection in the form of a number and decides between:
     //         (1) enter a new task
-    //         (2) see all entered tasks
-    //         (3) delete a task
-    //         (4) delete all entered tasks
-    //         (5) modify a task
+    //         (2) view entered tasks
+    //         (3) delete a task or all tasks
+    //         (4) modify a task
+    //         (5) sort the list of tasks
+    //         (6) save list of tasks to file or clear previous save
     //         else output error message for not an option
     public void userSelection(TaskList taskList) throws IOException {
         Scanner keyboard = new Scanner(System.in);
@@ -127,13 +128,42 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //REQUIRES: taskList.get(index) must be of type RegularTask or ImportantTask
     //MODIFIES: taskList.get(index)
     //EFFECTS: Prompts user to select which part of a task to modify and modifies the corresponding task according to
-    //         user input after checking whether user input is a valid option. If user input is:
-    //         (1) set task as complete
-    //         (2) change the due date for this task
-    //         (3) change the urgency level of this task
-    //         (4) change the content of this task
-    //         (5) returns to menu to prompt the user to reselect which task to modify
-    //         else output not an option error message and restarts the method
+    //         user input after checking whether user input is a valid option. Returns true if the user selects an
+    //         option, returns false otherwise. If user input is:
+    //         (1) set task as complete, return true
+    //         (2) change the due date for this task, return true
+    //         (3) change the urgency level of this task, return true
+    //         (4) change the content of this task, return true
+    //         (0) returns to menu to prompt the user to reselect which task to modify, return true
+    //         else returns false
+    public Boolean modifyTask(String input, int index, RegularTask task, TaskList taskList, Scanner keyboard) {
+        if ((input.equals("1"))) {
+            //set complete
+            setTaskComplete(taskList, index);
+        } else if ((input.equals("2"))) {
+            //change due date
+            task.setDueDate(setMonthAndDay(task.getDueDateObj()));
+        } else if ((input.equals("3"))) {
+            //change urgency
+            task.setUrgency(setUrgencyDecision(task.getUrgency()));
+        } else if ((input.equals("4"))) {
+            //change content
+            task.setContent(setTaskContentDecisions());
+        } else if ((input.equals("0"))) {
+            //return to prev
+            selectModifyTask(taskList, keyboard);
+        } else {
+            //no selection
+            return false;
+        }
+        //valid selection
+        return true;
+    }
+
+    //REQUIRES: taskList.get(index) instanceOf RegularTask
+    //MODIFIES: taskList.get(index)
+    //EFFECTS: Prompts the user to select which field of a regular task to modify
+    //         Prints not an option error message if the user did not select a valid option
     public void modifyRegularTask(TaskList taskList, int index) {
         modifyRegularTaskMessage();
         Scanner keyboard = new Scanner(System.in);
@@ -146,32 +176,11 @@ public class UserInputDecisions extends SetTaskInputDecisions {
         }
     }
 
-    public Boolean modifyTask(String input, int index, RegularTask task, TaskList taskList, Scanner keyboard) {
-        if ((input.equals("1"))) {
-            //set complete
-            setTaskComplete(taskList, index);
-            return true;
-        } else if ((input.equals("2"))) {
-            //change due date
-            task.setDueDate(setMonthAndDay(task.getDueDateObj()));
-            return true;
-        } else if ((input.equals("3"))) {
-            //change urgency
-            task.setUrgency(setUrgencyDecision(task.getUrgency()));
-            return true;
-        } else if ((input.equals("4"))) {
-            //change content
-            task.setContent(setTaskContentDecisions());
-            return true;
-        } else if ((input.equals("0"))) {
-            //return to prev
-            selectModifyTask(taskList, keyboard);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    //REQUIRES: taskList.get(index) instanceOf ImportantTask
+    //MODIFIES: taskList.get(index)
+    //EFFECTS: Prompts the user to select which field of a regular task to modify.
+    //         Displays a change importance option in addition to options displayed in modifyTask().
+    //         Prints not an option error message if the user did not select a valid option.
     public void modifyImportantTask(TaskList taskList, int index) {
 
         modifyImportantTaskMessage();
@@ -190,18 +199,24 @@ public class UserInputDecisions extends SetTaskInputDecisions {
         }
     }
 
+    //MODIFIES: taskList.get(index)
+    //EFFECTS: Prompts the user to modify important task is taskList.get(index) is an ImportantTask.
+    //         Prompts the user to modify regular task if taskList.get(index) is a RegularTask.
+    //         Else return cannot modify completed task error message.
     public void tryModifyTask(TaskList taskList, int index) {
-        try {
-            if (taskList.getTask(index) instanceof ImportantTask) {
-                modifyImportantTask(taskList, index);
-            } else if (taskList.getTask(index) instanceof RegularTask) {
-                modifyRegularTask(taskList, index);
-            }
-        } catch (ClassCastException e) {
-            System.out.println("Error! Completed tasks can not be modified.");
+        if (taskList.getTask(index) instanceof ImportantTask) {
+            modifyImportantTask(taskList, index);
+        } else if (taskList.getTask(index) instanceof RegularTask) {
+            modifyRegularTask(taskList, index);
+        } else {
+            cantModifyCompletedTaskError();
         }
     }
 
+    //MODIFIES: taskList.get(index)
+    //EFFECTS: Removes the given important task or regular task from the list of all tasks.
+    //         Creates a new completed task with the content, due date of the give task and the current time
+    //         Stores this completed task in the list of all tasks.
     public void setTaskComplete(TaskList taskList, int index) {
         Task task = taskList.getTask(index);
         CompletedTask completedTask;
@@ -211,8 +226,10 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     }
 
     //MODIFIES: taskList
-    //EFFECTS: Creates new task and prompts the user to assign or enter task content, task urgency, and task due date.
+    //EFFECTS: Creates new regular task or important task  with the following initial variables.
+    //         Prompts the user to assign or enter task information.
     //         Adds this new task to the list of tasks.
+    //         Else returns not an option error.
     public void selectEnterTask(TaskList taskList) {
         String taskContent = "empty RegularTask";
         MonthDay taskDueDate = MonthDay.now();
@@ -225,17 +242,20 @@ public class UserInputDecisions extends SetTaskInputDecisions {
 
         if ((input.equals("1"))) {
             RegularTask regularTask = new RegularTask(taskContent, taskDueDate, taskUrgency);
-            createTask(taskList, regularTask);
+            setGeneralRegularTask(taskList, regularTask);
         } else if ((input.equals("2"))) {
             ImportantTask importantTask = new ImportantTask(taskContent, taskDueDate, taskUrgency, taskImportance);
-            createTask(taskList, importantTask);
+            setGeneralRegularTask(taskList, importantTask);
             setImportantTask(importantTask);
         } else {
             selectNotAnOption();
         }
     }
 
-    public void createTask(TaskList taskList, RegularTask regularTask) {
+    //MODIFIES: taskList, regularTask
+    //EFFECTS: Prompts the user to set all fields in a regular task.
+    //         Sets all fields present in regular tasks if given a important task.
+    public void setGeneralRegularTask(TaskList taskList, RegularTask regularTask) {
         Scanner keyboard = new Scanner(System.in);
 
         regularTask.setContent(setTaskContentDecisions());
@@ -247,6 +267,9 @@ public class UserInputDecisions extends SetTaskInputDecisions {
         taskList.storeTask(regularTask);
     }
 
+    //MODIFIES: importantTask
+    //EFFECTS: Prompts the user to set fields in important tasks that are not already present in regular tasks.
+    //         i.e. set task importance and time left until due
     public void setImportantTask(ImportantTask importantTask) {
         importantTask.setImportance(setImportanceDecision(importantTask.getImportance()));
         if (importantTask.getDueDateObj().isBefore(MonthDay.now())) {
@@ -332,6 +355,8 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     }
 
     //EFFECTS: Displays welcome message and runs the program while the user does not exit.
+    //         Load list of tasks from save file, displays file not found error if file not found
+    //         Saves list of tasks once the user selects exit.
     public void run() throws IOException {
         welcomeMessage();
 

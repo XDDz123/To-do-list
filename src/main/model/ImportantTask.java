@@ -47,6 +47,7 @@ public class ImportantTask extends RegularTask {
     }
 
     //EFFECTS: Prints the information stored in the task in the following format
+    @Override
     public String printTask() {
         return super.printTask() + "  " + "Time left: " + getTimeLeft() + "  " + "*" + getImportance() + "*";
     }
@@ -69,9 +70,10 @@ public class ImportantTask extends RegularTask {
         return dueDate;
     }
 
+    //MODIFIES: this
     //EFFECTS: Computes how much time is left until the task is due.
-    //         Returns number of days or number of months and days.
-    //         Returns "due today" if the due date is the current date.
+    //         Returns number of months and/or number of days left until the task is due.
+    //         Time left is calculated differently depending on the given year.
     public String computeTimeLeft(int year) {
         int currentYear = Year.now().getValue();
 
@@ -84,6 +86,10 @@ public class ImportantTask extends RegularTask {
         }
     }
 
+    //EFFECTS: Returns the time left until task is due if given year matches the current year
+    //         Returns due today if the due date matches the current date
+    //         Returns the number of days left until due if due date is within a month from current date
+    //         Returns the number of months and days otherwise.
     public String computeTimeLeftCurrentYear(int currentYear) {
         Period difference = Period.between(dueDate.atYear(currentYear), currentDate.atYear(currentYear));
 
@@ -98,6 +104,8 @@ public class ImportantTask extends RegularTask {
         }
     }
 
+    //EFFECTS: Returns the time left until task is due if given year does not match the current year
+    //         Returns the number of months and days left until due date, with due date being in the next year
     public String computeTimeLeftNextYear(int currentYear) {
         Period difference = Period.between(dueDate.atYear(currentYear + 1), currentDate.atYear(currentYear));
 
