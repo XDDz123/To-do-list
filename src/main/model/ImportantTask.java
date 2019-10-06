@@ -101,10 +101,6 @@ public class ImportantTask extends RegularTask {
     public String computeTimeLeftNextYear(int currentYear) {
         Period difference = Period.between(dueDate.atYear(currentYear + 1), currentDate.atYear(currentYear));
 
-        if (difference.getMonths() == 0) {
-            return Math.abs(difference.getDays()) + " days.";
-        } else {
-            return Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days.";
-        }
+        return Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days.";
     }
 }
