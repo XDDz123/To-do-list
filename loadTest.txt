@@ -1,4 +1,4 @@
-task I/high/2/3/false
-task III/high/4/3/false
-task IV/low/6/7/true
-task II/low/9/27/false
+@~task I~high~2~3
+@~task III~high~4~3
+@~task IV~low~6~7
+@~task II~low~9~27

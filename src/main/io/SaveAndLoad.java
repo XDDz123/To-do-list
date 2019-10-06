@@ -34,7 +34,7 @@ public class SaveAndLoad implements Loadable, Savable {
         List<String> lines = Files.readAllLines(Paths.get(file));
 
         for (String line : lines) {
-            ArrayList<String> partsOfLine = separateOnSlash(line);
+            ArrayList<String> partsOfLine = separateOnTilde(line);
 
             if (checkFirstElement(partsOfLine, "*")) {
                 setIncompleteTaskField(partsOfLine);
@@ -162,7 +162,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //EFFECTS: returns a new list of strings with sub-strings separated from the given string
     //         Sub-strings in the givens string is separated by a "/"
     //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3
-    public ArrayList<String> separateOnSlash(String line) {
+    public ArrayList<String> separateOnTilde(String line) {
         String[] partOfLine = line.split("~");
         return new ArrayList<>(Arrays.asList(partOfLine));
     }

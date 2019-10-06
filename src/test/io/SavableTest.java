@@ -1,4 +1,3 @@
-/*
 package io;
 
 import model.RegularTask;
@@ -20,12 +19,18 @@ public class SavableTest {
     private RegularTask task2;
     private Savable savable;
 
+    private String taskContent = "empty RegularTask";
+    private MonthDay taskDueDate = MonthDay.now();
+    private String taskUrgency = "unassigned";
+    private String taskImportance = "important";
+
+
     @BeforeEach
     public void runBefore() {
         taskList = new TaskList();
         taskList1 = new TaskList();
-        task1 = new RegularTask();
-        task2 = new RegularTask();
+        task1 = new RegularTask(taskContent, taskDueDate, taskUrgency);
+        task2 = new RegularTask(taskContent, taskDueDate, taskUrgency);
         taskList.storeTask(task1);
         taskList.storeTask(task2);
         savable = new SaveAndLoad();
@@ -39,20 +44,16 @@ public class SavableTest {
         task2.setUrgency("high");
         task1.setDueDate(MonthDay.of(2,3));
         task2.setDueDate(MonthDay.of(4,3));
-        //task1.setStatus(true);
 
         savable.save(taskList, "saveTest.txt");
         ((SaveAndLoad)savable).load(taskList1, "saveTest.txt");
 
         assertEquals(taskList1.getTask(1).getContent(),"task I");
-        //assertEquals(taskList1.getTask(1).getUrgency(),"high");
+        assertEquals(((RegularTask)(taskList1.getTask(1))).getUrgency(),"high");
         assertEquals(taskList1.getTask(1).getDueDateObj(),MonthDay.of(2,3));
-        //assertTrue(taskList1.getTask(1).getStatus());
 
         assertEquals(taskList1.getTask(2).getContent(),"task III");
-        //assertEquals(taskList1.getTask(2).getUrgency(),"high");
+        assertEquals(((RegularTask)(taskList1.getTask(2))).getUrgency(),"high");
         assertEquals(taskList1.getTask(2).getDueDateObj(),MonthDay.of(4,3));
-        //assertFalse(taskList1.getTask(2).getStatus());
     }
 }
-*/

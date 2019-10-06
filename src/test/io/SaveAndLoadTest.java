@@ -25,12 +25,12 @@ public class SaveAndLoadTest {
     }
 
     @Test
-    public void separateOnSlashTest() {
-        String line = "task I/high/2/3/false";
-        assertEquals(saveAndLoad.separateOnSlash(line).get(0), "task I");
-        assertEquals(saveAndLoad.separateOnSlash(line).get(1), "high");
-        assertEquals(saveAndLoad.separateOnSlash(line).get(2), "2");
-        assertEquals(saveAndLoad.separateOnSlash(line).get(3), "3");
-        assertEquals(saveAndLoad.separateOnSlash(line).get(4), "false");
+    public void separateOnTildeTest() {
+        String line = "task I~high~2~3~false";
+        assertEquals(saveAndLoad.separateOnTilde(line).get(0), "task I");
+        assertEquals(saveAndLoad.separateOnTilde(line).get(1), "high");
+        assertEquals(saveAndLoad.separateOnTilde(line).get(2), "2");
+        assertEquals(saveAndLoad.separateOnTilde(line).get(3), "3");
+        assertEquals(saveAndLoad.separateOnTilde(line).get(4), "false");
     }
 }
