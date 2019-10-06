@@ -1,13 +1,13 @@
 package io;
 
 import model.CompletedTask;
-import model.Task;
 import model.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.MonthDay;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,9 +47,29 @@ public class SaveAndLoadTest {
     }
 
     @Test
-    public void setImportantTaskToPastDue() {
+    public void createPastDueFromImportantTest() {
         TaskList taskList = new TaskList();
-        saveAndLoad.setImportantTaskToPastDue(taskList);
+        saveAndLoad.createPastDueFromImportant(taskList);
         assertEquals(((CompletedTask) taskList.getTask(1)).getCompletionStatus(), "past due.");
+    }
+
+    @Test
+    public void checkImportantTaskLoadPastDueTest() {
+        ArrayList<String> partsOfLine = new ArrayList<>();
+        partsOfLine.add("*");
+        partsOfLine.add("unassigned");
+        partsOfLine.add("high");
+        partsOfLine.add(String.valueOf(MonthDay.now().getMonthValue() - 1));
+        partsOfLine.add(String.valueOf(MonthDay.now().getDayOfMonth() - 1));
+        partsOfLine.add("High Importance");
+        partsOfLine.add("2019");
+        saveAndLoad.setIncompleteTaskField(partsOfLine);
+        TaskList taskList = new TaskList();
+        saveAndLoad.checkImportantTaskLoad(partsOfLine, taskList);
+        assertEquals(taskList.getTask(1).getContent(), "unassigned");
+        assertEquals(taskList.getTask(1).getDueDate(), (MonthDay.now().getMonthValue() - 1)
+        + "/" + (MonthDay.now().getDayOfMonth() - 1));
+        assertEquals(((CompletedTask) taskList.getTask(1)).getCompletionStatus(), "past due.");
+        assertTrue(taskList.getTask(1) instanceof CompletedTask);
     }
 }

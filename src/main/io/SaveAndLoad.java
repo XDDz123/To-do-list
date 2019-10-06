@@ -50,13 +50,12 @@ public class SaveAndLoad implements Loadable, Savable {
     public void checkImportantTaskLoad(ArrayList<String> partsOfLine, TaskList taskList) {
         if (Integer.parseInt(partsOfLine.get(partsOfLine.size() - 1)) == Year.now().getValue()) {
             if (taskDueDate.isBefore(MonthDay.now())) {
-                setImportantTaskToPastDue(taskList);
+                createPastDueFromImportant(taskList);
             } else {
                 createImportantTaskFromLoad(partsOfLine, taskList);
             }
         } else {
-            ImportantTask importantTask = createImportantTaskFromLoad(partsOfLine, taskList);
-            importantTask.changeTimeLeft("1 year " + importantTask.getTimeLeft());
+            createImportantTaskFromLoad(partsOfLine, taskList);
         }
     }
 
@@ -65,7 +64,7 @@ public class SaveAndLoad implements Loadable, Savable {
     }
 
     public void createCompletedTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
-        setCompleteTaskField(partsOfLine);
+        setGeneralTaskField(partsOfLine);
 
         CompletedTask completedTask = new CompletedTask(taskContent, taskDueDate, completionStatus);
         taskList.storeTask(completedTask);
@@ -78,16 +77,15 @@ public class SaveAndLoad implements Loadable, Savable {
         taskList.storeTask(regularTask);
     }
 
-    public ImportantTask createImportantTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
+    public void createImportantTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
         taskImportance = partsOfLine.get(5);
         ImportantTask importantTask;
         importantTask = new ImportantTask(taskContent, taskDueDate, taskUrgency, taskImportance);
         importantTask.setTimeLeft();
         taskList.storeTask(importantTask);
-        return importantTask;
     }
 
-    public void setImportantTaskToPastDue(TaskList taskList) {
+    public void createPastDueFromImportant(TaskList taskList) {
         CompletedTask completedTask = new CompletedTask(taskContent, taskDueDate, "past due.");
         taskList.storeTask(completedTask);
     }
@@ -100,7 +98,7 @@ public class SaveAndLoad implements Loadable, Savable {
         taskDueDate = MonthDay.of(month, day);
     }
 
-    public void setCompleteTaskField(ArrayList<String> partsOfLine) {
+    public void setGeneralTaskField(ArrayList<String> partsOfLine) {
         taskContent = partsOfLine.get(1);
         month = Integer.parseInt(partsOfLine.get(2));
         day = Integer.parseInt(partsOfLine.get(3));
