@@ -5,4 +5,6 @@
 *~task V~mid~12~2~High Importance~2019
 *~task VI~mid~10~3~High Importance~2020
 #~task VI~10~5~past due.
-*~task VII~mid~10~3~High Importance~2019
+#~task VII~10~3~past due.
+*~zkmsmkd~high~10~3~High Importance~2020
+*~akmsmdkas~high~1~2~High Importance~2020

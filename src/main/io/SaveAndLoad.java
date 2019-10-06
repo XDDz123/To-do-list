@@ -53,9 +53,11 @@ public class SaveAndLoad implements Loadable, Savable {
                 createPastDueFromImportant(taskList);
             } else {
                 createImportantTaskFromLoad(partsOfLine, taskList);
+                ((ImportantTask) taskList.getTask(taskList.getTaskListSize())).setTimeLeft(Year.now().getValue());
             }
         } else {
             createImportantTaskFromLoad(partsOfLine, taskList);
+            ((ImportantTask) taskList.getTask(taskList.getTaskListSize())).setTimeLeft(Year.now().getValue() + 1);
         }
     }
 
@@ -81,7 +83,6 @@ public class SaveAndLoad implements Loadable, Savable {
         taskImportance = partsOfLine.get(5);
         ImportantTask importantTask;
         importantTask = new ImportantTask(taskContent, taskDueDate, taskUrgency, taskImportance);
-        importantTask.setTimeLeft();
         taskList.storeTask(importantTask);
     }
 

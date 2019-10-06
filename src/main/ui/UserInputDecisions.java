@@ -8,6 +8,7 @@ import model.*;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.time.MonthDay;
+import java.time.Year;
 import java.util.*;
 
 public class UserInputDecisions extends SetTaskInputDecisions {
@@ -248,7 +249,12 @@ public class UserInputDecisions extends SetTaskInputDecisions {
 
     public void setImportantTask(ImportantTask importantTask) {
         importantTask.setImportance(setImportanceDecision(importantTask.getImportance()));
-        importantTask.setTimeLeft();
+        if (importantTask.getDueDateObj().isBefore(MonthDay.now())) {
+            importantTask.setTimeLeft(Year.now().getValue() + 1);
+        } else {
+            importantTask.setTimeLeft(Year.now().getValue());
+        }
+
     }
 
     //EFFECTS: Prompts the user to select between:

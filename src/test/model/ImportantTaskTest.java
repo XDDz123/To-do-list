@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.MonthDay;
+import java.time.Year;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -33,14 +34,14 @@ public class ImportantTaskTest {
 
     @Test
     public void setTimeLeftTest() {
-        importantTask.setTimeLeft();
+        importantTask.setTimeLeft(Year.now().getValue());
         assertEquals(importantTask.getTimeLeft(), "due today");
     }
 
     @Test
     public void getTimeLeftTest() {
         assertEquals(importantTask.getTimeLeft(), "tbd");
-        importantTask.setTimeLeft();
+        importantTask.setTimeLeft(Year.now().getValue());
         assertEquals(importantTask.getTimeLeft(), "due today");
     }
 
@@ -66,25 +67,25 @@ public class ImportantTaskTest {
 
     @Test
     public void computeTimeLeftDueTodayTest() {
-        assertEquals(importantTask.computeTimeLeft(),"due today");
+        assertEquals(importantTask.computeTimeLeft(Year.now().getValue()),"due today");
     }
 
     @Test
     public void computeTimeLeftInDaysTest() {
         importantTask.setDueDate(MonthDay.of(MonthDay.now().getMonthValue(), MonthDay.now().getDayOfMonth() + 1));
-        assertEquals(importantTask.computeTimeLeft(),1 + " days.");
+        assertEquals(importantTask.computeTimeLeft(Year.now().getValue()),1 + " days.");
     }
 
     @Test
     public void computeTimeLeftInMonthsTest() {
         importantTask.setDueDate(MonthDay.of(MonthDay.now().getMonthValue() + 1, MonthDay.now().getDayOfMonth()));
-        assertEquals(importantTask.computeTimeLeft(),1 + " months " + 0 + " days.");
+        assertEquals(importantTask.computeTimeLeft(Year.now().getValue()),1 + " months " + 0 + " days.");
     }
 
     @Test
     public void computeTimeLeftInDaysAndMonthsTest() {
         importantTask.setDueDate(MonthDay.of(MonthDay.now().getMonthValue() + 1,
                 MonthDay.now().getDayOfMonth() + 1));
-        assertEquals(importantTask.computeTimeLeft(),1 + " months " + 1 + " days.");
+        assertEquals(importantTask.computeTimeLeft(Year.now().getValue()),1 + " months " + 1 + " days.");
     }
 }

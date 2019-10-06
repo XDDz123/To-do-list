@@ -32,8 +32,8 @@ public class ImportantTask extends RegularTask {
 
     //MODIFIES: this
     //EFFECTS: Updates time left until due to the most recent time left until due
-    public void setTimeLeft() {
-        timeLeft = computeTimeLeft();
+    public void setTimeLeft(int year) {
+        timeLeft = computeTimeLeft(year);
     }
 
     //EFFECTS: Returns how much time is left until the task is due
@@ -72,11 +72,19 @@ public class ImportantTask extends RegularTask {
     //EFFECTS: Computes how much time is left until the task is due.
     //         Returns number of days or number of months and days.
     //         Returns "due today" if the due date is the current date.
-    public String computeTimeLeft() {
+    public String computeTimeLeft(int year) {
         int currentYear = Year.now().getValue();
 
         setCurrentDateAndDueDate();
 
+        if (year == Year.now().getValue()) {
+            return computeTimeLeftCurrentYear(currentYear);
+        } else {
+            return computeTimeLeftNextYear(currentYear);
+        }
+    }
+
+    public String computeTimeLeftCurrentYear(int currentYear) {
         Period difference = Period.between(dueDate.atYear(currentYear), currentDate.atYear(currentYear));
 
         if (dueDate.equals(currentDate)) {
@@ -87,6 +95,16 @@ public class ImportantTask extends RegularTask {
             } else {
                 return Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days.";
             }
+        }
+    }
+
+    public String computeTimeLeftNextYear(int currentYear) {
+        Period difference = Period.between(dueDate.atYear(currentYear + 1), currentDate.atYear(currentYear));
+
+        if (difference.getMonths() == 0) {
+            return Math.abs(difference.getDays()) + " days.";
+        } else {
+            return Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days.";
         }
     }
 }
