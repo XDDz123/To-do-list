@@ -21,8 +21,6 @@ public class TaskListTest {
     private String taskContent = "empty task";
     private MonthDay taskDueDate = MonthDay.now();
     private String taskUrgency = "unassigned";
-    private String taskImportance = "important";
-
 
     @BeforeEach
     public void runBefore() {

@@ -1,12 +1,16 @@
 package io;
 
+import model.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class SaveAndLoadTest {
 
@@ -32,5 +36,12 @@ public class SaveAndLoadTest {
         assertEquals(saveAndLoad.separateOnTilde(line).get(2), "2");
         assertEquals(saveAndLoad.separateOnTilde(line).get(3), "3");
         assertEquals(saveAndLoad.separateOnTilde(line).get(4), "false");
+    }
+
+    @Test
+    public void checkFirstElementTest() {
+        ArrayList<String> partsOfLine = new ArrayList<>();
+        partsOfLine.add("*");
+        assertTrue(saveAndLoad.checkFirstElement(partsOfLine, "*"));
     }
 }
