@@ -1,2 +1,2 @@
-task I/high/2/3/true
-task III/high/4/3/false
+task I/high/2/3
+task III/high/4/3

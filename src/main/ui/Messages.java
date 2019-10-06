@@ -16,7 +16,7 @@ public class Messages {
     public void optionsMessage() {
         //System.out.println("Character checks not implemented yet,
         //please type in what you are supposed to type in. Or maybe they are...");
-        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Type in '1' to enter a new task.");
         System.out.println("Type in '2' to see all entered tasks.");
         System.out.println("Type in '3' to delete a task or all tasks.");
@@ -28,6 +28,11 @@ public class Messages {
     //EFFECTS: Prints the following.
     public void continueMessage() {
         System.out.println("Press enter to continue or type 'exit' to exit");
+    }
+
+    public void selectTaskTypeMessage() {
+        System.out.println("Type in '1' to enter a regular task.");
+        System.out.println("Type in '2' to enter an important task.");
     }
 
     //EFFECTS: Prints the following.
@@ -44,9 +49,9 @@ public class Messages {
         System.out.println("Type in '0' to return to the previous menu.");
     }
 
-    public void savedMessage() {
+/*    public void savedMessage() {
         System.out.println("Tasks saved successfully.");
-    }
+    }*/
 
     //EFFECTS: Prints the following.
     public void selectViewTasksByMessage() {
@@ -61,13 +66,21 @@ public class Messages {
 
     //EFFECTS: Prints the following.
     public void setUrgencyMessage() {
-        System.out.println("Set urgency. Enter 1 for high urgency, 2 for mid urgency, 3 for low urgency.");
+        System.out.println("Set urgency. Enter '1' for high urgency, '2' for mid urgency, '3' for low urgency.");
     }
 
     //EFFECTS: Prints the following.
-    public void urgencyError() {
+    public void notAnOptionTryAgainError() {
         System.out.println("Not an option. Please try again.");
         System.out.println("  ");
+    }
+
+    //EFFECTS: Prints the following.
+    public void setImportanceMessage() {
+        System.out.println("Set importance.");
+        System.out.println("Type in '1' for extreme importance.");
+        System.out.println("Type in '2' for high importance");
+        System.out.println("Type in '3' for medium importance");
     }
 
     //EFFECTS: Prints the following.
@@ -102,7 +115,7 @@ public class Messages {
     }
 
     //EFFECTS: Prints the following.
-    public void modifyTaskMessage() {
+    public void modifyRegularTaskMessage() {
         System.out.println("Type in '1' to set task as complete.");
         System.out.println("Type in '2' to change task due date.");
         System.out.println("Type in '3' to change task urgency.");
@@ -110,11 +123,21 @@ public class Messages {
         System.out.println("Type in '0' to return to the previous menu.");
     }
 
+    //EFFECTS: Prints the following.
+    public void modifyImportantTaskMessage() {
+        System.out.println("Type in '1' to set task as complete.");
+        System.out.println("Type in '2' to change task due date.");
+        System.out.println("Type in '3' to change task urgency.");
+        System.out.println("Type in '4' to change task content.");
+        System.out.println("Type in '5' to change task importance.");
+        System.out.println("Type in '0' to return to the previous menu.");
+    }
+
     //EFFECTS: Prints the current task list in the following format.
     public void printList(TaskList taskList) {
-        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println(taskList.printTaskList());
-        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------------------");
     }
 
     //EFFECTS: Prints the current task list and the following text.

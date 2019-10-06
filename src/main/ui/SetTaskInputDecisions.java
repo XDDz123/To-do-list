@@ -10,8 +10,14 @@ public class SetTaskInputDecisions extends Messages {
     private final String high = "high";
     private final String mid = "mid";
     private final String low = "low";
-    private String taskUrgencyTemp = "unassigned";
-    private  MonthDay taskDueDateTemp;
+    private String taskUrgency = "unassigned";
+    private MonthDay taskDueDate;
+    private String taskImportance = "unassigned";
+
+    private final String importanceExtreme = "Extreme Importance";
+    private final String importanceHigh = "High Importance";
+    private final String importanceMid = "Medium Importance";
+
 
     //MODIFIES: this
     //EFFECTS: Checks the validity of the user input and returns a task urgency based on user input:
@@ -27,11 +33,11 @@ public class SetTaskInputDecisions extends Messages {
             int input = keyboard.nextInt();
 
             if (input == 1) {
-                return taskUrgencyTemp = high;
+                return this.taskUrgency = high;
             } else if (input == 2) {
-                return taskUrgencyTemp = mid;
+                return this.taskUrgency = mid;
             } else if (input == 3) {
-                return taskUrgencyTemp = low;
+                return this.taskUrgency = low;
             } else {
                 return setUrgencyError(taskUrgency);
             }
@@ -42,9 +48,9 @@ public class SetTaskInputDecisions extends Messages {
 
     //EFFECTS: Displays error message and starts the method that prompts the user to set urgency.
     public String setUrgencyError(String taskUrgency) {
-        urgencyError();
+        notAnOptionTryAgainError();
         setUrgencyDecision(taskUrgency);
-        return taskUrgencyTemp;
+        return this.taskUrgency;
     }
 
     //EFFECTS: Prompts user to set due date. Returns a new MonthDay created from user input.
@@ -62,15 +68,15 @@ public class SetTaskInputDecisions extends Messages {
         if (keyboard.hasNextInt()) {
             month = keyboard.nextInt();
             if (checkMonth(month)) {
-                return taskDueDateTemp = taskDueDate.with(Month.of(month));
+                return this.taskDueDate = taskDueDate.with(Month.of(month));
             } else {
                 setMonth(taskDueDate);
-                return taskDueDateTemp;
+                return this.taskDueDate;
             }
         } else {
             dayMonthError();
             setMonth(taskDueDate);
-            return taskDueDateTemp;
+            return this.taskDueDate;
         }
     }
 
@@ -83,15 +89,15 @@ public class SetTaskInputDecisions extends Messages {
         if (keyboard.hasNextInt()) {
             day = keyboard.nextInt();
             if (checkDay(day, taskDueDate)) {
-                return taskDueDateTemp = taskDueDate.withDayOfMonth(day);
+                return this.taskDueDate = taskDueDate.withDayOfMonth(day);
             } else {
                 setDay(taskDueDate);
-                return taskDueDateTemp;
+                return this.taskDueDate;
             }
         } else {
             dayMonthError();
             setDay(taskDueDate);
-            return taskDueDateTemp;
+            return this.taskDueDate;
         }
     }
 
@@ -133,5 +139,33 @@ public class SetTaskInputDecisions extends Messages {
         taskMessage();
         Scanner keyboard = new Scanner(System.in);
         return keyboard.nextLine();
+    }
+
+    public String setImportanceDecision(String taskImportance) {
+        setImportanceMessage();
+
+        Scanner keyboard = new Scanner(System.in);
+
+        if (keyboard.hasNextInt()) {
+            int input = keyboard.nextInt();
+
+            if (input == 1) {
+                return this.taskImportance = importanceExtreme;
+            } else if (input == 2) {
+                return this.taskImportance = importanceHigh;
+            } else if (input == 3) {
+                return this.taskImportance = importanceMid;
+            } else {
+                return setImportanceError(taskImportance);
+            }
+        } else {
+            return setImportanceError(taskImportance);
+        }
+    }
+
+    public String setImportanceError(String taskImportance) {
+        notAnOptionTryAgainError();
+        setImportanceDecision(taskImportance);
+        return this.taskImportance;
     }
 }

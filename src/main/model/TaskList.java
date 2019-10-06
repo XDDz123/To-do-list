@@ -71,7 +71,7 @@ public class TaskList {
     public TaskList getTaskByUrgency(String urgency) {
         TaskList tempList = new TaskList();
         for (Task task : taskList) {
-            if (task.getUrgency().equalsIgnoreCase(urgency)) {
+            if (((RegularTask) task).getUrgency().equalsIgnoreCase(urgency)) {
                 tempList.storeTask(task);
             }
         }

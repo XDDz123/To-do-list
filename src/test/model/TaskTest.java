@@ -1,3 +1,4 @@
+/*
 package model;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -9,13 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-//Unit test for Task
+//Unit test for RegularTask
 public class TaskTest {
-    private Task task;
+    private RegularTask task;
 
     @BeforeEach
     public void runBefore() {
-        task = new Task();
+        task = new RegularTask();
     }
 
     @Test
@@ -64,6 +65,8 @@ public class TaskTest {
         assertEquals(task.getDueDate(), monthDay.getMonthValue() + "/" + monthDay.getDayOfMonth());
     }
 
+*/
+/*
     @Test
     public void getStatusTest() {
         assertFalse(task.getStatus());
@@ -74,6 +77,8 @@ public class TaskTest {
         task.setStatus(true);
         assertTrue(task.getStatus());
     }
+*//*
+
 
     @Test
     public void printTaskTest() {
@@ -81,4 +86,4 @@ public class TaskTest {
         assertEquals(task.printTask(),  "empty task"+ "  " + "Due: " + monthDay.getMonthValue() + "/" + monthDay.getDayOfMonth() + "  " + "Urgency: " + "unassigned" + "  "
                 + "Completed: " + false);
     }
-}
+}*/

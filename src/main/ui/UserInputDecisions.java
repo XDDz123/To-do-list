@@ -3,16 +3,16 @@ package ui;
 import io.Loadable;
 import io.Savable;
 import io.SaveAndLoad;
-import model.Task;
-import model.TaskList;
+import model.*;
 
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import java.time.MonthDay;
 import java.util.*;
 
 public class UserInputDecisions extends SetTaskInputDecisions {
 
-    private String fileName = "save.txt";
+    private final String fileName = "save.txt";
 
     //EFFECTS: Checks if keyboard input is equal to "exit".
     public Boolean checkExit() {
@@ -67,7 +67,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
             } else if (input.equals("2")) {
                 ((SaveAndLoad) saveTasks).clearSave(fileName);
             } else {
-                notAnOptionError();
+                selectNotAnOption();
             }
         }
     }
@@ -89,7 +89,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
             } else if (input.equals("2")) {
                 selectDeleteAllTasks(taskList);
             } else {
-                notAnOptionError();
+                selectNotAnOption();
             }
         }
     }
@@ -108,23 +108,22 @@ public class UserInputDecisions extends SetTaskInputDecisions {
         int input;
         selectTaskMessage(taskList);
 
-        if (keyboard.hasNextInt()) {
+        try {
             input = keyboard.nextInt();
+
             if (! (input == 0)) {
-                if (input > (taskList.getTaskList()).size()) {
+                try {
+                    tryModifyTask(taskList, input);
+                } catch (IndexOutOfBoundsException e) {
                     outOfBoundsError();
-                    selectModifyTask(taskList, keyboard);
-                } else {
-                    modifyTask(taskList, input);
                 }
             }
-        } else {
+        } catch (InputMismatchException e) {
             notIntegerError();
-            selectModifyTask(taskList, keyboard);
         }
     }
 
-
+    //REQUIRES: taskList.get(index) must be of type RegularTask or ImportantTask
     //MODIFIES: taskList.get(index)
     //EFFECTS: Prompts user to select which part of a task to modify and modifies the corresponding task according to
     //         user input after checking whether user input is a valid option. If user input is:
@@ -134,45 +133,122 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //         (4) change the content of this task
     //         (5) returns to menu to prompt the user to reselect which task to modify
     //         else output not an option error message and restarts the method
-    public void modifyTask(TaskList taskList, int index) {
-        modifyTaskMessage();
+    public void modifyRegularTask(TaskList taskList, int index) {
+        modifyRegularTaskMessage();
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
 
+        RegularTask regularTask = (RegularTask)(taskList.getTask(index));
+
+        if (! modifyTask(input, index, regularTask, taskList, keyboard)) {
+            selectNotAnOption();
+        }
+    }
+
+    public Boolean modifyTask(String input, int index, RegularTask task, TaskList taskList, Scanner keyboard) {
         if ((input.equals("1"))) {
             //set complete
-            taskList.getTask(index).setStatus(true);
+            setTaskComplete(taskList, index);
+            return true;
         } else if ((input.equals("2"))) {
             //change due date
-            taskList.getTask(index).setDueDate(setMonthAndDay(taskList.getTask(index).getDueDateObj()));
+            task.setDueDate(setMonthAndDay(task.getDueDateObj()));
+            return true;
         } else if ((input.equals("3"))) {
             //change urgency
-            taskList.getTask(index).setUrgency(setUrgencyDecision(taskList.getTask(index).getUrgency()));
+            task.setUrgency(setUrgencyDecision(task.getUrgency()));
+            return true;
         } else if ((input.equals("4"))) {
             //change content
-            taskList.getTask(index).setContent(setTaskContentDecisions());
+            task.setContent(setTaskContentDecisions());
+            return true;
         } else if ((input.equals("0"))) {
             //return to prev
             selectModifyTask(taskList, keyboard);
+            return true;
         } else {
-            selectNotAnOption();
-            modifyTask(taskList, index);
+            return false;
         }
+    }
+
+    public void modifyImportantTask(TaskList taskList, int index) {
+
+        modifyImportantTaskMessage();
+
+        Scanner keyboard = new Scanner(System.in);
+        String input = keyboard.nextLine();
+
+        ImportantTask importantTask = (ImportantTask) (taskList.getTask(index));
+
+        if (! modifyTask(input, index, importantTask, taskList, keyboard)) {
+            if ((input.equals("5"))) {
+                importantTask.setImportance(setImportanceDecision(importantTask.getImportance()));
+            } else {
+                selectNotAnOption();
+            }
+        }
+    }
+
+    public void tryModifyTask(TaskList taskList, int index) {
+        try {
+            if (taskList.getTask(index) instanceof ImportantTask) {
+                modifyImportantTask(taskList, index);
+            } else if (taskList.getTask(index) instanceof RegularTask) {
+                modifyRegularTask(taskList, index);
+            }
+        } catch (ClassCastException e) {
+            System.out.println("Error! Completed tasks can not be modified.");
+        }
+    }
+
+    public void setTaskComplete(TaskList taskList, int index) {
+        Task task = taskList.getTask(index);
+        CompletedTask completedTask;
+        completedTask = new CompletedTask(task.getContent(), task.getDueDateObj(), task.getDate(MonthDay.now()));
+        taskList.storeTask(completedTask);
+        taskList.deleteTask(index);
     }
 
     //MODIFIES: taskList
     //EFFECTS: Creates new task and prompts the user to assign or enter task content, task urgency, and task due date.
     //         Adds this new task to the list of tasks.
     public void selectEnterTask(TaskList taskList) {
+        String taskContent = "empty RegularTask";
+        MonthDay taskDueDate = MonthDay.now();
+        String taskUrgency = "unassigned";
+        String taskImportance = "important";
+
         Scanner keyboard = new Scanner(System.in);
-        Task task = new Task();
-        task.setContent(setTaskContentDecisions());
-        task.setUrgency(setUrgencyDecision(task.getUrgency()));
+        selectTaskTypeMessage();
+        String input = keyboard.nextLine();
+
+        if ((input.equals("1"))) {
+            RegularTask regularTask = new RegularTask(taskContent, taskDueDate, taskUrgency);
+            createTask(taskList, regularTask);
+        } else if ((input.equals("2"))) {
+            ImportantTask importantTask = new ImportantTask(taskContent, taskDueDate, taskUrgency, taskImportance);
+            createTask(taskList, importantTask);
+            setImportantTask(importantTask);
+        } else {
+            selectNotAnOption();
+        }
+    }
+
+    public void createTask(TaskList taskList, RegularTask regularTask) {
+        Scanner keyboard = new Scanner(System.in);
+
+        regularTask.setContent(setTaskContentDecisions());
+        regularTask.setUrgency(setUrgencyDecision(regularTask.getUrgency()));
         useDefaultDateMessage();
         if ((keyboard.nextLine()).equalsIgnoreCase("y")) {
-            task.setDueDate(setMonthAndDay(task.getDueDateObj()));
+            regularTask.setDueDate(setMonthAndDay(regularTask.getDueDateObj()));
         }
-        taskList.storeTask(task);
+        taskList.storeTask(regularTask);
+    }
+
+    public void setImportantTask(ImportantTask importantTask) {
+        importantTask.setImportance(setImportanceDecision(importantTask.getImportance()));
+        importantTask.setTimeLeft();
     }
 
     //EFFECTS: Prompts the user to select between:
@@ -189,7 +265,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
         } else if (input.equals("2")) {
             selectViewTaskByUrgency(taskList);
         } else {
-            notAnOptionError();
+            selectNotAnOption();
             selectViewTasksBy(taskList);
         }
     }
@@ -198,13 +274,17 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //         selected urgency level. Displays not an option error message if input is not an urgency level and
     //         restarts the method.
     public void selectViewTaskByUrgency(TaskList taskList) {
+        String high = "high";
+        String mid = "mid";
+        String low = "low";
+
         Scanner keyboard = new Scanner(System.in);
         selectUrgencyMessage();
         String input = keyboard.nextLine();
-        if (input.equalsIgnoreCase("high") || input.equalsIgnoreCase("mid") || input.equalsIgnoreCase("low")) {
+        if (input.equalsIgnoreCase(high) || input.equalsIgnoreCase(mid) || input.equalsIgnoreCase(low)) {
             printList(taskList.getTaskByUrgency(input));
         } else {
-            notAnOptionError();
+            selectNotAnOption();
             selectViewTaskByUrgency(taskList);
         }
     }
@@ -216,7 +296,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
         int input;
         selectTaskMessage(taskList);
 
-        if (keyboard.hasNextInt()) {
+        try {
             input = keyboard.nextInt();
 
             if (!(input == 0)) {
@@ -226,7 +306,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
                     taskList.deleteTask(input);
                 }
             }
-        } else {
+        } catch (InputMismatchException e) {
             notIntegerError();
         }
 
