@@ -3,7 +3,6 @@ package model;
 import java.time.LocalDate;
 import java.time.Period;
 
-
 public class RegularTask extends Task {
 
     private String timeLeft;

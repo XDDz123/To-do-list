@@ -3,38 +3,32 @@ package io;
 import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SavableTest {
+class SavableTest {
     private TaskList taskList;
     private TaskList taskList1;
-    private RegularTask task1;
-    private RegularTask task2;
-    private CompletedTask task3;
-    private CompletedTask task4;
-    private ImportantTask task5;
-    private ImportantTask task6;
     private Savable savable;
 
     @BeforeEach
-    public void runBefore() {
+    void runBefore() {
         taskList = new TaskList();
         taskList1 = new TaskList();
-        task1 = new RegularTask("task I", (LocalDate.of(2020,2,3)),
+
+        RegularTask task1 = new RegularTask("task I", (LocalDate.of(2020, 2, 3)),
                 "high");
-        task2 = new RegularTask("task III", (LocalDate.of(2020,4,3)),
+        RegularTask task2 = new RegularTask("task III", (LocalDate.of(2020, 4, 3)),
                 "high");
 
-        task3 = new CompletedTask("task IV", (LocalDate.of(2019,10,4)), "past due.");
-        task4 = new CompletedTask("task VII", (LocalDate.of(2019,4,5)), "4/5");
+        CompletedTask task3 = new CompletedTask("task IV", (LocalDate.of(2019, 10, 4)), "past due.");
+        CompletedTask task4 = new CompletedTask("task VII", (LocalDate.of(2019, 4, 5)), "4/5");
 
-        task5 = new ImportantTask("task V", (LocalDate.of(2019,12,2)),
+        ImportantTask task5 = new ImportantTask("task V", (LocalDate.of(2019, 12, 2)),
                 "mid", "High Importance");
-        task6 = new ImportantTask("task VI", (LocalDate.of(2020,10,3)),
+        ImportantTask task6 = new ImportantTask("task VI", (LocalDate.of(2020, 10, 3)),
                 "mid", "High Importance");
 
         taskList.storeTask(task1);
@@ -43,11 +37,12 @@ public class SavableTest {
         taskList.storeTask(task4);
         taskList.storeTask(task5);
         taskList.storeTask(task6);
+
         savable = new SaveAndLoad();
     }
 
     @Test
-    public void saveTest() throws IOException {
+    void saveTest() throws IOException {
 
         savable.save(taskList, "saveTest.txt");
         ((SaveAndLoad) savable).load(taskList1, "saveTest.txt");

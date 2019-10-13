@@ -6,26 +6,24 @@ import model.RegularTask;
 import model.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class LoadableTest {
+class LoadableTest {
 
     private TaskList taskList;
     private Loadable loadable;
 
     @BeforeEach
-    public void runBefore() {
+    void runBefore() {
         taskList = new TaskList();
         loadable = new SaveAndLoad();
     }
 
     @Test
-    public void loadTest() throws IOException {
+    void loadTest() throws IOException {
         loadable.load(taskList, "loadTest.txt");
 
         assertEquals(taskList.getTask(1).getContent(),"task I");

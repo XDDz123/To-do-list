@@ -155,6 +155,16 @@ class Messages {
         System.out.println("Selection: ");
     }
 
+    void checkBeforeDeleteAll() {
+        System.out.println("Delete all tasks?");
+        System.out.println("Type in 'yes' to delete all tasks.");
+        System.out.println("Type in anything else to cancel.");
+    }
+
+    void taskDeletedMessage() {
+        System.out.println("Tasks deleted successfully.");
+    }
+
     //EFFECTS: Prints the current task list and the following text.
     void cantModifyCompletedTaskError() {
         System.out.println("Error! Completed tasks can not be modified.");

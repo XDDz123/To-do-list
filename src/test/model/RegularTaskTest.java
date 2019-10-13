@@ -2,13 +2,10 @@ package model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
-import java.time.Year;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RegularTaskTest {
+class RegularTaskTest {
 
     private RegularTask regularTask;
     private String taskContent = "empty task";
@@ -16,76 +13,76 @@ public class RegularTaskTest {
     private String taskUrgency = "unassigned";
 
     @BeforeEach
-    public void runBefore() {
+    void runBefore() {
         regularTask = new RegularTask(taskContent, taskDueDate, taskUrgency);
     }
 
     @Test
-    public void setUrgencyTest() {
+    void setUrgencyTest() {
         regularTask.setUrgency("high");
         assertEquals(regularTask.getUrgency(), "high");
     }
 
     @Test
-    public void getUrgencyTest() {
+    void getUrgencyTest() {
         assertEquals(regularTask.getUrgency(), "unassigned");
     }
 
     @Test
-    public void printTaskTest() {
+    void printTaskTest() {
         assertEquals(regularTask.printTask(), "empty task"  + "  " + "Due: " + LocalDate.now().getMonthValue()
                 + "/" + LocalDate.now().getDayOfMonth() + "  " + "Urgency: " + "unassigned" + "  " + "Time left: tbd");
     }
 
 
     @Test
-    public void setTimeLeftTest() {
+    void setTimeLeftTest() {
         regularTask.setTimeLeft();
         assertEquals(regularTask.getTimeLeft(), "due today");
     }
 
     @Test
-    public void getTimeLeftTest() {
+    void getTimeLeftTest() {
         assertEquals(regularTask.getTimeLeft(), "tbd");
         regularTask.setTimeLeft();
         assertEquals(regularTask.getTimeLeft(), "due today");
     }
 
     @Test
-    public void changeTimeLeftTest() {
+    void changeTimeLeftTest() {
         regularTask.changeTimeLeft("1 day");
         assertEquals(regularTask.getTimeLeft(), "1 day");
     }
 
     @Test
-    public void changeTimeLeftAltTest() {
+    void changeTimeLeftAltTest() {
         regularTask.changeTimeLeft("2 days");
         assertEquals(regularTask.getTimeLeft(), "2 days");
     }
 
 
     @Test
-    public void computeTimeLeftDueTodayTest() {
+    void computeTimeLeftDueTodayTest() {
         regularTask.setTimeLeft();
         assertEquals(regularTask.getTimeLeft(),"due today");
     }
 
     @Test
-    public void computeTimeLeftInDaysTest() {
+    void computeTimeLeftInDaysTest() {
         regularTask.setDueDate(LocalDate.of(2019, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth() + 1));
         regularTask.setTimeLeft();
         assertEquals(regularTask.getTimeLeft(),1 + " days");
     }
 
     @Test
-    public void computeTimeLeftInMonthsTest() {
+    void computeTimeLeftInMonthsTest() {
         regularTask.setDueDate(LocalDate.of(2019,LocalDate.now().getMonthValue() + 1, LocalDate.now().getDayOfMonth()));
         regularTask.setTimeLeft();
         assertEquals(regularTask.getTimeLeft(),1 + " months " + 0 + " days");
     }
 
     @Test
-    public void computeTimeLeftInDaysAndMonthsTest() {
+    void computeTimeLeftInDaysAndMonthsTest() {
         regularTask.setDueDate(LocalDate.of(2019,LocalDate.now().getMonthValue() + 1,
                 LocalDate.now().getDayOfMonth() + 1));
         regularTask.setTimeLeft();

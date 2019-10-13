@@ -68,7 +68,7 @@ public class TaskList {
         if (isTaskListEmpty()) {
             return "No tasks found.";
         } else {
-            for (int i = 0; i < (getTaskListSize()); i++) {
+            for (int i = 0; i < list.size(); i++) {
                 taskListPrint.append(i + 1).append(" : ").append((list.get(i)).printTask()).append("\n");
             }
             //substring to -1 removes the last line break
