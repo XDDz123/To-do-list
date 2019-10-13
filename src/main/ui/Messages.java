@@ -21,7 +21,7 @@ class Messages {
         System.out.println("Type in '2' to see all entered tasks.");
         System.out.println("Type in '3' to delete a task or all tasks.");
         System.out.println("Type in '4' to modify a task.");
-        System.out.println("Type in '5' to sort tasks by urgency.");
+        System.out.println("Type in '5' to sort tasks by due date.");
         System.out.println("Type in '6' to save list or clear previous save.");
     }
 

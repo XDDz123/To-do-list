@@ -103,9 +103,11 @@ public class TaskList {
     //MODIFIES: this
     //EFFECTS: Sorts the current task list chronologically based on due dates. Starts from most recently due.
     public void sortByDueDate() {
-        filterOutCompleted(taskList).sort((a, b) -> {
-            if (a.getDueDateObj().isBefore(b.getDueDateObj())) {
+        taskList.sort((a, b) -> {
+            if (a.getDueDateObj().isBefore(b.getDueDateObj()) || b instanceof CompletedTask) {
                 return -1;
+            } else if (a.getDueDateObj().isAfter(b.getDueDateObj())) {
+                return 1;
             } else {
                 return 0;
             }

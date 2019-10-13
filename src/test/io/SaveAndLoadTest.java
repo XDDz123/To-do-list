@@ -89,7 +89,7 @@ public class SaveAndLoadTest {
         Period difference = Period.between((taskList.getTask(1)).getDueDateObj(), LocalDate.now());
 
         assertEquals(((ImportantTask) taskList.getTask(1)).getTimeLeft(),
-                Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days.");
+                Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days");
     }
 
     @Test
@@ -106,6 +106,6 @@ public class SaveAndLoadTest {
         saveAndLoad.setGeneralTaskField(partsOfLine);
         TaskList taskList = new TaskList();
         saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
-        assertEquals(((ImportantTask) taskList.getTask(1)).getTimeLeft(), "1 months 1 days.");
+        assertEquals(((ImportantTask) taskList.getTask(1)).getTimeLeft(), "1 months 1 days");
     }
 }

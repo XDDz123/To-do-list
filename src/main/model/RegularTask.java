@@ -7,8 +7,6 @@ import java.time.Period;
 public class RegularTask extends Task {
 
     private String timeLeft;
-    private LocalDate dueDate;
-    private LocalDate currentDate;
     private String taskUrgency;
 
     //EFFECTS: Constructs a new regular task.
@@ -52,22 +50,9 @@ public class RegularTask extends Task {
         this.timeLeft = timeLeft;
     }
 
-    //MODIFIES: this
-    //EFFECTS: Updates currentDate to the current date and month
-    //         Updates dueDate to the due date of this task
-    void setCurrentDateAndDueDate() {
-        currentDate = LocalDate.now();
-        dueDate = super.getDueDateObj();
-    }
-
-    //EFFECTS: Returns the current LocalDate, based on the system time
-    LocalDate getCurrentDate() {
-        return currentDate;
-    }
-
     //EFFECTS: Returns the LocalDate of the due date of this task
     LocalDate getDueDateTemp() {
-        return dueDate;
+        return taskDueDate;
     }
 
     //EFFECTS: Returns the time left until task is due if given year matches the current year
@@ -75,17 +60,16 @@ public class RegularTask extends Task {
     //         Returns the number of days left until due if due date is within a month from current date
     //         Returns the number of months and days otherwise.
     private String computeTimeLeft() {
-        setCurrentDateAndDueDate();
 
-        Period difference = Period.between(dueDate, currentDate);
+        Period difference = Period.between(taskDueDate, LocalDate.now());
 
-        if (dueDate.equals(currentDate)) {
+        if (taskDueDate.equals(LocalDate.now())) {
             return "due today";
         } else {
             if (difference.getMonths() == 0) {
-                return Math.abs(difference.getDays()) + " days.";
+                return Math.abs(difference.getDays()) + " days";
             } else {
-                return Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days.";
+                return Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days";
             }
         }
     }

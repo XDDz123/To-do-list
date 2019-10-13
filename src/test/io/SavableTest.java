@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.MonthDay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

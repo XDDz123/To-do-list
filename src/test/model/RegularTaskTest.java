@@ -63,12 +63,6 @@ public class RegularTaskTest {
         assertEquals(regularTask.getTimeLeft(), "2 days");
     }
 
-    @Test
-    public void setCurrentDateAndDueDateTest() {
-        regularTask.setCurrentDateAndDueDate();
-        assertEquals(regularTask.getCurrentDate(), LocalDate.now());
-        assertEquals(regularTask.getDueDateTemp(), LocalDate.now());
-    }
 
     @Test
     public void computeTimeLeftDueTodayTest() {
@@ -80,14 +74,14 @@ public class RegularTaskTest {
     public void computeTimeLeftInDaysTest() {
         regularTask.setDueDate(LocalDate.of(2019, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth() + 1));
         regularTask.setTimeLeft();
-        assertEquals(regularTask.getTimeLeft(),1 + " days.");
+        assertEquals(regularTask.getTimeLeft(),1 + " days");
     }
 
     @Test
     public void computeTimeLeftInMonthsTest() {
         regularTask.setDueDate(LocalDate.of(2019,LocalDate.now().getMonthValue() + 1, LocalDate.now().getDayOfMonth()));
         regularTask.setTimeLeft();
-        assertEquals(regularTask.getTimeLeft(),1 + " months " + 0 + " days.");
+        assertEquals(regularTask.getTimeLeft(),1 + " months " + 0 + " days");
     }
 
     @Test
@@ -95,6 +89,6 @@ public class RegularTaskTest {
         regularTask.setDueDate(LocalDate.of(2019,LocalDate.now().getMonthValue() + 1,
                 LocalDate.now().getDayOfMonth() + 1));
         regularTask.setTimeLeft();
-        assertEquals(regularTask.getTimeLeft(),1 + " months " + 1 + " days.");
+        assertEquals(regularTask.getTimeLeft(),1 + " months " + 1 + " days");
     }
 }
