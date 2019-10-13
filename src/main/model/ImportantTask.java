@@ -13,6 +13,7 @@ public class ImportantTask extends RegularTask {
         this.taskImportance = taskImportance;
     }
 
+
     //MODIFIES: this
     //EFFECTS: Sets the task importance to the give importance level
     public void setImportance(String taskImportance) {
