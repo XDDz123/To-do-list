@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-import java.time.MonthDay;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TaskTest {
     private Task task;
     private String taskContent = "empty task";
-    private MonthDay taskDueDate = MonthDay.now();
+    private LocalDate taskDueDate = LocalDate.now();
     private String taskUrgency = "unassigned";
 
     @BeforeEach
@@ -39,25 +39,25 @@ public class TaskTest {
 
     @Test
     public void setDueDateTest() {
-        MonthDay monthDay = MonthDay.of(1,2);
-        task.setDueDate(monthDay);
-        assertEquals(task.getDueDateObj(), monthDay);
+        LocalDate localDate = LocalDate.of(2019,1,2);
+        task.setDueDate(localDate);
+        assertEquals(task.getDueDateObj(), localDate);
     }
 
     @Test
     public void getDueDateObjTest() {
-        assertEquals(task.getDueDateObj(), MonthDay.now());
+        assertEquals(task.getDueDateObj(), LocalDate.now());
     }
 
     @Test
     public void getDueDateTest() {
-        MonthDay monthDay = MonthDay.now();
-        assertEquals(task.getDueDate(), monthDay.getMonthValue() + "/" + monthDay.getDayOfMonth());
+        LocalDate localDate = LocalDate.now();
+        assertEquals(task.getDueDate(), localDate.getMonthValue() + "/" + localDate.getDayOfMonth());
     }
 
     @Test
     public void printTaskContentAndDateTest() {
-        assertEquals(task.printTaskContentAndDate(), "empty task"  + "  " + "Due: " + MonthDay.now().getMonthValue()
-                + "/" + MonthDay.now().getDayOfMonth() + "  ");
+        assertEquals(task.printTaskContentAndDate(), "empty task"  + "  " + "Due: " + LocalDate.now().getMonthValue()
+                + "/" + LocalDate.now().getDayOfMonth() + "  ");
     }
 }

@@ -3,22 +3,20 @@ package ui;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.MonthDay;
-import java.time.Year;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class SetTaskInputDecisionsTest {
     private SetTaskInputDecisions taskBehavior;
-    private MonthDay monthDay;
+    private LocalDate localDate;
 
     @BeforeEach
     public void runBefore() {
         taskBehavior = new SetTaskInputDecisions();
-        MonthDay monthDay;
-        monthDay = MonthDay.of(1,1);
-        monthDay.atYear(Year.now().getValue());
+        localDate = LocalDate.of(2019, MonthDay.now().getMonthValue(), MonthDay.now().getDayOfMonth());
     }
 
 
@@ -33,85 +31,85 @@ public class SetTaskInputDecisionsTest {
 
     @Test
     public void checkDayJanTest() {
-        monthDay = MonthDay.of(1,1);
-        assertTrue(taskBehavior.checkDay(31, monthDay));
-        assertFalse(taskBehavior.checkDay(32, monthDay));
+        localDate = LocalDate.of(2019,1,1);
+        assertTrue(taskBehavior.checkDay(31, localDate));
+        assertFalse(taskBehavior.checkDay(32, localDate));
     }
 
     @Test
     public void checkFebDayTest() {
-        monthDay = MonthDay.of(2,1);
-        assertFalse(taskBehavior.checkDay(29, monthDay));
-        assertTrue(taskBehavior.checkDay(28, monthDay));
+        localDate = LocalDate.of(2019,2,1);
+        assertFalse(taskBehavior.checkDay(29, localDate));
+        assertTrue(taskBehavior.checkDay(28, localDate));
     }
 
     @Test
     public void checkDayMarTest() {
-        monthDay = MonthDay.of(3,1);
-        assertTrue(taskBehavior.checkDay(31, monthDay));
-        assertFalse(taskBehavior.checkDay(32, monthDay));
+        localDate = LocalDate.of(2019,3,1);
+        assertTrue(taskBehavior.checkDay(31, localDate));
+        assertFalse(taskBehavior.checkDay(32, localDate));
     }
 
     @Test
     public void checkDayTestApr() {
-        monthDay = MonthDay.of(4,1);
-        assertTrue(taskBehavior.checkDay(30, monthDay));
-        assertFalse(taskBehavior.checkDay(31, monthDay));
+        localDate = LocalDate.of(2019,4,1);
+        assertTrue(taskBehavior.checkDay(30, localDate));
+        assertFalse(taskBehavior.checkDay(31, localDate));
     }
 
     @Test
     public void checkDayMayTest() {
-        monthDay = MonthDay.of(5,1);
-        assertTrue(taskBehavior.checkDay(31, monthDay));
-        assertFalse(taskBehavior.checkDay(32, monthDay));
+        localDate = LocalDate.of(2019,5,1);
+        assertTrue(taskBehavior.checkDay(31, localDate));
+        assertFalse(taskBehavior.checkDay(32, localDate));
     }
 
     @Test
     public void checkDayJunTest() {
-        monthDay = MonthDay.of(6,1);
-        assertTrue(taskBehavior.checkDay(30, monthDay));
-        assertFalse(taskBehavior.checkDay(31, monthDay));
+        localDate = LocalDate.of(2019,6,1);
+        assertTrue(taskBehavior.checkDay(30, localDate));
+        assertFalse(taskBehavior.checkDay(31, localDate));
     }
 
     @Test
     public void checkDayTestJul() {
-        monthDay = MonthDay.of(7,1);
-        assertTrue(taskBehavior.checkDay(31, monthDay));
-        assertFalse(taskBehavior.checkDay(32, monthDay));
+        localDate = LocalDate.of(2019,7,1);
+        assertTrue(taskBehavior.checkDay(31, localDate));
+        assertFalse(taskBehavior.checkDay(32, localDate));
     }
 
     @Test
     public void checkDayAugTest() {
-        monthDay = MonthDay.of(8,1);
-        assertTrue(taskBehavior.checkDay(31, monthDay));
-        assertFalse(taskBehavior.checkDay(32, monthDay));
+        localDate = LocalDate.of(2019,8,1);
+        assertTrue(taskBehavior.checkDay(31, localDate));
+        assertFalse(taskBehavior.checkDay(32, localDate));
     }
 
     @Test
     public void checkDayTestSep() {
-        monthDay = MonthDay.of(9,1);
-        assertTrue(taskBehavior.checkDay(30, monthDay));
-        assertFalse(taskBehavior.checkDay(31, monthDay));
+        localDate = LocalDate.of(2019,9,1);
+        assertTrue(taskBehavior.checkDay(30, localDate));
+        assertFalse(taskBehavior.checkDay(31, localDate));
     }
 
     @Test
     public void checkDayOctTest() {
-        monthDay = MonthDay.of(10,1);
-        assertTrue(taskBehavior.checkDay(31, monthDay));
-        assertFalse(taskBehavior.checkDay(32, monthDay));
+        localDate = LocalDate.of(2019,10,1);
+        assertTrue(taskBehavior.checkDay(31, localDate));
+        assertFalse(taskBehavior.checkDay(32, localDate));
     }
 
     @Test
     public void checkDayNovTest() {
-        monthDay = MonthDay.of(11,1);
-        assertTrue(taskBehavior.checkDay(30, monthDay));
-        assertFalse(taskBehavior.checkDay(31, monthDay));
+        localDate = LocalDate.of(2019,11,1);
+        assertTrue(taskBehavior.checkDay(30, localDate));
+        assertFalse(taskBehavior.checkDay(31, localDate));
     }
 
     @Test
     public void checkDayDecTest() {
-        monthDay = MonthDay.of(12,1);
-        assertTrue(taskBehavior.checkDay(31, monthDay));
-        assertFalse(taskBehavior.checkDay(32, monthDay));
+        localDate = LocalDate.of(2019,12,1);
+        assertTrue(taskBehavior.checkDay(31, localDate));
+        assertFalse(taskBehavior.checkDay(32, localDate));
     }
 }

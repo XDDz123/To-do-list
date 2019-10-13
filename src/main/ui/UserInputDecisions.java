@@ -7,6 +7,7 @@ import model.*;
 
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
+import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.Year;
 import java.util.*;
@@ -67,7 +68,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
             if (input.equals("1")) {
                 saveTasks.save(taskList, fileName);
             } else if (input.equals("2")) {
-                ((SaveAndLoad) saveTasks).clearSave(fileName);
+                ((SaveAndLoad) saveTasks).clearSave(fileName, taskList);
             } else {
                 selectNotAnOption();
             }
@@ -220,7 +221,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     public void setTaskComplete(TaskList taskList, int index) {
         Task task = taskList.getTask(index);
         CompletedTask completedTask;
-        completedTask = new CompletedTask(task.getContent(), task.getDueDateObj(), task.getDate(MonthDay.now()));
+        completedTask = new CompletedTask(task.getContent(), task.getDueDateObj(), task.getDate(LocalDate.now()));
         taskList.storeTask(completedTask);
         taskList.deleteTask(index);
     }
@@ -232,7 +233,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //         Else returns not an option error.
     public void selectEnterTask(TaskList taskList) {
         String taskContent = "empty RegularTask";
-        MonthDay taskDueDate = MonthDay.now();
+        LocalDate taskDueDate = LocalDate.now();
         String taskUrgency = "unassigned";
         String taskImportance = "important";
 
@@ -246,7 +247,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
         } else if ((input.equals("2"))) {
             ImportantTask importantTask = new ImportantTask(taskContent, taskDueDate, taskUrgency, taskImportance);
             setGeneralRegularTask(taskList, importantTask);
-            setImportantTask(importantTask);
+            importantTask.setImportance(setImportanceDecision(importantTask.getImportance()));
         } else {
             selectNotAnOption();
         }
@@ -265,19 +266,8 @@ public class UserInputDecisions extends SetTaskInputDecisions {
             regularTask.setDueDate(setMonthAndDay(regularTask.getDueDateObj()));
         }
         taskList.storeTask(regularTask);
-    }
 
-    //MODIFIES: importantTask
-    //EFFECTS: Prompts the user to set fields in important tasks that are not already present in regular tasks.
-    //         i.e. set task importance and time left until due
-    public void setImportantTask(ImportantTask importantTask) {
-        importantTask.setImportance(setImportanceDecision(importantTask.getImportance()));
-        if (importantTask.getDueDateObj().isBefore(MonthDay.now())) {
-            importantTask.setTimeLeft(Year.now().getValue() + 1);
-        } else {
-            importantTask.setTimeLeft(Year.now().getValue());
-        }
-
+        regularTask.setTimeLeft();
     }
 
     //EFFECTS: Prompts the user to select between:
@@ -311,7 +301,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
         selectUrgencyMessage();
         String input = keyboard.nextLine();
         if (input.equalsIgnoreCase(high) || input.equalsIgnoreCase(mid) || input.equalsIgnoreCase(low)) {
-            printList(taskList.getTaskByUrgency(input));
+            printIncompleteTasksList(taskList.getTaskByUrgency(input));
         } else {
             selectNotAnOption();
             selectViewTaskByUrgency(taskList);

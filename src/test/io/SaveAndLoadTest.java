@@ -2,15 +2,16 @@ package io;
 
 import model.CompletedTask;
 import model.ImportantTask;
+import model.Task;
 import model.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.Period;
-import java.time.Year;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,17 +20,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SaveAndLoadTest {
 
     private SaveAndLoad saveAndLoad;
+    private TaskList taskList;
 
     @BeforeEach
     public void runBefore() {
         saveAndLoad = new SaveAndLoad();
+        taskList = new TaskList();
     }
 
     @Test
     public void clearSaveTest() throws IOException {
         File file = new File("clearTest.txt");
-        saveAndLoad.clearSave("clearTest.txt");
+        saveAndLoad.clearSave("clearTest.txt", taskList);
         assertEquals(file.length(), 0);
+        assertTrue(taskList.isTaskListEmpty());
     }
 
     @Test
@@ -43,16 +47,8 @@ public class SaveAndLoadTest {
     }
 
     @Test
-    public void checkFirstElementTest() {
-        ArrayList<String> partsOfLine = new ArrayList<>();
-        partsOfLine.add("*");
-        assertTrue(saveAndLoad.checkFirstElement(partsOfLine, "*"));
-    }
-
-    @Test
     public void createPastDueFromImportantTest() {
-        TaskList taskList = new TaskList();
-        saveAndLoad.createPastDueFromImportant(taskList);
+        saveAndLoad.createPastDueFromLoad(taskList);
         assertEquals(((CompletedTask) taskList.getTask(1)).getCompletionStatus(), "past due.");
     }
 
@@ -61,14 +57,14 @@ public class SaveAndLoadTest {
         ArrayList<String> partsOfLine = new ArrayList<>();
         partsOfLine.add("*");
         partsOfLine.add("unassigned");
-        partsOfLine.add("high");
         partsOfLine.add(String.valueOf(MonthDay.now().getMonthValue() - 1));
         partsOfLine.add(String.valueOf(MonthDay.now().getDayOfMonth() - 1));
-        partsOfLine.add("High Importance");
         partsOfLine.add("2019");
-        saveAndLoad.setIncompleteTaskField(partsOfLine);
+        partsOfLine.add("high");
+        partsOfLine.add("High Importance");
+        saveAndLoad.setGeneralTaskField(partsOfLine);
         TaskList taskList = new TaskList();
-        saveAndLoad.checkImportantTaskLoad(partsOfLine, taskList);
+        saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
         assertEquals(taskList.getTask(1).getContent(), "unassigned");
         assertEquals(taskList.getTask(1).getDueDate(), (MonthDay.now().getMonthValue() - 1)
         + "/" + (MonthDay.now().getDayOfMonth() - 1));
@@ -81,17 +77,16 @@ public class SaveAndLoadTest {
         ArrayList<String> partsOfLine = new ArrayList<>();
         partsOfLine.add("*");
         partsOfLine.add("unassigned");
-        partsOfLine.add("high");
         partsOfLine.add(String.valueOf(MonthDay.now().getMonthValue() - 1));
         partsOfLine.add(String.valueOf(MonthDay.now().getDayOfMonth() - 1));
-        partsOfLine.add("High Importance");
         partsOfLine.add("2020");
-        saveAndLoad.setIncompleteTaskField(partsOfLine);
+        partsOfLine.add("high");
+        partsOfLine.add("High Importance");
+
+        saveAndLoad.setGeneralTaskField(partsOfLine);
         TaskList taskList = new TaskList();
-        saveAndLoad.checkImportantTaskLoad(partsOfLine, taskList);
-        Period difference = Period.between(
-                (taskList.getTask(1)).getDueDateObj().atYear(Year.now().getValue() + 1),
-                MonthDay.now().atYear(Year.now().getValue()));
+        saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
+        Period difference = Period.between((taskList.getTask(1)).getDueDateObj(), LocalDate.now());
 
         assertEquals(((ImportantTask) taskList.getTask(1)).getTimeLeft(),
                 Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days.");
@@ -102,14 +97,15 @@ public class SaveAndLoadTest {
         ArrayList<String> partsOfLine = new ArrayList<>();
         partsOfLine.add("*");
         partsOfLine.add("unassigned");
-        partsOfLine.add("high");
         partsOfLine.add(String.valueOf(MonthDay.now().getMonthValue() + 1));
         partsOfLine.add(String.valueOf(MonthDay.now().getDayOfMonth() + 1));
-        partsOfLine.add("High Importance");
         partsOfLine.add("2019");
-        saveAndLoad.setIncompleteTaskField(partsOfLine);
+        partsOfLine.add("high");
+        partsOfLine.add("High Importance");
+
+        saveAndLoad.setGeneralTaskField(partsOfLine);
         TaskList taskList = new TaskList();
-        saveAndLoad.checkImportantTaskLoad(partsOfLine, taskList);
+        saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
         assertEquals(((ImportantTask) taskList.getTask(1)).getTimeLeft(), "1 months 1 days.");
     }
 }

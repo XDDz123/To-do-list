@@ -51,26 +51,47 @@ public class TaskList {
         return taskList.size();
     }
 
-    //EFFECTS: Returns "No tasks found." if current task list is empty, returns all tasks in the current task list ow.
+    //EFFECTS: Prints the contents of incomplete tasks in the list
+    public String printIncompleteTasks() {
+        return printTaskList(filterOutCompleted(taskList));
+    }
+
+    //EFFECTS: Prints the contents of the current task list
     public String printTaskList() {
-        String taskListPrint = "";
+        return printTaskList(taskList);
+    }
+
+    //EFFECTS: Returns "No tasks found." if current task list is empty, returns all tasks in the current task list ow.
+    private String printTaskList(ArrayList<Task> list) {
+        StringBuilder taskListPrint = new StringBuilder();
 
         if (isTaskListEmpty()) {
             return "No tasks found.";
         } else {
             for (int i = 0; i < (getTaskListSize()); i++) {
-                taskListPrint = taskListPrint + (i + 1) + " : " + (taskList.get(i)).printTask() + "\n";
+                taskListPrint.append(i + 1).append(" : ").append((list.get(i)).printTask()).append("\n");
             }
             //substring to -1 removes the last line break
             return taskListPrint.substring(0, taskListPrint.length() - 1);
         }
     }
 
+    //EFFECTS: takes in an list of tasks, returns a new list with only incomplete tasks.
+    private ArrayList<Task> filterOutCompleted(ArrayList<Task> taskList) {
+        ArrayList<Task> filteredList = new ArrayList<>();
+        for (Task task : taskList) {
+            if (!(task instanceof CompletedTask)) {
+                filteredList.add(task);
+            }
+        }
+        return filteredList;
+    }
+
     //EFFECTS: Returns a new task list that contains all tasks in the current task list
     //         with the specified urgency level.
     public TaskList getTaskByUrgency(String urgency) {
         TaskList tempList = new TaskList();
-        for (Task task : taskList) {
+        for (Task task : filterOutCompleted(taskList)) {
             if (((RegularTask) task).getUrgency().equalsIgnoreCase(urgency)) {
                 tempList.storeTask(task);
             }
@@ -82,14 +103,11 @@ public class TaskList {
     //MODIFIES: this
     //EFFECTS: Sorts the current task list chronologically based on due dates. Starts from most recently due.
     public void sortByDueDate() {
-        Collections.sort(taskList, new Comparator<Task>() {
-            @Override
-            public int compare(Task a, Task b) {
-                if (a.getDueDateObj().isBefore(b.getDueDateObj())) {
-                    return -1;
-                } else {
-                    return 1;
-                }
+        filterOutCompleted(taskList).sort((a, b) -> {
+            if (a.getDueDateObj().isBefore(b.getDueDateObj())) {
+                return -1;
+            } else {
+                return 0;
             }
         });
     }

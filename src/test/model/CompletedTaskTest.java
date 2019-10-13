@@ -3,6 +3,7 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.MonthDay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CompletedTaskTest {
     private CompletedTask completedTask;
     private String taskContent = "empty task";
-    private MonthDay taskDueDate = MonthDay.now();
+    private LocalDate taskDueDate = LocalDate.now();
     private String completionStatus = "tbd";
 
     @BeforeEach

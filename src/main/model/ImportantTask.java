@@ -1,22 +1,16 @@
 package model;
 
-import java.time.MonthDay;
-import java.time.Period;
-import java.time.Year;
+import java.time.LocalDate;
 
 public class ImportantTask extends RegularTask {
 
-    private String timeLeft;
-    private MonthDay dueDate;
-    private MonthDay currentDate;
     private String taskImportance;
 
     //MODIFIES: this
     //EFFECTS: Constructs an important task
-    public ImportantTask(String taskContent, MonthDay taskDueDate, String taskUrgency, String taskImportance) {
+    public ImportantTask(String taskContent, LocalDate taskDueDate, String taskUrgency, String taskImportance) {
         super(taskContent, taskDueDate, taskUrgency);
         this.taskImportance = taskImportance;
-        timeLeft = "tbd";
     }
 
     //MODIFIES: this
@@ -30,85 +24,9 @@ public class ImportantTask extends RegularTask {
         return taskImportance;
     }
 
-    //MODIFIES: this
-    //EFFECTS: Updates time left until due to the most recent time left until due
-    public void setTimeLeft(int year) {
-        timeLeft = computeTimeLeft(year);
-    }
-
-    //EFFECTS: Returns how much time is left until the task is due
-    public String getTimeLeft() {
-        return timeLeft;
-    }
-
-    //EFFECTS: Changes the time left to the give time left
-    public void changeTimeLeft(String timeLeft) {
-        this.timeLeft = timeLeft;
-    }
-
     //EFFECTS: Prints the information stored in the task in the following format
     @Override
     public String printTask() {
-        return super.printTask() + "  " + "Time left: " + getTimeLeft() + "  " + "*" + getImportance() + "*";
-    }
-
-    //MODIFIES: this
-    //EFFECTS: Updates currentDate to the current date and month
-    //         Updates dueDate to the due date of this task
-    public void setCurrentDateAndDueDate() {
-        currentDate = MonthDay.now();
-        dueDate = super.getDueDateObj();
-    }
-
-    //EFFECTS: Returns the current MonthDay, based on the system time
-    public MonthDay getCurrentDate() {
-        return currentDate;
-    }
-
-    //EFFECTS: Returns the MonthDay of the due date of this task
-    public MonthDay getDueDateTemp() {
-        return dueDate;
-    }
-
-    //MODIFIES: this
-    //EFFECTS: Computes how much time is left until the task is due.
-    //         Returns number of months and/or number of days left until the task is due.
-    //         Time left is calculated differently depending on the given year.
-    public String computeTimeLeft(int year) {
-        int currentYear = Year.now().getValue();
-
-        setCurrentDateAndDueDate();
-
-        if (year == Year.now().getValue()) {
-            return computeTimeLeftCurrentYear(currentYear);
-        } else {
-            return computeTimeLeftNextYear(currentYear);
-        }
-    }
-
-    //EFFECTS: Returns the time left until task is due if given year matches the current year
-    //         Returns due today if the due date matches the current date
-    //         Returns the number of days left until due if due date is within a month from current date
-    //         Returns the number of months and days otherwise.
-    public String computeTimeLeftCurrentYear(int currentYear) {
-        Period difference = Period.between(dueDate.atYear(currentYear), currentDate.atYear(currentYear));
-
-        if (dueDate.equals(currentDate)) {
-            return "due today";
-        } else {
-            if (difference.getMonths() == 0) {
-                return Math.abs(difference.getDays()) + " days.";
-            } else {
-                return Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days.";
-            }
-        }
-    }
-
-    //EFFECTS: Returns the time left until task is due if given year does not match the current year
-    //         Returns the number of months and days left until due date, with due date being in the next year
-    public String computeTimeLeftNextYear(int currentYear) {
-        Period difference = Period.between(dueDate.atYear(currentYear + 1), currentDate.atYear(currentYear));
-
-        return Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days.";
+        return super.printTask() + "  " + "*" + getImportance() + "*";
     }
 }

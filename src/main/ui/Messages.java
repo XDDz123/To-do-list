@@ -2,10 +2,10 @@ package ui;
 
 import model.TaskList;
 
-public class Messages {
+class Messages {
 
     //EFFECTS: Prints the following.
-    public void welcomeMessage() {
+    void welcomeMessage() {
         System.out.println("Type in 'exit' to exit this program.");
         System.out.println("Your data will be automatically saved after this session.");
         System.out.println("  ");
@@ -13,7 +13,7 @@ public class Messages {
     }
 
     //EFFECTS: Prints the following.
-    public void optionsMessage() {
+    void optionsMessage() {
         //System.out.println("Character checks not implemented yet,
         //please type in what you are supposed to type in. Or maybe they are...");
         System.out.println("-----------------------------------------------------------------------------------------");
@@ -26,24 +26,24 @@ public class Messages {
     }
 
     //EFFECTS: Prints the following.
-    public void continueMessage() {
+    void continueMessage() {
         System.out.println("Press enter to continue or type 'exit' to exit");
     }
 
-    public void selectTaskTypeMessage() {
+    void selectTaskTypeMessage() {
         System.out.println("Type in '1' to enter a regular task.");
         System.out.println("Type in '2' to enter an important task.");
     }
 
     //EFFECTS: Prints the following.
-    public void selectDeleteTaskMessage() {
+    void selectDeleteTaskMessage() {
         System.out.println("Type in '1' to delete a task.");
         System.out.println("Type in '2' to delete all entered tasks.");
         System.out.println("Type in '0' to return to the previous menu.");
     }
 
     //EFFECTS: Prints the following.
-    public void saveAndClearSaveMessage() {
+    void saveAndClearSaveMessage() {
         System.out.println("Type in '1' to save current list of tasks.");
         System.out.println("Type in '2' to clear the previous save.");
         System.out.println("Type in '0' to return to the previous menu.");
@@ -54,29 +54,29 @@ public class Messages {
     }*/
 
     //EFFECTS: Prints the following.
-    public void selectViewTasksByMessage() {
+    void selectViewTasksByMessage() {
         System.out.println("Type in '1' to view all tasks.");
         System.out.println("Type in '2' to view all tasks by urgency.");
     }
 
     //EFFECTS: Prints the following.
-    public void taskMessage() {
+    void taskMessage() {
         System.out.println("Enter your task here: ");
     }
 
     //EFFECTS: Prints the following.
-    public void setUrgencyMessage() {
+    void setUrgencyMessage() {
         System.out.println("Set urgency. Enter '1' for high urgency, '2' for mid urgency, '3' for low urgency.");
     }
 
     //EFFECTS: Prints the following.
-    public void notAnOptionTryAgainError() {
+    void notAnOptionTryAgainError() {
         System.out.println("Not an option. Please try again.");
         System.out.println("  ");
     }
 
     //EFFECTS: Prints the following.
-    public void setImportanceMessage() {
+    void setImportanceMessage() {
         System.out.println("Set importance.");
         System.out.println("Type in '1' for extreme importance.");
         System.out.println("Type in '2' for high importance");
@@ -84,38 +84,38 @@ public class Messages {
     }
 
     //EFFECTS: Prints the following.
-    public void selectUrgencyMessage() {
+    void selectUrgencyMessage() {
         System.out.println("Select urgency. Type in 'high', 'mid' or 'low': ");
     }
 
     //EFFECTS: Prints the following.
-    public void setDueDateMessage() {
+    void setDueDateMessage() {
         System.out.println("Set a due date for your task.");
     }
 
     //EFFECTS: Prints the following.
-    public void useDefaultDateMessage() {
+    void useDefaultDateMessage() {
         System.out.println("Enter 'y' to set a due date. Unset due dates are defaulted to the current date.");
         System.out.println("Press enter to skip.");
     }
 
     //EFFECTS: Prints the following.
-    public void enterMonthMessage() {
+    void enterMonthMessage() {
         System.out.print("Enter month: ");
     }
 
     //EFFECTS: Prints the following.
-    public void enterDayMessage() {
+    void enterDayMessage() {
         System.out.print("Enter Day: ");
     }
 
     //EFFECTS: Prints the following.
-    public void dayMonthError() {
+    void dayMonthError() {
         System.out.println("Not a valid day or month.");
     }
 
     //EFFECTS: Prints the following.
-    public void modifyRegularTaskMessage() {
+    void modifyRegularTaskMessage() {
         System.out.println("Type in '1' to set task as complete.");
         System.out.println("Type in '2' to change task due date.");
         System.out.println("Type in '3' to change task urgency.");
@@ -124,7 +124,7 @@ public class Messages {
     }
 
     //EFFECTS: Prints the following.
-    public void modifyImportantTaskMessage() {
+    void modifyImportantTaskMessage() {
         System.out.println("Type in '1' to set task as complete.");
         System.out.println("Type in '2' to change task due date.");
         System.out.println("Type in '3' to change task urgency.");
@@ -134,14 +134,21 @@ public class Messages {
     }
 
     //EFFECTS: Prints the current task list in the following format.
-    public void printList(TaskList taskList) {
+    void printList(TaskList taskList) {
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println(taskList.printTaskList());
         System.out.println("-----------------------------------------------------------------------------------------");
     }
 
+    //EFFECTS: Prints the current task list in the following format.
+    void printIncompleteTasksList(TaskList taskList) {
+        System.out.println("-----------------------------------------------------------------------------------------");
+        System.out.println(taskList.printIncompleteTasks());
+        System.out.println("-----------------------------------------------------------------------------------------");
+    }
+
     //EFFECTS: Prints the current task list and the following text.
-    public void selectTaskMessage(TaskList taskList) {
+    void selectTaskMessage(TaskList taskList) {
         System.out.println("Select task by entering number");
         printList(taskList);
         System.out.println("Type in '0' to return to the previous menu.");
@@ -149,22 +156,22 @@ public class Messages {
     }
 
     //EFFECTS: Prints the current task list and the following text.
-    public void cantModifyCompletedTaskError() {
+    void cantModifyCompletedTaskError() {
         System.out.println("Error! Completed tasks can not be modified.");
     }
 
     //EFFECTS: Prints the following.
-    public void outOfBoundsError() {
+    void outOfBoundsError() {
         System.out.println("Selection out of bounds!");
     }
 
     //EFFECTS: Prints the following.
-    public void notIntegerError() {
+    void notIntegerError() {
         System.out.println("Error enter an integer!");
     }
 
     //EFFECTS: Prints the following.
-    public void notAnOptionError() {
+    void notAnOptionError() {
         System.out.println("Error! Not an option.");
     }
 }

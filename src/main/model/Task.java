@@ -1,15 +1,15 @@
 package model;
 
-import java.time.MonthDay;
+import java.time.LocalDate;
 
 public abstract class Task {
 
     private String taskContent;
-    private MonthDay taskDueDate;
+    protected LocalDate taskDueDate;
 
     //EFFECTS: Constructs a new task.
     //MODIFIES: this
-    public Task(String taskContent, MonthDay taskDueDate) {
+    Task(String taskContent, LocalDate taskDueDate) {
         this.taskContent = taskContent;
         this.taskDueDate = taskDueDate;
     }
@@ -27,7 +27,7 @@ public abstract class Task {
 
     //MODIFIES: this
     //EFFECTS: Sets the due date of this task in the form of month and day.
-    public void setDueDate(MonthDay taskDueDate) {
+    public void setDueDate(LocalDate taskDueDate) {
         this.taskDueDate = taskDueDate;
     }
 
@@ -36,12 +36,12 @@ public abstract class Task {
         return getDate(taskDueDate);
     }
 
-    public String getDate(MonthDay monthDay) {
-        return monthDay.getMonthValue() + "/" + monthDay.getDayOfMonth();
+    public String getDate(LocalDate localDate) {
+        return localDate.getMonthValue() + "/" + localDate.getDayOfMonth();
     }
 
-    //EFFECTS: Returns the due date of this task in the form of object MonthDay.
-    public MonthDay getDueDateObj() {
+    //EFFECTS: Returns the due date of this task in the form of object LocalDate.
+    public LocalDate getDueDateObj() {
         return taskDueDate;
     }
 
@@ -49,7 +49,7 @@ public abstract class Task {
     public abstract String printTask();
 
     //EFFECTS: Prints the task content and due date in the following format
-    public String printTaskContentAndDate() {
+    String printTaskContentAndDate() {
         return getContent() + "  " + "Due: " + getDueDate() + "  ";
     }
 }

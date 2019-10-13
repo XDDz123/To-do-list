@@ -1,22 +1,22 @@
 package ui;
 
+import java.time.LocalDate;
 import java.time.Month;
-import java.time.MonthDay;
 import java.time.Year;
 import java.util.Scanner;
 
-public class SetTaskInputDecisions extends Messages {
+class SetTaskInputDecisions extends Messages {
 
-    private final String high = "high";
-    private final String mid = "mid";
-    private final String low = "low";
+    private static final String high = "high";
+    private static final String mid = "mid";
+    private static final String low = "low";
     private String taskUrgency = "unassigned";
-    private MonthDay taskDueDate;
+    private LocalDate taskDueDate;
     private String taskImportance = "unassigned";
 
-    private final String importanceExtreme = "Extreme Importance";
-    private final String importanceHigh = "High Importance";
-    private final String importanceMid = "Medium Importance";
+    private static final String importanceExtreme = "Extreme Importance";
+    private static final String importanceHigh = "High Importance";
+    private static final String importanceMid = "Medium Importance";
 
 
     //MODIFIES: this
@@ -25,7 +25,7 @@ public class SetTaskInputDecisions extends Messages {
     //         (2) mid
     //         (3) low
     //         else displays error message and restarts the method.
-    public String setUrgencyDecision(String taskUrgency) {
+    String setUrgencyDecision(String taskUrgency) {
         setUrgencyMessage();
         Scanner keyboard = new Scanner(System.in);
 
@@ -47,21 +47,21 @@ public class SetTaskInputDecisions extends Messages {
     }
 
     //EFFECTS: Displays error message and starts the method that prompts the user to set urgency.
-    public String setUrgencyError(String taskUrgency) {
+    private String setUrgencyError(String taskUrgency) {
         notAnOptionTryAgainError();
         setUrgencyDecision(taskUrgency);
         return this.taskUrgency;
     }
 
-    //EFFECTS: Prompts user to set due date. Returns a new MonthDay created from user input.
-    public MonthDay setMonthAndDay(MonthDay taskDueDate) {
+    //EFFECTS: Prompts user to set due date. Returns a new LocalDate created from user input.
+    LocalDate setMonthAndDay(LocalDate taskDueDate) {
         setDueDateMessage();
-        return setDay(setMonth(taskDueDate));
+        return setYear(setDay(setMonth(taskDueDate)));
     }
 
     //MODIFIES: this
-    //EFFECTS: Checks the validity of the user input and returns a MonthDay with modified month based on user input.
-    public MonthDay setMonth(MonthDay taskDueDate) {
+    //EFFECTS: Checks the validity of the user input and returns a LocalDate with modified month based on user input.
+    private LocalDate setMonth(LocalDate taskDueDate) {
         enterMonthMessage();
         Scanner keyboard = new Scanner(System.in);
         int month;
@@ -81,8 +81,8 @@ public class SetTaskInputDecisions extends Messages {
     }
 
     //MODIFIES: this
-    //EFFECTS: Checks the validity of the user input and returns a MonthDay with modified day based on user input:
-    public MonthDay setDay(MonthDay taskDueDate) {
+    //EFFECTS: Checks the validity of the user input and returns a LocalDate with modified day based on user input:
+    private LocalDate setDay(LocalDate taskDueDate) {
         enterDayMessage();
         Scanner keyboard = new Scanner(System.in);
         int day;
@@ -101,6 +101,14 @@ public class SetTaskInputDecisions extends Messages {
         }
     }
 
+    private LocalDate setYear(LocalDate taskDueDate) {
+        if (taskDueDate.isBefore(LocalDate.now())) {
+            return this.taskDueDate.withYear(Year.now().getValue() + 1);
+        } else {
+            return this.taskDueDate;
+        }
+    }
+
     //MODIFIES: this
     //EFFECTS: Takes the system/machine time and checks whether the current year is a leap year, if so return true,
     //         returns false otherwise.
@@ -110,7 +118,7 @@ public class SetTaskInputDecisions extends Messages {
     }
 
     //EFFECTS: Checks if the given month is within 1 and 12, return true if within, return false otherwise.
-    public boolean checkMonth(int month) {
+    boolean checkMonth(int month) {
         if (month >= 1 && month <= 12) {
             return true;
         } else {
@@ -119,7 +127,7 @@ public class SetTaskInputDecisions extends Messages {
     }
 
     //EFFECTS: Check if the given day exists in the given month, return true if it exists, return false otherwise.
-    public boolean checkDay(int day, MonthDay taskDueDate) {
+    boolean checkDay(int day, LocalDate taskDueDate) {
         if (day >= 1 && day <= taskDueDate.getMonth().length(checkLeapYear())) {
             return true;
         } else {
@@ -128,14 +136,14 @@ public class SetTaskInputDecisions extends Messages {
     }
 
     //EFFECTS: Prints not a day or month error message, returns false.
-    public boolean checkDayMonthHelper() {
+    private boolean checkDayMonthHelper() {
         dayMonthError();
         return false;
     }
 
     //EFFECTS: Prompts the user to enter the task content of a task.
     //         Returns the user input.
-    public String setTaskContentDecisions() {
+    String setTaskContentDecisions() {
         taskMessage();
         Scanner keyboard = new Scanner(System.in);
         return keyboard.nextLine();
@@ -147,7 +155,7 @@ public class SetTaskInputDecisions extends Messages {
     //         (2) High Importance
     //         (3) Medium Importance
     //         else displays error message and restarts the method.
-    public String setImportanceDecision(String taskImportance) {
+    String setImportanceDecision(String taskImportance) {
         setImportanceMessage();
 
         Scanner keyboard = new Scanner(System.in);
@@ -170,7 +178,7 @@ public class SetTaskInputDecisions extends Messages {
     }
 
     //EFFECTS: Displays error message and starts the method that prompts the user to set importance.
-    public String setImportanceError(String taskImportance) {
+    private String setImportanceError(String taskImportance) {
         notAnOptionTryAgainError();
         setImportanceDecision(taskImportance);
         return this.taskImportance;
