@@ -130,6 +130,12 @@ class TaskListTest {
                 "tbd",
                 "tbd");
         taskList.storeTask(task6);
+        ImportantTask task7 = new ImportantTask(
+                "empty task",
+                LocalDate.of(2019,3,5),
+                "tbd",
+                "tbd");
+        taskList.storeTask(task7);
 
 
         TaskList taskList5 = new TaskList();
@@ -137,6 +143,7 @@ class TaskListTest {
         taskList5.storeTask(task2);
         taskList5.storeTask(task1);
         taskList5.storeTask(task6);
+        taskList5.storeTask(task7);
         taskList5.storeTask(task4);
         taskList5.storeTask(task3);
         taskList5.storeTask(task5);

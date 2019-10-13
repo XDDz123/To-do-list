@@ -49,11 +49,6 @@ public class RegularTask extends Task {
         this.timeLeft = timeLeft;
     }
 
-    //EFFECTS: Returns the LocalDate of the due date of this task
-    LocalDate getDueDateTemp() {
-        return taskDueDate;
-    }
-
     //EFFECTS: Returns the time left until task is due if given year matches the current year
     //         Returns due today if the due date matches the current date
     //         Returns the number of days left until due if due date is within a month from current date
