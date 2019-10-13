@@ -17,12 +17,7 @@ public class SaveAndLoad implements Loadable, Savable {
     private String taskContent;
     private String taskUrgency;
     private LocalDate taskDueDate;
-    private String taskImportance;
     private String completionStatus;
-
-    private int month;
-    private int day;
-    private int year;
 
     //REQUIRES: save.txt to exist and follow the expected format
     //MODIFIES: taskList
@@ -54,7 +49,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //              -else create a task from the given info and sets the time until using the current year
     //         else create an important task from the given info and sets the time until due using the next year.
     //         Stores created tasks in the given taskList.
-    public void createTaskSetYearFromLoad(ArrayList<String> partsOfLine, TaskList taskList, String taskType) {
+    void createTaskSetYearFromLoad(ArrayList<String> partsOfLine, TaskList taskList, String taskType) {
         if (taskDueDate.isBefore(LocalDate.now())) {
             createPastDueFromLoad(taskList);
         } else {
@@ -71,7 +66,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new completed task
     //         if the given information of an important task shows it is past due
     //         Stores the created task in the list of tasks.
-    public void createPastDueFromLoad(TaskList taskList) {
+    void createPastDueFromLoad(TaskList taskList) {
         CompletedTask completedTask = new CompletedTask(taskContent, taskDueDate, "past due.");
         taskList.storeTask(completedTask);
     }
@@ -79,7 +74,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //MODIFIES: taskList
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new completed task.
     //         Stores the created task in the list of tasks.
-    public void createCompletedTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
+    private void createCompletedTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
         setCompletedTaskField(partsOfLine);
         taskList.storeTask(new CompletedTask(taskContent, taskDueDate, completionStatus));
     }
@@ -87,7 +82,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //MODIFIES: taskList
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new regular task.
     //         Stores the created task in the list of tasks.
-    public void createRegularTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
+    private void createRegularTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
         taskUrgency = partsOfLine.get(5);
         setGeneralTaskField(partsOfLine);
         taskList.storeTask(new RegularTask(taskContent, taskDueDate, taskUrgency));
@@ -96,27 +91,26 @@ public class SaveAndLoad implements Loadable, Savable {
     //MODIFIES: taskList, this
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new important task.
     //         Stores the created task in the list of tasks.
-    public void createImportantTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
+    private void createImportantTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
         taskUrgency = partsOfLine.get(5);
-        taskImportance = partsOfLine.get(6);
-        taskList.storeTask(new ImportantTask(taskContent, taskDueDate, taskUrgency, taskImportance));
+        taskList.storeTask(new ImportantTask(taskContent, taskDueDate, taskUrgency, partsOfLine.get(6)));
     }
 
     //MODIFIES: this
     //EFFECTS: Loads information from the list partsOfLine into the temporary variables of:
     //         task content, urgency, and due date
-    public void setGeneralTaskField(ArrayList<String> partsOfLine) {
+    void setGeneralTaskField(ArrayList<String> partsOfLine) {
         taskContent = partsOfLine.get(1);
-        month = Integer.parseInt(partsOfLine.get(2));
-        day = Integer.parseInt(partsOfLine.get(3));
-        year = Integer.parseInt(partsOfLine.get(4));
+        int month = Integer.parseInt(partsOfLine.get(2));
+        int day = Integer.parseInt(partsOfLine.get(3));
+        int year = Integer.parseInt(partsOfLine.get(4));
         taskDueDate = LocalDate.of(year, month, day);
     }
 
     //MODIFIES: this
     //EFFECTS: Loads information from the list partsOfLine into the temporary variables of:
     //         task content, due date and completion status
-    public void setCompletedTaskField(ArrayList<String> partsOfLine) {
+    private void setCompletedTaskField(ArrayList<String> partsOfLine) {
         setGeneralTaskField(partsOfLine);
         completionStatus = partsOfLine.get(5);
     }
@@ -152,32 +146,32 @@ public class SaveAndLoad implements Loadable, Savable {
     }
 
     //EFFECTS: Returns the task due date with added symbols in the following format
-    public String formatTaskDueDateInfo(TaskList taskList, int i) {
+    private String formatTaskDueDateInfo(TaskList taskList, int i) {
         return taskList.getTask(i).getDueDateObj().getMonthValue() + "~"
                 + taskList.getTask(i).getDueDateObj().getDayOfMonth() + "~"
                 + taskList.getTask(i).getDueDateObj().getYear();
     }
 
     //EFFECTS: Returns the task content with added symbols in the following format
-    public String formatGeneralTaskInfo(TaskList taskList, int i) {
+    private String formatGeneralTaskInfo(TaskList taskList, int i) {
         return taskList.getTask(i).getContent() + "~"
                 + formatTaskDueDateInfo(taskList, i) + "~"
                 + ((RegularTask) taskList.getTask(i)).getUrgency();
     }
 
     //EFFECTS: Returns information in an important task in the following format
-    public String formatImportantTaskInfo(TaskList taskList, int i) {
+    private String formatImportantTaskInfo(TaskList taskList, int i) {
         return "*" + "~" + formatGeneralTaskInfo(taskList, i) + "~"
                 + ((ImportantTask) taskList.getTask(i)).getImportance();
     }
 
     //EFFECTS: Returns information in a regular task in the following format
-    public String formatRegularTaskInfo(TaskList taskList, int i) {
+    private String formatRegularTaskInfo(TaskList taskList, int i) {
         return "@" + "~" + formatGeneralTaskInfo(taskList, i);
     }
 
     //EFFECTS: Returns information in a completed task in the following format
-    public String formatCompletedTaskInfo(TaskList taskList, int i) {
+    private String formatCompletedTaskInfo(TaskList taskList, int i) {
         return "#" + "~" + taskList.getTask(i).getContent() + "~"
                 + formatTaskDueDateInfo(taskList, i) + "~"
                 + ((CompletedTask) taskList.getTask(i)).getCompletionStatus();
@@ -195,7 +189,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //EFFECTS: returns a new list of strings with sub-strings separated from the given string
     //         Sub-strings in the givens string is separated by a "~"
     //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3
-    public ArrayList<String> separateOnTilde(String line) {
+    ArrayList<String> separateOnTilde(String line) {
         String[] partOfLine = line.split("~");
         return new ArrayList<>(Arrays.asList(partOfLine));
     }

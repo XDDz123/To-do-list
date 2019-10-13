@@ -8,16 +8,14 @@ import model.*;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.time.LocalDate;
-import java.time.MonthDay;
-import java.time.Year;
 import java.util.*;
 
-public class UserInputDecisions extends SetTaskInputDecisions {
+class UserInputDecisions extends SetTaskInputDecisions {
 
     private final String fileName = "save.txt";
 
     //EFFECTS: Checks if keyboard input is equal to "exit".
-    public Boolean checkExit() {
+    private Boolean checkExit() {
         continueMessage();
         Scanner keyboard = new Scanner(System.in);
         return (keyboard.nextLine()).equalsIgnoreCase("exit");
@@ -31,7 +29,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //         (5) sort the list of tasks
     //         (6) save list of tasks to file or clear previous save
     //         else output error message for not an option
-    public void userSelection(TaskList taskList) throws IOException {
+    private void userSelection(TaskList taskList) throws IOException {
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
 
@@ -58,8 +56,8 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //        (2) clear/format the current save file
     //        (0) close current menu
     //        to make adjustments to the save file
-    public void saveAndClearSave(TaskList taskList) throws IOException {
-        Savable saveTasks = new SaveAndLoad();
+    private void saveAndClearSave(TaskList taskList) throws IOException {
+        SaveAndLoad saveTasks = new SaveAndLoad();
         Scanner selection = new Scanner(System.in);
         saveAndClearSaveMessage();
         String input = selection.nextLine();
@@ -68,7 +66,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
             if (input.equals("1")) {
                 saveTasks.save(taskList, fileName);
             } else if (input.equals("2")) {
-                ((SaveAndLoad) saveTasks).clearSave(fileName, taskList);
+                saveTasks.clearSave(fileName, taskList);
             } else {
                 selectNotAnOption();
             }
@@ -81,7 +79,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //         (2) delete all tasks from the current list of tasks
     //         (0) close current menu
     //         to delete task(s) from the current list of tasks
-    public void selectDeleteTasks(TaskList taskList, Scanner keyboard) {
+    private void selectDeleteTasks(TaskList taskList, Scanner keyboard) {
         Scanner selection = new Scanner(System.in);
         selectDeleteTaskMessage();
         String input = selection.nextLine();
@@ -100,14 +98,14 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //MODIFIES: taskList
     //EFFECTS: Sorts the current list of tasks chronologically by due dates (starts from most recently due).
     //         Prints out sorted list of tasks.
-    public void sortTaskList(TaskList taskList) {
+    private void sortTaskList(TaskList taskList) {
         taskList.sortByDueDate();
         printList(taskList);
     }
 
     //MODIFIES: taskList.get(index)
     //EFFECTS: Check if user input is valid and that the user is selecting a task that exists in the list of tasks.
-    public void selectModifyTask(TaskList taskList, Scanner keyboard) {
+    private void selectModifyTask(TaskList taskList, Scanner keyboard) {
         int input;
         selectTaskMessage(taskList);
 
@@ -137,7 +135,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //         (4) change the content of this task, return true
     //         (0) returns to menu to prompt the user to reselect which task to modify, return true
     //         else returns false
-    public Boolean modifyTask(String input, int index, RegularTask task, TaskList taskList, Scanner keyboard) {
+    private Boolean modifyTask(String input, int index, RegularTask task, TaskList taskList, Scanner keyboard) {
         if ((input.equals("1"))) {
             //set complete
             setTaskComplete(taskList, index);
@@ -165,7 +163,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //MODIFIES: taskList.get(index)
     //EFFECTS: Prompts the user to select which field of a regular task to modify
     //         Prints not an option error message if the user did not select a valid option
-    public void modifyRegularTask(TaskList taskList, int index) {
+    private void modifyRegularTask(TaskList taskList, int index) {
         modifyRegularTaskMessage();
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
@@ -182,7 +180,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //EFFECTS: Prompts the user to select which field of a regular task to modify.
     //         Displays a change importance option in addition to options displayed in modifyTask().
     //         Prints not an option error message if the user did not select a valid option.
-    public void modifyImportantTask(TaskList taskList, int index) {
+    private void modifyImportantTask(TaskList taskList, int index) {
 
         modifyImportantTaskMessage();
 
@@ -204,7 +202,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //EFFECTS: Prompts the user to modify important task is taskList.get(index) is an ImportantTask.
     //         Prompts the user to modify regular task if taskList.get(index) is a RegularTask.
     //         Else return cannot modify completed task error message.
-    public void tryModifyTask(TaskList taskList, int index) {
+    private void tryModifyTask(TaskList taskList, int index) {
         if (taskList.getTask(index) instanceof ImportantTask) {
             modifyImportantTask(taskList, index);
         } else if (taskList.getTask(index) instanceof RegularTask) {
@@ -218,7 +216,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //EFFECTS: Removes the given important task or regular task from the list of all tasks.
     //         Creates a new completed task with the content, due date of the give task and the current time
     //         Stores this completed task in the list of all tasks.
-    public void setTaskComplete(TaskList taskList, int index) {
+    private void setTaskComplete(TaskList taskList, int index) {
         Task task = taskList.getTask(index);
         CompletedTask completedTask;
         completedTask = new CompletedTask(task.getContent(), task.getDueDateObj(), task.getDate(LocalDate.now()));
@@ -231,7 +229,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //         Prompts the user to assign or enter task information.
     //         Adds this new task to the list of tasks.
     //         Else returns not an option error.
-    public void selectEnterTask(TaskList taskList) {
+    private void selectEnterTask(TaskList taskList) {
         String taskContent = "empty RegularTask";
         LocalDate taskDueDate = LocalDate.now();
         String taskUrgency = "unassigned";
@@ -256,7 +254,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //MODIFIES: taskList, regularTask
     //EFFECTS: Prompts the user to set all fields in a regular task.
     //         Sets all fields present in regular tasks if given a important task.
-    public void setGeneralRegularTask(TaskList taskList, RegularTask regularTask) {
+    private void setGeneralRegularTask(TaskList taskList, RegularTask regularTask) {
         Scanner keyboard = new Scanner(System.in);
 
         regularTask.setContent(setTaskContentDecisions());
@@ -274,7 +272,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //         (1) Prints all tasks in the current task list
     //         (2) Prints tasks in the current task list based on urgency
     //         else display not an option error and restarts the method
-    public void selectViewTasksBy(TaskList taskList) {
+    private void selectViewTasksBy(TaskList taskList) {
         selectViewTasksByMessage();
 
         Scanner keyboard = new Scanner(System.in);
@@ -292,7 +290,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //EFFECTS: Prompts the user to select an urgency level and prints out all tasks in the current task list with the
     //         selected urgency level. Displays not an option error message if input is not an urgency level and
     //         restarts the method.
-    public void selectViewTaskByUrgency(TaskList taskList) {
+    private void selectViewTaskByUrgency(TaskList taskList) {
         String high = "high";
         String mid = "mid";
         String low = "low";
@@ -311,7 +309,7 @@ public class UserInputDecisions extends SetTaskInputDecisions {
     //MODIFIES: taskList
     //EFFECTS: Prompts the user to enter a number to select which task from the task list to delete.
     //         Check if user input is valid and that the user is selecting a task that exists in the list of tasks.
-    public void selectToDeleteTask(TaskList taskList, Scanner keyboard) {
+    private void selectToDeleteTask(TaskList taskList, Scanner keyboard) {
         int input;
         selectTaskMessage(taskList);
 
@@ -334,20 +332,20 @@ public class UserInputDecisions extends SetTaskInputDecisions {
 
     //MODIFIES: taskList
     //EFFECTS: removes all tasks from the current list of tasks
-    public void selectDeleteAllTasks(TaskList taskList) {
+    private void selectDeleteAllTasks(TaskList taskList) {
         taskList.clearTaskList();
         printList(taskList);
     }
 
     //EFFECTS: Displays the not an option error message.
-    public void selectNotAnOption() {
+    private void selectNotAnOption() {
         notAnOptionError();
     }
 
     //EFFECTS: Displays welcome message and runs the program while the user does not exit.
     //         Load list of tasks from save file, displays file not found error if file not found
     //         Saves list of tasks once the user selects exit.
-    public void run() throws IOException {
+    void run() throws IOException {
         welcomeMessage();
 
         TaskList taskList = new TaskList();
