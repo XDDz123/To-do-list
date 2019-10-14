@@ -8,13 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class RegularTaskTest {
 
     private RegularTask regularTask;
-    private String taskContent = "empty task";
     private LocalDate taskDueDate = LocalDate.now();
-    private String taskUrgency = "unassigned";
 
     @BeforeEach
     void runBefore() {
-        regularTask = new RegularTask(taskContent, taskDueDate, taskUrgency);
+        regularTask = new RegularTask("empty task", taskDueDate, "unassigned");
     }
 
     @Test

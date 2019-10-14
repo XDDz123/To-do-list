@@ -15,19 +15,19 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SaveAndLoadTest {
+class SaveAndLoadTest {
 
     private SaveAndLoad saveAndLoad;
     private TaskList taskList;
 
     @BeforeEach
-    public void runBefore() {
+    void runBefore() {
         saveAndLoad = new SaveAndLoad();
         taskList = new TaskList();
     }
 
     @Test
-    public void clearSaveTest() throws IOException {
+    void clearSaveTest() throws IOException {
         File file = new File("clearTest.txt");
         saveAndLoad.clearSave("clearTest.txt", taskList);
         assertEquals(file.length(), 0);
@@ -35,7 +35,7 @@ public class SaveAndLoadTest {
     }
 
     @Test
-    public void separateOnTildeTest() {
+    void separateOnTildeTest() {
         String line = "task I~high~2~3~false";
         assertEquals(saveAndLoad.separateOnTilde(line).get(0), "task I");
         assertEquals(saveAndLoad.separateOnTilde(line).get(1), "high");
@@ -45,7 +45,7 @@ public class SaveAndLoadTest {
     }
 
     @Test
-    public void createPastDueFromImportantTest() {
+    void createPastDueFromImportantTest() {
         try {
             saveAndLoad.createPastDueFromLoad(taskList);
         } catch (TooManyIncompleteTasksException e) {
@@ -55,7 +55,7 @@ public class SaveAndLoadTest {
     }
 
     @Test
-    public void checkImportantTaskLoadPastDueTest() {
+    void checkImportantTaskLoadPastDueTest() {
         ArrayList<String> partsOfLine = new ArrayList<>();
         partsOfLine.add("*");
         partsOfLine.add("unassigned");
@@ -79,7 +79,7 @@ public class SaveAndLoadTest {
     }
 
     @Test
-    public void checkImportantTaskNextYear() {
+    void checkImportantTaskNextYear() {
         ArrayList<String> partsOfLine = new ArrayList<>();
         partsOfLine.add("*");
         partsOfLine.add("unassigned");
@@ -103,7 +103,7 @@ public class SaveAndLoadTest {
     }
 
     @Test
-    public void checkImportantTaskCurrentYear() {
+    void checkImportantTaskCurrentYear() {
         ArrayList<String> partsOfLine = new ArrayList<>();
         partsOfLine.add("*");
         partsOfLine.add("unassigned");

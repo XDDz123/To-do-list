@@ -270,7 +270,7 @@ class TaskListTest {
     @Test
     void overLoadInsertExceptionTest() {
         try {
-            for (int i = 0; i < 11; i++) {
+            for (int i = 0; i <= TaskList.maxSize; i++) {
                 task = new RegularTask(taskContent, taskDueDate, taskUrgency);
                 taskList.storeTask(task);
             }

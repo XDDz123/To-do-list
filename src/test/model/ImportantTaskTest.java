@@ -10,14 +10,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ImportantTaskTest {
 
     private ImportantTask importantTask;
-    private String taskContent = "empty task";
     private LocalDate taskDueDate = LocalDate.now();
-    private String taskUrgency = "unassigned";
-    private String taskImportance = "unassigned";
+
 
     @BeforeEach
     void runBefore() {
-        importantTask = new ImportantTask(taskContent, taskDueDate, taskUrgency, taskImportance);
+        importantTask = new ImportantTask(
+                "empty task",
+                taskDueDate,
+                "unassigned",
+                "unassigned");
     }
 
     @Test

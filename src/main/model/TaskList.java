@@ -9,7 +9,7 @@ import java.util.*;
 public class TaskList {
 
     private ArrayList<Task> taskList;
-    private final int maxSize = 10;
+    public static final int maxSize = 10;
 
     //MODIFIES: this
     //EFFECTS: Constructs a new taskList as an ArrayList.
