@@ -1,8 +1,6 @@
 package ui;
 
-import exceptions.ModifyCompletedTaskException;
-import exceptions.TaskDoesNotExistException;
-import exceptions.TooManyIncompleteTasksException;
+import exceptions.*;
 import io.Loadable;
 import io.Savable;
 import io.SaveAndLoad;
@@ -32,7 +30,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         (5) sort the list of tasks
     //         (6) save list of tasks to file or clear previous save
     //         else output error message for not an option
-    private void userSelection(TaskList taskList) {
+    private void userSelection(TaskList taskList) throws NotAnOptionException {
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
 
@@ -49,7 +47,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
         } else if ((input.equals("6"))) {
             saveAndClearSave(taskList);
         } else {
-            selectNotAnOption();
+            throw new NotAnOptionException();
         }
     }
 
@@ -59,7 +57,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //        (2) clear/format the current save file
     //        (0) close current menu
     //        to make adjustments to the save file
-    private void saveAndClearSave(TaskList taskList) {
+    private void saveAndClearSave(TaskList taskList) throws NotAnOptionException {
         SaveAndLoad saveTasks = new SaveAndLoad();
         Scanner selection = new Scanner(System.in);
         saveAndClearSaveMessage();
@@ -72,11 +70,11 @@ class UserInputDecisions extends SetTaskInputDecisions {
                 } else if (input.equals("2")) {
                     saveTasks.clearSave(fileName, taskList);
                 } else {
-                    selectNotAnOption();
+                    throw new NotAnOptionException();
                 }
             }
         } catch (IOException e) {
-            exceptionErrorMessage(e);
+            fileNotFoundError();
         }
     }
 
@@ -86,7 +84,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         (2) delete all tasks from the current list of tasks
     //         (0) close current menu
     //         to delete task(s) from the current list of tasks
-    private void selectDeleteTasks(TaskList taskList) {
+    private void selectDeleteTasks(TaskList taskList) throws NotAnOptionException {
         Scanner selection = new Scanner(System.in);
         selectDeleteTaskMessage();
         String input = selection.nextLine();
@@ -97,7 +95,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
             } else if (input.equals("2")) {
                 selectDeleteAllTasks(taskList);
             } else {
-                selectNotAnOption();
+                throw new NotAnOptionException();
             }
         }
     }
@@ -122,10 +120,10 @@ class UserInputDecisions extends SetTaskInputDecisions {
 
             if (! (input == 0)) {
                 try {
-                    tryModifyTask(taskList, input);
+                    attemptModifyTask(taskList, input);
                 } catch (IndexOutOfBoundsException e) {
                     outOfBoundsError();
-                } catch (ModifyCompletedTaskException e) {
+                } catch (UIException e) {
                     exceptionErrorMessage(e);
                 }
             }
@@ -174,7 +172,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //MODIFIES: taskList.get(index)
     //EFFECTS: Prompts the user to select which field of a regular task to modify
     //         Prints not an option error message if the user did not select a valid option
-    private void modifyRegularTask(TaskList taskList, int index) {
+    private void modifyRegularTask(TaskList taskList, int index) throws NotAnOptionException {
         modifyRegularTaskMessage();
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
@@ -182,7 +180,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
         RegularTask regularTask = (RegularTask)(taskList.getTask(index));
 
         if (! modifyTask(input, index, regularTask, taskList)) {
-            selectNotAnOption();
+            throw new NotAnOptionException();
         }
     }
 
@@ -191,7 +189,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //EFFECTS: Prompts the user to select which field of a regular task to modify.
     //         Displays a change importance option in addition to options displayed in modifyTask().
     //         Prints not an option error message if the user did not select a valid option.
-    private void modifyImportantTask(TaskList taskList, int index) {
+    private void modifyImportantTask(TaskList taskList, int index) throws NotAnOptionException {
 
         modifyImportantTaskMessage();
 
@@ -204,7 +202,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
             if ((input.equals("5"))) {
                 importantTask.setImportance(setImportanceDecision(importantTask.getImportance()));
             } else {
-                selectNotAnOption();
+                throw new NotAnOptionException();
             }
         }
     }
@@ -213,7 +211,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //EFFECTS: Prompts the user to modify important task is taskList.get(index) is an ImportantTask.
     //         Prompts the user to modify regular task if taskList.get(index) is a RegularTask.
     //         Else return cannot modify completed task error message.
-    private void tryModifyTask(TaskList taskList, int index) throws ModifyCompletedTaskException {
+    private void attemptModifyTask(TaskList taskList, int index) throws UIException {
         if (taskList.getTask(index) instanceof ImportantTask) {
             modifyImportantTask(taskList, index);
         } else if (taskList.getTask(index) instanceof RegularTask) {
@@ -248,7 +246,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         Prompts the user to assign or enter task information.
     //         Adds this new task to the list of tasks.
     //         Else returns not an option error.
-    private void selectEnterTask(TaskList taskList) {
+    private void selectEnterTask(TaskList taskList) throws NotAnOptionException {
         String taskContent = "empty RegularTask";
         LocalDate taskDueDate = LocalDate.now();
         String taskUrgency = "unassigned";
@@ -266,7 +264,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
             setGeneralRegularTask(taskList, importantTask);
             importantTask.setImportance(setImportanceDecision(importantTask.getImportance()));
         } else {
-            selectNotAnOption();
+            throw new NotAnOptionException();
         }
     }
 
@@ -296,7 +294,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         (1) Prints all tasks in the current task list
     //         (2) Prints tasks in the current task list based on urgency
     //         else display not an option error and restarts the method
-    private void selectViewTasksBy(TaskList taskList) {
+    private void selectViewTasksBy(TaskList taskList) throws NotAnOptionException {
         selectViewTasksByMessage();
 
         Scanner keyboard = new Scanner(System.in);
@@ -306,15 +304,14 @@ class UserInputDecisions extends SetTaskInputDecisions {
         } else if (input.equals("2")) {
             selectViewTaskByUrgency(taskList);
         } else {
-            selectNotAnOption();
-            selectViewTasksBy(taskList);
+            throw new NotAnOptionException();
         }
     }
 
     //EFFECTS: Prompts the user to select an urgency level and prints out all tasks in the current task list with the
     //         selected urgency level. Displays not an option error message if input is not an urgency level and
     //         restarts the method.
-    private void selectViewTaskByUrgency(TaskList taskList) {
+    private void selectViewTaskByUrgency(TaskList taskList) throws NotAnOptionException {
         String high = "high";
         String mid = "mid";
         String low = "low";
@@ -329,8 +326,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
                 exceptionErrorMessage(e);
             }
         } else {
-            selectNotAnOption();
-            selectViewTaskByUrgency(taskList);
+            throw new NotAnOptionException();
         }
     }
 
@@ -368,11 +364,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
         }
     }
 
-    //EFFECTS: Displays the not an option error message.
-    private void selectNotAnOption() {
-        notAnOptionError();
-    }
-
+    //MODIFIES: taskList
     //EFFECTS: Attempts to load task info from save
     private void tryLoad(TaskList taskList) {
         Loadable loadTasks = new SaveAndLoad();
@@ -400,13 +392,17 @@ class UserInputDecisions extends SetTaskInputDecisions {
 
         do {
             optionsMessage();
-            userSelection(taskList);
+            try {
+                userSelection(taskList);
+            } catch (NotAnOptionException e) {
+                exceptionErrorMessage(e);
+            }
         } while (!checkExit());
 
         try {
             saveTasks.save(taskList, fileName);
         } catch (IOException e) {
-            exceptionErrorMessage(e);
+            fileNotFoundError();
         }
     }
 }

@@ -219,8 +219,8 @@ class TaskListTest {
         CompletedTask task1 = new CompletedTask("empty task", LocalDate.now(), "tbd");
 
         try {
-            taskList.storeTask(task);
             taskList.storeTask(task1);
+            taskList.storeTask(task);
         } catch (TooManyIncompleteTasksException e) {
             fail();
         }

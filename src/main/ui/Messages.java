@@ -6,10 +6,11 @@ class Messages {
 
     //EFFECTS: Prints the following.
     void welcomeMessage() {
-        System.out.println("Type in 'exit' to exit this program.");
+        //System.out.println("Type in 'exit' to exit this program.");
+        System.out.println("  ");
         System.out.println("Your data will be automatically saved after this session.");
         System.out.println("  ");
-        System.out.println("  ");
+        //System.out.println("  ");
     }
 
     //EFFECTS: Prints the following.
@@ -165,10 +166,10 @@ class Messages {
         System.out.println("Tasks deleted successfully.");
     }
 
-    //EFFECTS: Prints the current task list and the following text.
+/*    //EFFECTS: Prints the current task list and the following text.
     void cantModifyCompletedTaskError() {
         System.out.println("Error! Completed tasks can not be modified.");
-    }
+    }*/
 
     //EFFECTS: Prints the following.
     void outOfBoundsError() {
@@ -180,10 +181,10 @@ class Messages {
         System.out.println("Error enter an integer!");
     }
 
-    //EFFECTS: Prints the following.
+/*    //EFFECTS: Prints the following.
     void notAnOptionError() {
         System.out.println("Error! Not an option.");
-    }
+    }*/
 
     //EFFECTS: Prints the following.
     void exceptionErrorMessage(Exception e) {

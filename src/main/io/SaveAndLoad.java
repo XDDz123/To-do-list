@@ -138,6 +138,7 @@ public class SaveAndLoad implements Loadable, Savable {
                 writer.println(formatCompletedTaskInfo(taskList, i));
             }
         }
+
         writer.close();
     }
 
