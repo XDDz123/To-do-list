@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.ModifyCompletedTaskException;
 import exceptions.TaskDoesNotExistException;
 import exceptions.TooManyIncompleteTasksException;
 import io.Loadable;
@@ -124,6 +125,8 @@ class UserInputDecisions extends SetTaskInputDecisions {
                     tryModifyTask(taskList, input);
                 } catch (IndexOutOfBoundsException e) {
                     outOfBoundsError();
+                } catch (ModifyCompletedTaskException e) {
+                    exceptionErrorMessage(e);
                 }
             }
         } catch (InputMismatchException e) {
@@ -210,13 +213,13 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //EFFECTS: Prompts the user to modify important task is taskList.get(index) is an ImportantTask.
     //         Prompts the user to modify regular task if taskList.get(index) is a RegularTask.
     //         Else return cannot modify completed task error message.
-    private void tryModifyTask(TaskList taskList, int index) {
+    private void tryModifyTask(TaskList taskList, int index) throws ModifyCompletedTaskException {
         if (taskList.getTask(index) instanceof ImportantTask) {
             modifyImportantTask(taskList, index);
         } else if (taskList.getTask(index) instanceof RegularTask) {
             modifyRegularTask(taskList, index);
         } else {
-            cantModifyCompletedTaskError();
+            throw new ModifyCompletedTaskException();
         }
     }
 
