@@ -125,6 +125,7 @@ public class TaskList {
     }
 
     //inspired by post by user zb226 @ https://stackoverflow.com/questions/16252269/how-to-sort-an-arraylist
+    //            and https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html
     //MODIFIES: this
     //EFFECTS: Sorts the current task list chronologically based on due dates. Starts from most recently due.
     public void sortByDueDate() {

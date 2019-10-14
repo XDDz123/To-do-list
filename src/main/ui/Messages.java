@@ -39,7 +39,7 @@ class Messages {
     //EFFECTS: Prints the following.
     void selectDeleteTaskMessage() {
         System.out.println("Type in '1' to delete a task.");
-        System.out.println("Type in '2' to delete all entered tasks.");
+        System.out.println("Type in '2' to delete all tasks.");
         System.out.println("Type in '0' to return to the previous menu.");
     }
 
@@ -97,7 +97,7 @@ class Messages {
     //EFFECTS: Prints the following.
     void useDefaultDateMessage() {
         System.out.println("Enter 'y' to set a due date. Unset due dates are defaulted to the current date.");
-        System.out.println("Press enter to skip.");
+        System.out.println("Press enter for default due date.");
     }
 
     //EFFECTS: Prints the following.

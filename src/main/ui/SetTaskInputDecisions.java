@@ -91,7 +91,8 @@ class SetTaskInputDecisions extends Messages {
             if (checkDay(day, taskDueDate)) {
                 return this.taskDueDate = taskDueDate.withDayOfMonth(day);
             } else {
-                setDay(taskDueDate);
+                //restarts set month and set day
+                setMonthAndDay(taskDueDate);
                 return this.taskDueDate;
             }
         } else {
