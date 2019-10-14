@@ -1,5 +1,6 @@
 package io;
 
+import exceptions.TooManyIncompleteTasksException;
 import model.CompletedTask;
 import model.ImportantTask;
 import model.TaskList;
@@ -11,8 +12,8 @@ import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.Period;
 import java.util.ArrayList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SaveAndLoadTest {
 
@@ -45,7 +46,11 @@ public class SaveAndLoadTest {
 
     @Test
     public void createPastDueFromImportantTest() {
-        saveAndLoad.createPastDueFromLoad(taskList);
+        try {
+            saveAndLoad.createPastDueFromLoad(taskList);
+        } catch (TooManyIncompleteTasksException e) {
+            fail();
+        }
         assertEquals(((CompletedTask) taskList.getTask(1)).getCompletionStatus(), "past due.");
     }
 
@@ -61,7 +66,11 @@ public class SaveAndLoadTest {
         partsOfLine.add("High Importance");
         saveAndLoad.setGeneralTaskField(partsOfLine);
         TaskList taskList = new TaskList();
-        saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
+        try {
+            saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
+        } catch (TooManyIncompleteTasksException e) {
+            fail();
+        }
         assertEquals(taskList.getTask(1).getContent(), "unassigned");
         assertEquals(taskList.getTask(1).getDueDate(), (MonthDay.now().getMonthValue() - 1)
         + "/" + (MonthDay.now().getDayOfMonth() - 1));
@@ -82,7 +91,11 @@ public class SaveAndLoadTest {
 
         saveAndLoad.setGeneralTaskField(partsOfLine);
         TaskList taskList = new TaskList();
-        saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
+        try {
+            saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
+        } catch (TooManyIncompleteTasksException e) {
+            fail();
+        }
         Period difference = Period.between((taskList.getTask(1)).getDueDateObj(), LocalDate.now());
 
         assertEquals(((ImportantTask) taskList.getTask(1)).getTimeLeft(),
@@ -102,7 +115,11 @@ public class SaveAndLoadTest {
 
         saveAndLoad.setGeneralTaskField(partsOfLine);
         TaskList taskList = new TaskList();
-        saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
+        try {
+            saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
+        } catch (TooManyIncompleteTasksException e) {
+            fail();
+        }
         assertEquals(((ImportantTask) taskList.getTask(1)).getTimeLeft(), "1 months 1 days");
     }
 }

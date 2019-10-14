@@ -1,5 +1,6 @@
 package io;
 
+import exceptions.TooManyIncompleteTasksException;
 import model.CompletedTask;
 import model.ImportantTask;
 import model.RegularTask;
@@ -24,7 +25,12 @@ class LoadableTest {
 
     @Test
     void loadTest() throws IOException {
-        loadable.load(taskList, "loadTest.txt");
+
+        try {
+            loadable.load(taskList, "loadTest.txt");
+        } catch (TooManyIncompleteTasksException e) {
+            assertEquals(e.getMessage(), "Too many incomplete tasks.");
+        }
 
         assertEquals(taskList.getTask(1).getContent(),"task I");
         assertEquals(((RegularTask)(taskList.getTask(1))).getUrgency(),"high");

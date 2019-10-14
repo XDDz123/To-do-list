@@ -1,5 +1,7 @@
 package ui;
 
+import exceptions.TaskDoesNotExistException;
+import exceptions.TooManyIncompleteTasksException;
 import io.Loadable;
 import io.Savable;
 import io.SaveAndLoad;
@@ -29,7 +31,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         (5) sort the list of tasks
     //         (6) save list of tasks to file or clear previous save
     //         else output error message for not an option
-    private void userSelection(TaskList taskList) throws IOException {
+    private void userSelection(TaskList taskList) {
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
 
@@ -56,20 +58,24 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //        (2) clear/format the current save file
     //        (0) close current menu
     //        to make adjustments to the save file
-    private void saveAndClearSave(TaskList taskList) throws IOException {
+    private void saveAndClearSave(TaskList taskList) {
         SaveAndLoad saveTasks = new SaveAndLoad();
         Scanner selection = new Scanner(System.in);
         saveAndClearSaveMessage();
         String input = selection.nextLine();
 
-        if (!input.equals("0")) {
-            if (input.equals("1")) {
-                saveTasks.save(taskList, fileName);
-            } else if (input.equals("2")) {
-                saveTasks.clearSave(fileName, taskList);
-            } else {
-                selectNotAnOption();
+        try {
+            if (!input.equals("0")) {
+                if (input.equals("1")) {
+                    saveTasks.save(taskList, fileName);
+                } else if (input.equals("2")) {
+                    saveTasks.clearSave(fileName, taskList);
+                } else {
+                    selectNotAnOption();
+                }
             }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -222,8 +228,16 @@ class UserInputDecisions extends SetTaskInputDecisions {
         Task task = taskList.getTask(index);
         CompletedTask completedTask;
         completedTask = new CompletedTask(task.getContent(), task.getDueDateObj(), task.getDate(LocalDate.now()));
-        taskList.storeTask(completedTask);
-        taskList.deleteTask(index);
+        try {
+            taskList.storeTask(completedTask);
+        } catch (TooManyIncompleteTasksException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            taskList.deleteTask(index);
+        } catch (TaskDoesNotExistException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     //MODIFIES: taskList
@@ -265,7 +279,12 @@ class UserInputDecisions extends SetTaskInputDecisions {
         if ((keyboard.nextLine()).equalsIgnoreCase("y")) {
             regularTask.setDueDate(setMonthAndDay(regularTask.getDueDateObj()));
         }
-        taskList.storeTask(regularTask);
+
+        try {
+            taskList.storeTask(regularTask);
+        } catch (TooManyIncompleteTasksException e) {
+            System.out.println(e.getMessage());
+        }
 
         regularTask.setTimeLeft();
     }
@@ -301,7 +320,11 @@ class UserInputDecisions extends SetTaskInputDecisions {
         selectUrgencyMessage();
         String input = keyboard.nextLine();
         if (input.equalsIgnoreCase(high) || input.equalsIgnoreCase(mid) || input.equalsIgnoreCase(low)) {
-            printIncompleteTasksList(taskList.getTaskByUrgency(input));
+            try {
+                printIncompleteTasksList(taskList.getTaskByUrgency(input));
+            } catch (TooManyIncompleteTasksException e) {
+                System.out.println(e.getMessage());
+            }
         } else {
             selectNotAnOption();
             selectViewTaskByUrgency(taskList);
@@ -318,16 +341,13 @@ class UserInputDecisions extends SetTaskInputDecisions {
 
         try {
             input = keyboard.nextInt();
-
             if (!(input == 0)) {
-                if (input > (taskList.getTaskList()).size()) {
-                    outOfBoundsError();
-                } else {
-                    taskList.deleteTask(input);
-                }
+                taskList.deleteTask(input);
             }
         } catch (InputMismatchException e) {
             notIntegerError();
+        } catch (TaskDoesNotExistException e) {
+            System.out.println(e.getMessage());
         }
 
         printList(taskList);
@@ -350,27 +370,40 @@ class UserInputDecisions extends SetTaskInputDecisions {
         notAnOptionError();
     }
 
-    //EFFECTS: Displays welcome message and runs the program while the user does not exit.
-    //         Load list of tasks from save file, displays file not found error if file not found
-    //         Saves list of tasks once the user selects exit.
-    void run() throws IOException {
-        welcomeMessage();
-
-        TaskList taskList = new TaskList();
+    //EFFECTS: Attempts to load task info from save
+    private void tryLoad(TaskList taskList) {
         Loadable loadTasks = new SaveAndLoad();
-        Savable saveTasks = new SaveAndLoad();
-
         try {
             loadTasks.load(taskList, fileName);
         } catch (NoSuchFileException e) {
             System.out.println("File not found!");
+        } catch (TooManyIncompleteTasksException | IOException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            System.out.println("Loading attempted.");
         }
+    }
+
+    //EFFECTS: Displays welcome message and runs the program while the user does not exit.
+    //         Load list of tasks from save file, displays file not found error if file not found
+    //         Saves list of tasks once the user selects exit.
+    void run() {
+        welcomeMessage();
+
+        TaskList taskList = new TaskList();
+        Savable saveTasks = new SaveAndLoad();
+
+        tryLoad(taskList);
 
         do {
             optionsMessage();
             userSelection(taskList);
         } while (!checkExit());
 
-        saveTasks.save(taskList, fileName);
+        try {
+            saveTasks.save(taskList, fileName);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

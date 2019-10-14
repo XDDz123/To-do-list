@@ -1,5 +1,6 @@
 package io;
 
+import exceptions.TooManyIncompleteTasksException;
 import model.*;
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //         else task is completed task, also denoted by "#"
     //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3
     @Override
-    public void load(TaskList taskList, String file) throws IOException {
+    public void load(TaskList taskList, String file) throws IOException, TooManyIncompleteTasksException {
         List<String> lines = Files.readAllLines(Paths.get(file));
 
         for (String line : lines) {
@@ -48,7 +49,8 @@ public class SaveAndLoad implements Loadable, Savable {
     //              -else create a task from the given info and sets the time until using the current year
     //         else create an important task from the given info and sets the time until due using the next year.
     //         Stores created tasks in the given taskList.
-    void createTaskSetYearFromLoad(ArrayList<String> partsOfLine, TaskList taskList, String taskType) {
+    void createTaskSetYearFromLoad(ArrayList<String> partsOfLine, TaskList taskList, String taskType)
+            throws TooManyIncompleteTasksException {
         if (taskDueDate.isBefore(LocalDate.now())) {
             createPastDueFromLoad(taskList);
         } else {
@@ -65,7 +67,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new completed task
     //         if the given information of an important task shows it is past due
     //         Stores the created task in the list of tasks.
-    void createPastDueFromLoad(TaskList taskList) {
+    void createPastDueFromLoad(TaskList taskList) throws TooManyIncompleteTasksException {
         CompletedTask completedTask = new CompletedTask(taskContent, taskDueDate, "past due.");
         taskList.storeTask(completedTask);
     }
@@ -73,7 +75,8 @@ public class SaveAndLoad implements Loadable, Savable {
     //MODIFIES: taskList
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new completed task.
     //         Stores the created task in the list of tasks.
-    private void createCompletedTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
+    private void createCompletedTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList)
+            throws TooManyIncompleteTasksException {
         setCompletedTaskField(partsOfLine);
         taskList.storeTask(new CompletedTask(taskContent, taskDueDate, completionStatus));
     }
@@ -81,7 +84,8 @@ public class SaveAndLoad implements Loadable, Savable {
     //MODIFIES: taskList
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new regular task.
     //         Stores the created task in the list of tasks.
-    private void createRegularTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
+    private void createRegularTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList)
+            throws TooManyIncompleteTasksException {
         taskUrgency = partsOfLine.get(5);
         setGeneralTaskField(partsOfLine);
         taskList.storeTask(new RegularTask(taskContent, taskDueDate, taskUrgency));
@@ -90,7 +94,8 @@ public class SaveAndLoad implements Loadable, Savable {
     //MODIFIES: taskList, this
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new important task.
     //         Stores the created task in the list of tasks.
-    private void createImportantTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList) {
+    private void createImportantTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList)
+            throws TooManyIncompleteTasksException {
         taskUrgency = partsOfLine.get(5);
         taskList.storeTask(new ImportantTask(taskContent, taskDueDate, taskUrgency, partsOfLine.get(6)));
     }

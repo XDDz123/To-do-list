@@ -1,5 +1,6 @@
 package io;
 
+import exceptions.TooManyIncompleteTasksException;
 import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class SavableTest {
     private TaskList taskList;
@@ -31,12 +33,17 @@ class SavableTest {
         ImportantTask task6 = new ImportantTask("task VI", (LocalDate.of(2020, 10, 3)),
                 "mid", "High Importance");
 
-        taskList.storeTask(task1);
-        taskList.storeTask(task2);
-        taskList.storeTask(task3);
-        taskList.storeTask(task4);
-        taskList.storeTask(task5);
-        taskList.storeTask(task6);
+
+        try {
+            taskList.storeTask(task1);
+            taskList.storeTask(task2);
+            taskList.storeTask(task3);
+            taskList.storeTask(task4);
+            taskList.storeTask(task5);
+            taskList.storeTask(task6);
+        } catch (TooManyIncompleteTasksException e) {
+            fail();
+        }
 
         savable = new SaveAndLoad();
     }
@@ -45,7 +52,11 @@ class SavableTest {
     void saveTest() throws IOException {
 
         savable.save(taskList, "saveTest.txt");
-        ((SaveAndLoad) savable).load(taskList1, "saveTest.txt");
+        try {
+            ((SaveAndLoad) savable).load(taskList1, "saveTest.txt");
+        } catch (TooManyIncompleteTasksException e) {
+            fail();
+        }
 
         assertEquals(taskList1.getTask(1).getContent(),"task I");
         assertEquals(((RegularTask)(taskList1.getTask(1))).getUrgency(),"high");

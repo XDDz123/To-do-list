@@ -1,10 +1,15 @@
 package model;
 
+import exceptions.EmptyListException;
+import exceptions.TaskDoesNotExistException;
+import exceptions.TooManyIncompleteTasksException;
+
 import java.util.*;
 
 public class TaskList {
 
     private ArrayList<Task> taskList;
+    private final int maxSize = 10;
 
     //MODIFIES: this
     //EFFECTS: Constructs a new taskList as an ArrayList.
@@ -14,8 +19,16 @@ public class TaskList {
 
     //MODIFIES: this
     //EFFECTS: Inserts a task to the current task list
-    public void storeTask(Task task) {
-        taskList.add(task);
+    public void storeTask(Task task) throws TooManyIncompleteTasksException {
+        if (filterOutCompleted(taskList).size() > maxSize) {
+            if (!(task instanceof CompletedTask)) {
+                throw new TooManyIncompleteTasksException();
+            } else {
+                taskList.add(task);
+            }
+        } else {
+            taskList.add(task);
+        }
     }
 
     //EFFECTS: Returns the ArrayList that stores the current task list
@@ -31,8 +44,12 @@ public class TaskList {
     //REQUIRES: index must refer to an existing index in the list of tasks
     //MODIFIES: this
     //EFFECTS: Removes a task in the current task list based on an index that starts at 1.
-    public void deleteTask(int index) {
-        taskList.remove(index - 1);
+    public void deleteTask(int index) throws TaskDoesNotExistException {
+        try {
+            taskList.remove(index - 1);
+        } catch (IndexOutOfBoundsException e) {
+            throw new TaskDoesNotExistException();
+        }
     }
 
     //MODIFIES: this
@@ -53,20 +70,28 @@ public class TaskList {
 
     //EFFECTS: Prints the contents of incomplete tasks in the list
     public String printIncompleteTasks() {
-        return printTaskList(filterOutCompleted(taskList));
+        try {
+            return printTaskList(filterOutCompleted(taskList));
+        } catch (EmptyListException e) {
+            return e.getMessage();
+        }
     }
 
     //EFFECTS: Prints the contents of the current task list
     public String printTaskList() {
-        return printTaskList(taskList);
+        try {
+            return printTaskList(taskList);
+        } catch (EmptyListException e) {
+            return e.getMessage();
+        }
     }
 
     //EFFECTS: Returns "No tasks found." if current task list is empty, returns all tasks in the current task list ow.
-    private String printTaskList(ArrayList<Task> list) {
+    private String printTaskList(ArrayList<Task> list) throws EmptyListException {
         StringBuilder taskListPrint = new StringBuilder();
 
         if (isTaskListEmpty()) {
-            return "No tasks found.";
+            throw new EmptyListException();
         } else {
             for (int i = 0; i < list.size(); i++) {
                 taskListPrint.append(i + 1).append(" : ").append((list.get(i)).printTask()).append("\n");
@@ -89,7 +114,7 @@ public class TaskList {
 
     //EFFECTS: Returns a new task list that contains all tasks in the current task list
     //         with the specified urgency level.
-    public TaskList getTaskByUrgency(String urgency) {
+    public TaskList getTaskByUrgency(String urgency) throws TooManyIncompleteTasksException {
         TaskList tempList = new TaskList();
         for (Task task : filterOutCompleted(taskList)) {
             if (((RegularTask) task).getUrgency().equalsIgnoreCase(urgency)) {
@@ -104,14 +129,21 @@ public class TaskList {
     //EFFECTS: Sorts the current task list chronologically based on due dates. Starts from most recently due.
     public void sortByDueDate() {
         taskList.sort((a, b) -> {
-            if (a.getDueDateObj().isBefore(b.getDueDateObj()) || b instanceof CompletedTask) {
-                return -1;
-            } else if (a.getDueDateObj().isAfter(b.getDueDateObj())) {
-                return 1;
-            } else {
+            if (a instanceof CompletedTask && b instanceof CompletedTask) {
                 return 0;
+            } else if (a instanceof CompletedTask) {
+                return 1;
+            } else if (b instanceof CompletedTask) {
+                return -1;
+            } else {
+                if (a.getDueDateObj().isBefore(b.getDueDateObj())) {
+                    return -1;
+                } else if (a.getDueDateObj().isAfter(b.getDueDateObj())) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
         });
     }
-
 }
