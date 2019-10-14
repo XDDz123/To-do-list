@@ -75,7 +75,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
                 }
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            exceptionErrorMessage(e);
         }
     }
 
@@ -231,12 +231,12 @@ class UserInputDecisions extends SetTaskInputDecisions {
         try {
             taskList.storeTask(completedTask);
         } catch (TooManyIncompleteTasksException e) {
-            System.out.println(e.getMessage());
+            exceptionErrorMessage(e);
         }
         try {
             taskList.deleteTask(index);
         } catch (TaskDoesNotExistException e) {
-            System.out.println(e.getMessage());
+            exceptionErrorMessage(e);
         }
     }
 
@@ -283,7 +283,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
         try {
             taskList.storeTask(regularTask);
         } catch (TooManyIncompleteTasksException e) {
-            System.out.println(e.getMessage());
+            exceptionErrorMessage(e);
         }
 
         regularTask.setTimeLeft();
@@ -323,7 +323,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
             try {
                 printIncompleteTasksList(taskList.getTaskByUrgency(input));
             } catch (TooManyIncompleteTasksException e) {
-                System.out.println(e.getMessage());
+                exceptionErrorMessage(e);
             }
         } else {
             selectNotAnOption();
@@ -347,7 +347,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
         } catch (InputMismatchException e) {
             notIntegerError();
         } catch (TaskDoesNotExistException e) {
-            System.out.println(e.getMessage());
+            exceptionErrorMessage(e);
         }
 
         printList(taskList);
@@ -376,11 +376,11 @@ class UserInputDecisions extends SetTaskInputDecisions {
         try {
             loadTasks.load(taskList, fileName);
         } catch (NoSuchFileException e) {
-            System.out.println("File not found!");
+            fileNotFoundError();
         } catch (TooManyIncompleteTasksException | IOException e) {
-            System.out.println(e.getMessage());
+            exceptionErrorMessage(e);
         } finally {
-            System.out.println("Loading attempted.");
+            loadAttemptedMessage();
         }
     }
 
@@ -403,7 +403,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
         try {
             saveTasks.save(taskList, fileName);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            exceptionErrorMessage(e);
         }
     }
 }

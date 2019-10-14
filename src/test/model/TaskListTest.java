@@ -44,11 +44,7 @@ class TaskListTest {
         assertEquals(taskList.getTaskListSize(), 1);
         try {
             taskList.storeTask(task);
-        } catch (TooManyIncompleteTasksException e) {
-            fail();
-        }
-        assertEquals(taskList.getTaskListSize(), 2);
-        try {
+            assertEquals(taskList.getTaskListSize(), 2);
             taskList.storeTask(task);
         } catch (TooManyIncompleteTasksException e) {
             fail();
@@ -134,17 +130,10 @@ class TaskListTest {
     @Test
     void getTaskByUrgencyTestHigh() {
         runBeforeGetTaskByAndSortAndPrint();
+
         try {
             taskList1.storeTask(task);
-        } catch (TooManyIncompleteTasksException e) {
-            fail();
-        }
-        try {
             taskList1.storeTask(task1);
-        } catch (TooManyIncompleteTasksException e) {
-            fail();
-        }
-        try {
             assertEquals(taskList.getTaskByUrgency("high").getTaskList(), taskList1.getTaskList());
         } catch (TooManyIncompleteTasksException e) {
             fail();
@@ -176,13 +165,13 @@ class TaskListTest {
     void sortByDueDateTest() {
         runBeforeGetTaskByAndSortAndPrint();
         CompletedTask task5 = new CompletedTask("empty task", LocalDate.now(), "tbd");
-
+        CompletedTask task8 = new CompletedTask("empty task", LocalDate.now(), "tbd");
+        CompletedTask task9 = new CompletedTask("empty task", LocalDate.now(), "tbd");
         ImportantTask task6 = new ImportantTask(
                 "empty task",
                 LocalDate.of(2019,3,4),
                 "tbd",
                 "tbd");
-
         ImportantTask task7 = new ImportantTask(
                 "empty task",
                 LocalDate.of(2019,3,5),
@@ -194,6 +183,8 @@ class TaskListTest {
             taskList.storeTask(task5);
             taskList.storeTask(task6);
             taskList.storeTask(task7);
+            taskList.storeTask(task8);
+            taskList.storeTask(task9);
         } catch (TooManyIncompleteTasksException e) {
             fail();
         }
@@ -208,6 +199,8 @@ class TaskListTest {
             taskList5.storeTask(task4);
             taskList5.storeTask(task3);
             taskList5.storeTask(task5);
+            taskList5.storeTask(task8);
+            taskList5.storeTask(task9);
         } catch (TooManyIncompleteTasksException e) {
             fail();
         }
@@ -249,17 +242,23 @@ class TaskListTest {
                         "3 : empty task  Due: 2/3  Urgency: mid  Time left: tbd\n" +
                         "4 : empty task  Due: 6/7  Urgency: unassigned  Time left: tbd\n" +
                         "5 : empty task  Due: 5/6  Urgency: unassigned  Time left: tbd");
+
+        taskList.clearTaskList();
+        assertEquals(taskList.printIncompleteTasks(), "No tasks found.");
     }
 
     @Test
     void overLoadInsertExceptionTest() {
         try {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 11; i++) {
                 task = new RegularTask(taskContent, taskDueDate, taskUrgency);
                 taskList.storeTask(task);
             }
+            CompletedTask completedTask = new CompletedTask(taskContent, taskDueDate, "tbd");
+            taskList.storeTask(completedTask);
+            assertEquals(taskList.getTask(taskList.getTaskListSize()), completedTask);
         } catch (TooManyIncompleteTasksException e) {
-            assertEquals(e.getMessage(), "Too many incomplete tasks.");
+            assertEquals(e.getMessage(), "Too many incomplete tasks!");
         }
     }
 }

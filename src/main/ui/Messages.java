@@ -184,4 +184,19 @@ class Messages {
     void notAnOptionError() {
         System.out.println("Error! Not an option.");
     }
+
+    //EFFECTS: Prints the following.
+    void exceptionErrorMessage(Exception e) {
+        System.out.println(e.getMessage());
+    }
+
+    //EFFECTS: Prints the following.
+    void loadAttemptedMessage() {
+        System.out.println("Loading attempted.");
+    }
+
+    //EFFECTS: Prints the following.
+    void fileNotFoundError() {
+        System.out.println("File not found!");
+    }
 }
