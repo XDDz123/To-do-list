@@ -210,6 +210,26 @@ class TaskListTest {
     }
 
     @Test
+    void sortByDueDateAlt() {
+        ImportantTask task = new ImportantTask(
+                "empty task",
+                LocalDate.of(2019,3,4),
+                "tbd",
+                "tbd");
+        CompletedTask task1 = new CompletedTask("empty task", LocalDate.now(), "tbd");
+
+        try {
+            taskList.storeTask(task);
+            taskList.storeTask(task1);
+        } catch (TooManyIncompleteTasksException e) {
+            fail();
+        }
+
+        taskList.sortByDueDate();
+        assertTrue(taskList.getTask(taskList.getTaskListSize()) instanceof CompletedTask);
+    }
+
+    @Test
     void printTaskListTest() {
         runBeforeGetTaskByAndSortAndPrint();
         assertEquals(taskList.printTaskList(),
@@ -254,12 +274,17 @@ class TaskListTest {
                 task = new RegularTask(taskContent, taskDueDate, taskUrgency);
                 taskList.storeTask(task);
             }
-            CompletedTask completedTask = new CompletedTask(taskContent, taskDueDate, "tbd");
-            taskList.storeTask(completedTask);
-            assertEquals(taskList.getTask(taskList.getTaskListSize()), completedTask);
         } catch (TooManyIncompleteTasksException e) {
             assertEquals(e.getMessage(), "Too many incomplete tasks!");
         }
+
+        CompletedTask completedTask = new CompletedTask(taskContent, taskDueDate, "tbd");
+        try {
+            taskList.storeTask(completedTask);
+        } catch (TooManyIncompleteTasksException e) {
+            fail();
+        }
+        assertEquals(taskList.getTask(taskList.getTaskListSize()), completedTask);
     }
 }
 
