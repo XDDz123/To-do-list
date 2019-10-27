@@ -132,7 +132,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
         }
     }
 
-    //REQUIRES: taskList.get(index) must be of type RegularTask or ImportantTask
+    //REQUIRES: taskList.get(index) must be of type IncompleteTask or ImportantTask
     //MODIFIES: taskList.get(index)
     //EFFECTS: Prompts user to select which part of a task to modify and modifies the corresponding task according to
     //         user input after checking whether user input is a valid option. Returns true if the user selects an
@@ -143,7 +143,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         (4) change the content of this task, return true
     //         (0) returns to menu to prompt the user to reselect which task to modify, return true
     //         else returns false
-    private Boolean modifyTask(String input, int index, RegularTask task, TaskList taskList) {
+    private Boolean modifyTask(String input, int index, IncompleteTask task, TaskList taskList) {
         if ((input.equals("1"))) {
             //set complete
             setTaskComplete(taskList, index);
@@ -168,25 +168,25 @@ class UserInputDecisions extends SetTaskInputDecisions {
         return true;
     }
 
-    //REQUIRES: taskList.get(index) instanceOf RegularTask
+    //REQUIRES: taskList.get(index) instanceOf IncompleteTask
     //MODIFIES: taskList.get(index)
-    //EFFECTS: Prompts the user to select which field of a regular task to modify
+    //EFFECTS: Prompts the user to select which field of a incomplete task to modify
     //         Prints not an option error message if the user did not select a valid option
-    private void modifyRegularTask(TaskList taskList, int index) throws NotAnOptionException {
-        modifyRegularTaskMessage();
+    private void modifyIncompleteTask(TaskList taskList, int index) throws NotAnOptionException {
+        modifyIncompleteTaskMessage();
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
 
-        RegularTask regularTask = (RegularTask)(taskList.getTask(index));
+        IncompleteTask incompleteTask = (IncompleteTask)(taskList.getTask(index));
 
-        if (! modifyTask(input, index, regularTask, taskList)) {
+        if (! modifyTask(input, index, incompleteTask, taskList)) {
             throw new NotAnOptionException();
         }
     }
 
     //REQUIRES: taskList.get(index) instanceOf ImportantTask
     //MODIFIES: taskList.get(index)
-    //EFFECTS: Prompts the user to select which field of a regular task to modify.
+    //EFFECTS: Prompts the user to select which field of a incomplete task to modify.
     //         Displays a change importance option in addition to options displayed in modifyTask().
     //         Prints not an option error message if the user did not select a valid option.
     private void modifyImportantTask(TaskList taskList, int index) throws NotAnOptionException {
@@ -209,20 +209,20 @@ class UserInputDecisions extends SetTaskInputDecisions {
 
     //MODIFIES: taskList.get(index)
     //EFFECTS: Prompts the user to modify important task is taskList.get(index) is an ImportantTask.
-    //         Prompts the user to modify regular task if taskList.get(index) is a RegularTask.
+    //         Prompts the user to modify incomplete task if taskList.get(index) is a IncompleteTask.
     //         Else return cannot modify completed task error message.
     private void attemptModifyTask(TaskList taskList, int index) throws UIException {
         if (taskList.getTask(index) instanceof ImportantTask) {
             modifyImportantTask(taskList, index);
-        } else if (taskList.getTask(index) instanceof RegularTask) {
-            modifyRegularTask(taskList, index);
+        } else if (taskList.getTask(index) instanceof IncompleteTask) {
+            modifyIncompleteTask(taskList, index);
         } else {
             throw new ModifyCompletedTaskException();
         }
     }
 
     //MODIFIES: taskList.get(index)
-    //EFFECTS: Removes the given important task or regular task from the list of all tasks.
+    //EFFECTS: Removes the given important task or incomplete task from the list of all tasks.
     //         Creates a new completed task with the content, due date of the give task and the current time
     //         Stores this completed task in the list of all tasks.
     private void setTaskComplete(TaskList taskList, int index) {
@@ -242,12 +242,12 @@ class UserInputDecisions extends SetTaskInputDecisions {
     }
 
     //MODIFIES: taskList
-    //EFFECTS: Creates new regular task or important task  with the following initial variables.
+    //EFFECTS: Creates new incomplete task or important task  with the following initial variables.
     //         Prompts the user to assign or enter task information.
     //         Adds this new task to the list of tasks.
     //         Else returns not an option error.
     private void selectEnterTask(TaskList taskList) throws NotAnOptionException {
-        String taskContent = "empty RegularTask";
+        String taskContent = "empty IncompleteTask";
         LocalDate taskDueDate = LocalDate.now();
         String taskUrgency = "unassigned";
         String taskImportance = "important";
@@ -257,37 +257,37 @@ class UserInputDecisions extends SetTaskInputDecisions {
         String input = keyboard.nextLine();
 
         if ((input.equals("1"))) {
-            RegularTask regularTask = new RegularTask(taskContent, taskDueDate, taskUrgency);
-            setGeneralRegularTask(taskList, regularTask);
+            IncompleteTask incompleteTask = new IncompleteTask(taskContent, taskDueDate, taskUrgency);
+            setIncompleteTask(taskList, incompleteTask);
         } else if ((input.equals("2"))) {
             ImportantTask importantTask = new ImportantTask(taskContent, taskDueDate, taskUrgency, taskImportance);
-            setGeneralRegularTask(taskList, importantTask);
+            setIncompleteTask(taskList, importantTask);
             importantTask.setImportance(setImportanceDecision(importantTask.getImportance()));
         } else {
             throw new NotAnOptionException();
         }
     }
 
-    //MODIFIES: taskList, regularTask
-    //EFFECTS: Prompts the user to set all fields in a regular task.
-    //         Sets all fields present in regular tasks if given a important task.
-    private void setGeneralRegularTask(TaskList taskList, RegularTask regularTask) {
+    //MODIFIES: taskList, incompleteTask
+    //EFFECTS: Prompts the user to set all fields in a incomplete task.
+    //         Sets all fields present in incomplete tasks if given a important task.
+    private void setIncompleteTask(TaskList taskList, IncompleteTask incompleteTask) {
         Scanner keyboard = new Scanner(System.in);
 
-        regularTask.setContent(setTaskContentDecisions());
-        regularTask.setUrgency(setUrgencyDecision(regularTask.getUrgency()));
+        incompleteTask.setContent(setTaskContentDecisions());
+        incompleteTask.setUrgency(setUrgencyDecision(incompleteTask.getUrgency()));
         useDefaultDateMessage();
         if ((keyboard.nextLine()).equalsIgnoreCase("y")) {
-            regularTask.setDueDate(setMonthAndDay(regularTask.getDueDateObj()));
+            incompleteTask.setDueDate(setMonthAndDay(incompleteTask.getDueDateObj()));
         }
 
         try {
-            taskList.storeTask(regularTask);
+            taskList.storeTask(incompleteTask);
         } catch (TooManyIncompleteTasksException e) {
             exceptionErrorMessage(e);
         }
 
-        regularTask.setTimeLeft();
+        incompleteTask.setTimeLeft();
     }
 
     //EFFECTS: Prompts the user to select between:

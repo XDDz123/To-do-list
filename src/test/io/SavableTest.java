@@ -20,9 +20,9 @@ class SavableTest {
         taskList = new TaskList();
         taskList1 = new TaskList();
 
-        RegularTask task1 = new RegularTask("task I", (LocalDate.of(2020, 2, 3)),
+        IncompleteTask task1 = new IncompleteTask("task I", (LocalDate.of(2020, 2, 3)),
                 "high");
-        RegularTask task2 = new RegularTask("task III", (LocalDate.of(2020, 4, 3)),
+        IncompleteTask task2 = new IncompleteTask("task III", (LocalDate.of(2020, 4, 3)),
                 "high");
 
         CompletedTask task3 = new CompletedTask("task IV", (LocalDate.of(2019, 10, 4)), "past due.");
@@ -59,11 +59,11 @@ class SavableTest {
         }
 
         assertEquals(taskList1.getTask(1).getContent(),"task I");
-        assertEquals(((RegularTask)(taskList1.getTask(1))).getUrgency(),"high");
+        assertEquals(((IncompleteTask)(taskList1.getTask(1))).getUrgency(),"high");
         assertEquals(taskList1.getTask(1).getDueDateObj(), LocalDate.of(2020,2,3));
 
         assertEquals(taskList1.getTask(2).getContent(),"task III");
-        assertEquals(((RegularTask)(taskList1.getTask(2))).getUrgency(),"high");
+        assertEquals(((IncompleteTask)(taskList1.getTask(2))).getUrgency(),"high");
         assertEquals(taskList1.getTask(2).getDueDateObj(), LocalDate.of(2020,4,3));
 
         assertEquals(taskList1.getTask(3).getContent(), "task IV");

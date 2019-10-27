@@ -9,7 +9,7 @@ import java.util.*;
 public class TaskList {
 
     private ArrayList<Task> taskList;
-    public static final int maxSize = 10;
+    static final int maxSize = 10;
 
     //MODIFIES: this
     //EFFECTS: Constructs a new taskList as an ArrayList.
@@ -117,7 +117,7 @@ public class TaskList {
     public TaskList getTaskByUrgency(String urgency) throws TooManyIncompleteTasksException {
         TaskList tempList = new TaskList();
         for (Task task : filterOutCompleted(taskList)) {
-            if (((RegularTask) task).getUrgency().equalsIgnoreCase(urgency)) {
+            if (((IncompleteTask) task).getUrgency().equalsIgnoreCase(urgency)) {
                 tempList.storeTask(task);
             }
         }

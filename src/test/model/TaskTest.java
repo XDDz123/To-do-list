@@ -12,7 +12,7 @@ class TaskTest {
 
     @BeforeEach
     void runBefore() {
-        task = new RegularTask("empty task", taskDueDate, "unassigned");
+        task = new IncompleteTask("empty task", taskDueDate, "unassigned");
     }
 
     @Test

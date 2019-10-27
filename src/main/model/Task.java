@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public abstract class Task {
 
@@ -52,4 +53,30 @@ public abstract class Task {
     String printTaskContentAndDate() {
         return getContent() + "  " + "Due: " + getDueDate() + "  ";
     }
+
+/*    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Task task = (Task) o;
+
+        if (!Objects.equals(taskContent, task.taskContent)) {
+            return false;
+        }
+
+        return Objects.equals(taskDueDate, task.taskDueDate);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = taskContent != null ? taskContent.hashCode() : 0;
+        result = 31 * result + (taskDueDate != null ? taskDueDate.hashCode() : 0);
+        return result;
+    }*/
 }

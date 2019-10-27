@@ -3,14 +3,14 @@ package model;
 import java.time.LocalDate;
 import java.time.Period;
 
-public class RegularTask extends Task {
+public class IncompleteTask extends Task {
 
     private String timeLeft;
     private String taskUrgency;
 
-    //EFFECTS: Constructs a new regular task.
+    //EFFECTS: Constructs a new incomplete task.
     //MODIFIES: this
-    public RegularTask(String taskContent, LocalDate taskDueDate, String taskUrgency) {
+    public IncompleteTask(String taskContent, LocalDate taskDueDate, String taskUrgency) {
         super(taskContent, taskDueDate);
         this.taskUrgency = taskUrgency;
         timeLeft = "tbd";
@@ -54,7 +54,7 @@ public class RegularTask extends Task {
     //         Returns the number of days left until due if due date is within a month from current date
     //         Returns the number of months and days otherwise.
     private String computeTimeLeft() {
-
+        
         Period difference = Period.between(taskDueDate, LocalDate.now());
 
         if (taskDueDate.equals(LocalDate.now())) {

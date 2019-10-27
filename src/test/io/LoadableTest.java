@@ -3,7 +3,7 @@ package io;
 import exceptions.TooManyIncompleteTasksException;
 import model.CompletedTask;
 import model.ImportantTask;
-import model.RegularTask;
+import model.IncompleteTask;
 import model.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,11 +33,11 @@ class LoadableTest {
         }
 
         assertEquals(taskList.getTask(1).getContent(),"task I");
-        assertEquals(((RegularTask)(taskList.getTask(1))).getUrgency(),"high");
+        assertEquals(((IncompleteTask)(taskList.getTask(1))).getUrgency(),"high");
         assertEquals(taskList.getTask(1).getDueDateObj(), LocalDate.of(2020,2,3));
 
         assertEquals(taskList.getTask(2).getContent(),"task III");
-        assertEquals(((RegularTask)(taskList.getTask(2))).getUrgency(),"high");
+        assertEquals(((IncompleteTask)(taskList.getTask(2))).getUrgency(),"high");
         assertEquals(taskList.getTask(2).getDueDateObj(), LocalDate.of(2020,4,3));
 
         assertEquals(taskList.getTask(3).getContent(), "task IV");

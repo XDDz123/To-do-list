@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDate;
 
-public class ImportantTask extends RegularTask {
+public class ImportantTask extends IncompleteTask {
 
     private String taskImportance;
 

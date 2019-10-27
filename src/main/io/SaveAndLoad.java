@@ -24,7 +24,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //EFFECTS: Reads information from save file to create tasks with said information
     //         Adds these tasks to the taskList, the list of tasks.
     //         "*" denotes an important task
-    //         "@" denotes a regular task
+    //         "@" denotes an incomplete task
     //         else task is completed task, also denoted by "#"
     //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3
     @Override
@@ -49,7 +49,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //              -else create a task from the given info and sets the time until using the current year
     //         else create an important task from the given info and sets the time until due using the next year.
     //         Stores created tasks in the given taskList.
-    void createTaskSetYearFromLoad(ArrayList<String> partsOfLine, TaskList taskList, String taskType)
+    private void createTaskSetYearFromLoad(ArrayList<String> partsOfLine, TaskList taskList, String taskType)
             throws TooManyIncompleteTasksException {
         if (taskDueDate.isBefore(LocalDate.now())) {
             createPastDueFromLoad(taskList);
@@ -57,9 +57,9 @@ public class SaveAndLoad implements Loadable, Savable {
             if (taskType.equals("*")) {
                 createImportantTaskFromLoad(partsOfLine, taskList);
             } else {
-                createRegularTaskFromLoad(partsOfLine, taskList);
+                createIncompleteTaskFromLoad(partsOfLine, taskList);
             }
-            ((RegularTask) taskList.getTask(taskList.getTaskListSize())).setTimeLeft();
+            ((IncompleteTask) taskList.getTask(taskList.getTaskListSize())).setTimeLeft();
         }
     }
 
@@ -67,7 +67,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new completed task
     //         if the given information of an important task shows it is past due
     //         Stores the created task in the list of tasks.
-    void createPastDueFromLoad(TaskList taskList) throws TooManyIncompleteTasksException {
+    private void createPastDueFromLoad(TaskList taskList) throws TooManyIncompleteTasksException {
         CompletedTask completedTask = new CompletedTask(taskContent, taskDueDate, "past due.");
         taskList.storeTask(completedTask);
     }
@@ -82,13 +82,13 @@ public class SaveAndLoad implements Loadable, Savable {
     }
 
     //MODIFIES: taskList
-    //EFFECTS: Uses the given information stored in the list partsOfLine to create a new regular task.
+    //EFFECTS: Uses the given information stored in the list partsOfLine to create a new incomplete task.
     //         Stores the created task in the list of tasks.
-    private void createRegularTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList)
+    private void createIncompleteTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList)
             throws TooManyIncompleteTasksException {
         taskUrgency = partsOfLine.get(5);
         setGeneralTaskField(partsOfLine);
-        taskList.storeTask(new RegularTask(taskContent, taskDueDate, taskUrgency));
+        taskList.storeTask(new IncompleteTask(taskContent, taskDueDate, taskUrgency));
     }
 
     //MODIFIES: taskList, this
@@ -132,8 +132,8 @@ public class SaveAndLoad implements Loadable, Savable {
         for (int i = 1; i <= taskList.getTaskListSize(); i++) {
             if (taskList.getTask(i) instanceof ImportantTask) {
                 writer.println(formatImportantTaskInfo(taskList, i));
-            } else if (taskList.getTask(i) instanceof RegularTask) {
-                writer.println(formatRegularTaskInfo(taskList, i));
+            } else if (taskList.getTask(i) instanceof IncompleteTask) {
+                writer.println(formatIncompleteTaskInfo(taskList, i));
             } else {
                 writer.println(formatCompletedTaskInfo(taskList, i));
             }
@@ -153,7 +153,7 @@ public class SaveAndLoad implements Loadable, Savable {
     private String formatGeneralTaskInfo(TaskList taskList, int i) {
         return taskList.getTask(i).getContent() + "~"
                 + formatTaskDueDateInfo(taskList, i) + "~"
-                + ((RegularTask) taskList.getTask(i)).getUrgency();
+                + ((IncompleteTask) taskList.getTask(i)).getUrgency();
     }
 
     //EFFECTS: Returns information in an important task in the following format
@@ -162,8 +162,8 @@ public class SaveAndLoad implements Loadable, Savable {
                 + ((ImportantTask) taskList.getTask(i)).getImportance();
     }
 
-    //EFFECTS: Returns information in a regular task in the following format
-    private String formatRegularTaskInfo(TaskList taskList, int i) {
+    //EFFECTS: Returns information in a incomplete task in the following format
+    private String formatIncompleteTaskInfo(TaskList taskList, int i) {
         return "@" + "~" + formatGeneralTaskInfo(taskList, i);
     }
 
@@ -186,7 +186,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //EFFECTS: returns a new list of strings with sub-strings separated from the given string
     //         Sub-strings in the givens string is separated by a "~"
     //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3
-    ArrayList<String> separateOnTilde(String line) {
+    private ArrayList<String> separateOnTilde(String line) {
         String[] partOfLine = line.split("~");
         return new ArrayList<>(Arrays.asList(partOfLine));
     }

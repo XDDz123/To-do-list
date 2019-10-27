@@ -32,7 +32,7 @@ class Messages {
     }
 
     void selectTaskTypeMessage() {
-        System.out.println("Type in '1' to enter a regular task.");
+        System.out.println("Type in '1' to enter a task.");
         System.out.println("Type in '2' to enter an important task.");
     }
 
@@ -116,7 +116,7 @@ class Messages {
     }
 
     //EFFECTS: Prints the following.
-    void modifyRegularTaskMessage() {
+    void modifyIncompleteTaskMessage() {
         System.out.println("Type in '1' to set task as complete.");
         System.out.println("Type in '2' to change task due date.");
         System.out.println("Type in '3' to change task urgency.");

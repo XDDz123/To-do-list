@@ -12,11 +12,11 @@ class TaskListTest {
     private TaskList taskList1;
     private TaskList taskList2;
     private TaskList taskList3;
-    private RegularTask task;
-    private RegularTask task1;
-    private RegularTask task2;
-    private RegularTask task3;
-    private RegularTask task4;
+    private IncompleteTask task;
+    private IncompleteTask task1;
+    private IncompleteTask task2;
+    private IncompleteTask task3;
+    private IncompleteTask task4;
 
     private String taskContent = "empty task";
     private LocalDate taskDueDate = LocalDate.now();
@@ -25,7 +25,7 @@ class TaskListTest {
     @BeforeEach
     void runBefore() {
         taskList = new TaskList();
-        task = new RegularTask(taskContent, taskDueDate, taskUrgency);
+        task = new IncompleteTask(taskContent, taskDueDate, taskUrgency);
         try {
             taskList.storeTask(task);
         } catch (TooManyIncompleteTasksException e) {
@@ -96,10 +96,10 @@ class TaskListTest {
     }
 
     void runBeforeGetTaskByAndSortAndPrint() {
-        task1 = new RegularTask(taskContent, taskDueDate, taskUrgency);
-        task2 = new RegularTask(taskContent, taskDueDate, taskUrgency);
-        task3 = new RegularTask(taskContent, taskDueDate, taskUrgency);
-        task4 = new RegularTask(taskContent, taskDueDate, taskUrgency);
+        task1 = new IncompleteTask(taskContent, taskDueDate, taskUrgency);
+        task2 = new IncompleteTask(taskContent, taskDueDate, taskUrgency);
+        task3 = new IncompleteTask(taskContent, taskDueDate, taskUrgency);
+        task4 = new IncompleteTask(taskContent, taskDueDate, taskUrgency);
 
         task.setUrgency("high");
         task1.setUrgency("high");
@@ -271,7 +271,7 @@ class TaskListTest {
     void overLoadInsertExceptionTest() {
         try {
             for (int i = 0; i <= TaskList.maxSize; i++) {
-                task = new RegularTask(taskContent, taskDueDate, taskUrgency);
+                task = new IncompleteTask(taskContent, taskDueDate, taskUrgency);
                 taskList.storeTask(task);
             }
         } catch (TooManyIncompleteTasksException e) {
