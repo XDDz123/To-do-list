@@ -49,7 +49,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //              -else create a task from the given info and sets the time until using the current year
     //         else create an important task from the given info and sets the time until due using the next year.
     //         Stores created tasks in the given taskList.
-    private void createTaskSetYearFromLoad(ArrayList<String> partsOfLine, TaskList taskList, String taskType)
+    void createTaskSetYearFromLoad(ArrayList<String> partsOfLine, TaskList taskList, String taskType)
             throws TooManyIncompleteTasksException {
         if (taskDueDate.isBefore(LocalDate.now())) {
             createPastDueFromLoad(taskList);
@@ -67,7 +67,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new completed task
     //         if the given information of an important task shows it is past due
     //         Stores the created task in the list of tasks.
-    private void createPastDueFromLoad(TaskList taskList) throws TooManyIncompleteTasksException {
+    void createPastDueFromLoad(TaskList taskList) throws TooManyIncompleteTasksException {
         CompletedTask completedTask = new CompletedTask(taskContent, taskDueDate, "past due.");
         taskList.storeTask(completedTask);
     }
@@ -186,7 +186,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //EFFECTS: returns a new list of strings with sub-strings separated from the given string
     //         Sub-strings in the givens string is separated by a "~"
     //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3
-    private ArrayList<String> separateOnTilde(String line) {
+    ArrayList<String> separateOnTilde(String line) {
         String[] partOfLine = line.split("~");
         return new ArrayList<>(Arrays.asList(partOfLine));
     }

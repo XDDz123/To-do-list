@@ -102,6 +102,10 @@ class SetTaskInputDecisions extends Messages {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: sets the year for this due date depending on the given due date.
+    //         If the given due date is before the current day, set year to next year.
+    //         else return the given due date.
     private LocalDate setYear(LocalDate taskDueDate) {
         if (taskDueDate.isBefore(LocalDate.now())) {
             return this.taskDueDate.withYear(Year.now().getValue() + 1);
