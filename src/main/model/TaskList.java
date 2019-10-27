@@ -20,7 +20,7 @@ public class TaskList {
     //MODIFIES: this
     //EFFECTS: Inserts a task to the current task list
     public void storeTask(Task task) throws TooManyIncompleteTasksException {
-        if (filterOutCompleted(taskList).size() > maxSize) {
+        if (filterOutCompleted().size() > maxSize) {
             if (!(task instanceof CompletedTask)) {
                 throw new TooManyIncompleteTasksException();
             } else {
@@ -71,7 +71,7 @@ public class TaskList {
     //EFFECTS: Prints the contents of incomplete tasks in the list
     public String printIncompleteTasks() {
         try {
-            return printTaskList(filterOutCompleted(taskList));
+            return printTaskList(filterOutCompleted());
         } catch (EmptyListException e) {
             return e.getMessage();
         }
@@ -102,7 +102,7 @@ public class TaskList {
     }
 
     //EFFECTS: takes in an list of tasks, returns a new list with only incomplete tasks.
-    private ArrayList<Task> filterOutCompleted(ArrayList<Task> taskList) {
+    private ArrayList<Task> filterOutCompleted() {
         ArrayList<Task> filteredList = new ArrayList<>();
         for (Task task : taskList) {
             if (!(task instanceof CompletedTask)) {
@@ -116,7 +116,7 @@ public class TaskList {
     //         with the specified urgency level.
     public TaskList getTaskByUrgency(String urgency) throws TooManyIncompleteTasksException {
         TaskList tempList = new TaskList();
-        for (Task task : filterOutCompleted(taskList)) {
+        for (Task task : filterOutCompleted()) {
             if (((IncompleteTask) task).getUrgency().equalsIgnoreCase(urgency)) {
                 tempList.storeTask(task);
             }
