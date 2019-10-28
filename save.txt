@@ -1,14 +1,7 @@
-@~a~10~13~2019~high
-@~aaaa~10~13~2019~high
-@~aaaaaa~10~13~2019~mid
-@~aaaa~11~22~2019~high
-@~aaaa~12~1~2019~mid
-@~aa~1~1~2020~high
-*~c~1~3~2020~high~High Importance
-@~task 1~2~3~2020~mid
-*~task 2~9~4~2020~mid~Extreme Importance
-@~b~10~3~2020~mid
-#~d~11~2~2019~10/13
-#~task~12~3~2019~10/13
-#~aaa~10~13~2019~10/13
-@~aaaa~12~30~2019~high
+*~task2~list2~10~27~2019~mid~mid
+*~tasks~list2~12~2~2019~mid~mid
+@~task1~list2~11~1~2019~high
+@~task~list~10~27~2019~high
+*~1~list~11~1~2019~high~high
+@~1~list~11~1~2019~high
+@~1~list~10~27~2019~high

@@ -1,6 +1,7 @@
 package ui;
 
 import model.TaskList;
+import model.TaskListHashMap;
 
 class Messages {
 
@@ -10,7 +11,6 @@ class Messages {
         System.out.println("  ");
         System.out.println("Your data will be automatically saved after this session.");
         System.out.println("  ");
-        //System.out.println("  ");
     }
 
     //EFFECTS: Prints the following.
@@ -23,12 +23,40 @@ class Messages {
         System.out.println("Type in '3' to delete a task or all tasks.");
         System.out.println("Type in '4' to modify a task.");
         System.out.println("Type in '5' to sort tasks by due date.");
-        System.out.println("Type in '6' to save list or clear previous save.");
+    }
+
+    //EFFECTS: Prints the following.
+    void selectListOptionsMessage() {
+        System.out.println("-----------------------------------------------------------------------------------------");
+        System.out.println("Type in '1' to view existing task lists.");
+        System.out.println("Type in '2' to create a new task list.");
+        System.out.println("Type in '3' to delete a task list.");
+    }
+
+    //EFFECTS: Prints the following.
+    void deleteListMessage(TaskListHashMap taskListHashMap) {
+        System.out.println(taskListHashMap.getKeys().toString());
+        System.out.println("Enter the name of the task list to delete: ");
+    }
+
+    //EFFECTS: Prints the following.
+    void selectListMessage(TaskListHashMap taskListHashMap) {
+        System.out.println(taskListHashMap.getKeys().toString());
+        System.out.println("Enter the name of the task list to select: ");
+    }
+
+    void createNewListMessage() {
+        System.out.println("Enter the name of your new task list: ");
     }
 
     //EFFECTS: Prints the following.
     void continueMessage() {
-        System.out.println("Press enter to continue or type 'exit' to exit");
+        System.out.println("Press enter to continue or type 'exit' to exit from the program.");
+    }
+
+    //EFFECTS: Prints the following.
+    void continueMessageForList() {
+        System.out.println("Press enter to continue or type 'exit' to exit from the current list.");
     }
 
     void selectTaskTypeMessage() {
@@ -43,12 +71,14 @@ class Messages {
         System.out.println("Type in '0' to return to the previous menu.");
     }
 
+/*
     //EFFECTS: Prints the following.
     void saveAndClearSaveMessage() {
         System.out.println("Type in '1' to save current list of tasks.");
         System.out.println("Type in '2' to clear the previous save.");
         System.out.println("Type in '0' to return to the previous menu.");
     }
+*/
 
 /*    public void savedMessage() {
         System.out.println("Tasks saved successfully.");
@@ -170,6 +200,11 @@ class Messages {
     void cantModifyCompletedTaskError() {
         System.out.println("Error! Completed tasks can not be modified.");
     }*/
+
+    //EFFECTS: Prints the following.
+    void nameAlreadyExistsError() {
+        System.out.println("Error! A list with the same name already exists, try a different name.");
+    }
 
     //EFFECTS: Prints the following.
     void outOfBoundsError() {

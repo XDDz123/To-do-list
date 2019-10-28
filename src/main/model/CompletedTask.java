@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.TaskException;
 import java.time.LocalDate;
 
 public class CompletedTask extends Task {
@@ -8,8 +9,9 @@ public class CompletedTask extends Task {
 
     //MODIFIES: this
     //EFFECTS: Constructs a completed task
-    public CompletedTask(String taskContent, LocalDate taskDueDate, String completionStatus) {
-        super(taskContent, taskDueDate);
+    public CompletedTask(TaskList taskList, String taskContent, LocalDate taskDueDate, String completionStatus)
+            throws TaskException {
+        super(taskList, taskContent, taskDueDate);
         this.completionStatus = completionStatus;
     }
 

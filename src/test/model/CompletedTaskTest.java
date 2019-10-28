@@ -1,10 +1,12 @@
 package model;
 
+import exceptions.TaskException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.MonthDay;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class CompletedTaskTest {
     private CompletedTask completedTask;
@@ -12,7 +14,12 @@ class CompletedTaskTest {
 
     @BeforeEach
     void runBefore() {
-        completedTask = new CompletedTask("empty task", taskDueDate, "tbd");
+        TaskList taskList = new TaskList("");
+        try {
+            completedTask = new CompletedTask(taskList,"empty task", taskDueDate, "tbd");
+        } catch (TaskException e) {
+            fail();
+        }
     }
 
     @Test

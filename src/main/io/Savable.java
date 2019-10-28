@@ -1,9 +1,8 @@
 package io;
 
-import model.TaskList;
-
+import model.TaskListHashMap;
 import java.io.IOException;
 
 public interface Savable {
-    void save(TaskList taskList, String file) throws IOException;
+    void save(TaskListHashMap taskListHashMap, String file) throws IOException;
 }

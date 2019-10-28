@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.TaskException;
+
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -10,8 +12,9 @@ public class IncompleteTask extends Task {
 
     //EFFECTS: Constructs a new incomplete task.
     //MODIFIES: this
-    public IncompleteTask(String taskContent, LocalDate taskDueDate, String taskUrgency) {
-        super(taskContent, taskDueDate);
+    public IncompleteTask(TaskList taskList, String taskContent, LocalDate taskDueDate, String taskUrgency)
+            throws TaskException {
+        super(taskList, taskContent, taskDueDate);
         this.taskUrgency = taskUrgency;
         timeLeft = "tbd";
     }

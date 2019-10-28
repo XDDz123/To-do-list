@@ -1,19 +1,59 @@
 package model;
 
+import exceptions.TaskException;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public abstract class Task {
 
+    private TaskList taskList;
     private String taskContent;
     protected LocalDate taskDueDate;
 
     //EFFECTS: Constructs a new task.
     //MODIFIES: this
-    Task(String taskContent, LocalDate taskDueDate) {
+    Task(TaskList taskList, String taskContent, LocalDate taskDueDate) throws TaskException {
+        this.taskList = taskList;
         this.taskContent = taskContent;
         this.taskDueDate = taskDueDate;
+
+        if (taskList != null) {
+            taskList.storeTask(this);
+        }
     }
+
+    //EFFECTS: Returns the taskList of this task
+    public TaskList getTaskList() {
+        return taskList;
+    }
+
+    //MODIFIES: this, taskList
+    //EFFECTS: Sets the taskList of this task to the given taskList
+    public void setTaskList(TaskList taskList) throws TaskException {
+        try {
+            if (!taskList.getTaskList().contains(this)) {
+                this.taskList = taskList;
+                taskList.storeTask(this);
+            }
+        } catch (NullPointerException e) {
+            this.taskList = null;
+        }
+    }
+
+    /*
+    //MODIFIES: this, taskList
+    //EFFECTS: Removes this task's taskList and removes this task from the taskList
+    public void removeTaskList() throws TooManyIncompleteTasksException {
+        taskList.deleteTask(this);
+        this.taskList = null;
+    }
+
+    //MODIFIES: this, taskList, newList
+    //EFFECTS: changes the taskList of this task to another taskList
+    public void changeTaskList(TaskList newList) throws TooManyIncompleteTasksException {
+        removeTaskList();
+        setTaskList(newList);
+    }*/
 
     //MODIFIES: this
     //EFFECTS: Changes this task's task content to given content.
@@ -54,7 +94,7 @@ public abstract class Task {
         return getContent() + "  " + "Due: " + getDueDate() + "  ";
     }
 
-/*    @Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -66,6 +106,10 @@ public abstract class Task {
 
         Task task = (Task) o;
 
+        if (!Objects.equals(taskList, task.taskList)) {
+            return false;
+        }
+
         if (!Objects.equals(taskContent, task.taskContent)) {
             return false;
         }
@@ -75,8 +119,9 @@ public abstract class Task {
 
     @Override
     public int hashCode() {
-        int result = taskContent != null ? taskContent.hashCode() : 0;
+        int result = taskList != null ? taskList.hashCode() : 0;
+        result = 31 * result + (taskContent != null ? taskContent.hashCode() : 0);
         result = 31 * result + (taskDueDate != null ? taskDueDate.hashCode() : 0);
         return result;
-    }*/
+    }
 }

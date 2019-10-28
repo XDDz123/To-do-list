@@ -1,8 +1,7 @@
 package io;
 
-import exceptions.TooManyIncompleteTasksException;
+import exceptions.TaskException;
 import model.*;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -11,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SaveAndLoad implements Loadable, Savable {
 
@@ -28,8 +28,11 @@ public class SaveAndLoad implements Loadable, Savable {
     //         else task is completed task, also denoted by "#"
     //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3
     @Override
-    public void load(TaskList taskList, String file) throws IOException, TooManyIncompleteTasksException {
+    public void load(TaskListHashMap taskListHashMap, String file)
+            throws IOException, TaskException, NumberFormatException {
         List<String> lines = Files.readAllLines(Paths.get(file));
+        ArrayList<Task> taskList = new ArrayList<>();
+        ArrayList<String> listOfKeys = new ArrayList<>();
 
         for (String line : lines) {
             ArrayList<String> partsOfLine = separateOnTilde(line);
@@ -40,7 +43,32 @@ public class SaveAndLoad implements Loadable, Savable {
             } else {
                 createCompletedTaskFromLoad(partsOfLine, taskList);
             }
+
+            listOfKeys.add(partsOfLine.get(2));
         }
+        loadIntoHashMap(taskListHashMap, taskList, listOfKeys);
+    }
+
+    void loadIntoHashMap(TaskListHashMap taskListHashMap, ArrayList<Task> taskList, ArrayList<String> listOfKeys) {
+        for (String key: eliminateDuplicates(listOfKeys)) {
+            TaskList taskListTemp = new TaskList(key);
+            taskListHashMap.storeTaskList(taskListTemp);
+        }
+
+        for (int i = 0; i < listOfKeys.size(); i++) {
+            try {
+                taskListHashMap.getTaskList(listOfKeys.get(i)).storeTask(taskList.get(i));
+            } catch (TaskException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    //inspired by https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/
+    List<String> eliminateDuplicates(ArrayList<String> list) {
+        return list.stream()
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     //MODIFIES: taskList
@@ -49,8 +77,8 @@ public class SaveAndLoad implements Loadable, Savable {
     //              -else create a task from the given info and sets the time until using the current year
     //         else create an important task from the given info and sets the time until due using the next year.
     //         Stores created tasks in the given taskList.
-    void createTaskSetYearFromLoad(ArrayList<String> partsOfLine, TaskList taskList, String taskType)
-            throws TooManyIncompleteTasksException {
+    void createTaskSetYearFromLoad(ArrayList<String> partsOfLine, ArrayList<Task> taskList, String taskType)
+            throws TaskException {
         if (taskDueDate.isBefore(LocalDate.now())) {
             createPastDueFromLoad(taskList);
         } else {
@@ -59,7 +87,7 @@ public class SaveAndLoad implements Loadable, Savable {
             } else {
                 createIncompleteTaskFromLoad(partsOfLine, taskList);
             }
-            ((IncompleteTask) taskList.getTask(taskList.getTaskListSize())).setTimeLeft();
+            ((IncompleteTask) taskList.get(taskList.size() - 1)).setTimeLeft();
         }
     }
 
@@ -67,37 +95,40 @@ public class SaveAndLoad implements Loadable, Savable {
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new completed task
     //         if the given information of an important task shows it is past due
     //         Stores the created task in the list of tasks.
-    void createPastDueFromLoad(TaskList taskList) throws TooManyIncompleteTasksException {
-        CompletedTask completedTask = new CompletedTask(taskContent, taskDueDate, "past due.");
-        taskList.storeTask(completedTask);
+    void createPastDueFromLoad(ArrayList<Task> taskList) throws TaskException {
+        taskList.add(new CompletedTask(null, taskContent, taskDueDate, "past due."));
+        //taskList.storeTask(completedTask);
     }
 
     //MODIFIES: taskList
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new completed task.
     //         Stores the created task in the list of tasks.
-    private void createCompletedTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList)
-            throws TooManyIncompleteTasksException {
+    private void createCompletedTaskFromLoad(ArrayList<String> partsOfLine,  ArrayList<Task> taskList)
+            throws TaskException {
         setCompletedTaskField(partsOfLine);
-        taskList.storeTask(new CompletedTask(taskContent, taskDueDate, completionStatus));
+        taskList.add(new CompletedTask(null, taskContent, taskDueDate, completionStatus));
+        //taskList.storeTask(new CompletedTask(taskList, taskContent, taskDueDate, completionStatus));
     }
 
     //MODIFIES: taskList
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new incomplete task.
     //         Stores the created task in the list of tasks.
-    private void createIncompleteTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList)
-            throws TooManyIncompleteTasksException {
-        taskUrgency = partsOfLine.get(5);
+    private void createIncompleteTaskFromLoad(ArrayList<String> partsOfLine, ArrayList<Task> taskList)
+            throws TaskException {
+        taskUrgency = partsOfLine.get(6);
         setGeneralTaskField(partsOfLine);
-        taskList.storeTask(new IncompleteTask(taskContent, taskDueDate, taskUrgency));
+        taskList.add(new IncompleteTask(null, taskContent, taskDueDate, taskUrgency));
+        //taskList.storeTask(new IncompleteTask(taskList, taskContent, taskDueDate, taskUrgency));
     }
 
     //MODIFIES: taskList, this
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new important task.
     //         Stores the created task in the list of tasks.
-    private void createImportantTaskFromLoad(ArrayList<String> partsOfLine, TaskList taskList)
-            throws TooManyIncompleteTasksException {
-        taskUrgency = partsOfLine.get(5);
-        taskList.storeTask(new ImportantTask(taskContent, taskDueDate, taskUrgency, partsOfLine.get(6)));
+    private void createImportantTaskFromLoad(ArrayList<String> partsOfLine, ArrayList<Task> taskList)
+            throws TaskException {
+        taskUrgency = partsOfLine.get(6);
+        taskList.add(new ImportantTask(null, taskContent, taskDueDate, taskUrgency, partsOfLine.get(7)));
+        //taskList.storeTask(new ImportantTask(taskList, taskContent, taskDueDate, taskUrgency, partsOfLine.get(6)));
     }
 
     //MODIFIES: this
@@ -105,9 +136,9 @@ public class SaveAndLoad implements Loadable, Savable {
     //         task content, urgency, and due date
     void setGeneralTaskField(ArrayList<String> partsOfLine) {
         taskContent = partsOfLine.get(1);
-        int month = Integer.parseInt(partsOfLine.get(2));
-        int day = Integer.parseInt(partsOfLine.get(3));
-        int year = Integer.parseInt(partsOfLine.get(4));
+        int month = Integer.parseInt(partsOfLine.get(3));
+        int day = Integer.parseInt(partsOfLine.get(4));
+        int year = Integer.parseInt(partsOfLine.get(5));
         taskDueDate = LocalDate.of(year, month, day);
     }
 
@@ -116,7 +147,7 @@ public class SaveAndLoad implements Loadable, Savable {
     //         task content, due date and completion status
     private void setCompletedTaskField(ArrayList<String> partsOfLine) {
         setGeneralTaskField(partsOfLine);
-        completionStatus = partsOfLine.get(5);
+        completionStatus = partsOfLine.get(6);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -126,16 +157,19 @@ public class SaveAndLoad implements Loadable, Savable {
     //EFFECTS: Takes current task list and writes the included information in the following format to save.txt.
     //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3
     @Override
-    public void save(TaskList taskList, String file) throws IOException {
+    public void save(TaskListHashMap taskListHashMap, String file) throws IOException {
         PrintWriter writer = new PrintWriter(file,"UTF-8");
 
-        for (int i = 1; i <= taskList.getTaskListSize(); i++) {
-            if (taskList.getTask(i) instanceof ImportantTask) {
-                writer.println(formatImportantTaskInfo(taskList, i));
-            } else if (taskList.getTask(i) instanceof IncompleteTask) {
-                writer.println(formatIncompleteTaskInfo(taskList, i));
-            } else {
-                writer.println(formatCompletedTaskInfo(taskList, i));
+        for (Object key : taskListHashMap.getKeys()) {
+            TaskList taskList = taskListHashMap.getTaskList((String) key);
+            for (int i = 1; i <= taskList.getTaskListSize(); i++) {
+                if (taskList.getTask(i) instanceof ImportantTask) {
+                    writer.println(formatImportantTaskInfo(taskList, i));
+                } else if (taskList.getTask(i) instanceof IncompleteTask) {
+                    writer.println(formatIncompleteTaskInfo(taskList, i));
+                } else {
+                    writer.println(formatCompletedTaskInfo(taskList, i));
+                }
             }
         }
 
@@ -144,7 +178,8 @@ public class SaveAndLoad implements Loadable, Savable {
 
     //EFFECTS: Returns the task due date with added symbols in the following format
     private String formatTaskDueDateInfo(TaskList taskList, int i) {
-        return taskList.getTask(i).getDueDateObj().getMonthValue() + "~"
+        return taskList.getName() + "~"
+                + taskList.getTask(i).getDueDateObj().getMonthValue() + "~"
                 + taskList.getTask(i).getDueDateObj().getDayOfMonth() + "~"
                 + taskList.getTask(i).getDueDateObj().getYear();
     }
@@ -173,6 +208,7 @@ public class SaveAndLoad implements Loadable, Savable {
                 + formatTaskDueDateInfo(taskList, i) + "~"
                 + ((CompletedTask) taskList.getTask(i)).getCompletionStatus();
     }
+/*
 
     //MODIFIES: save.txt
     //EFFECTS: Clears/formats the current save file
@@ -182,6 +218,7 @@ public class SaveAndLoad implements Loadable, Savable {
         file.createNewFile();
         taskList.clearTaskList();
     }
+*/
 
     //EFFECTS: returns a new list of strings with sub-strings separated from the given string
     //         Sub-strings in the givens string is separated by a "~"

@@ -1,10 +1,11 @@
 package io;
 
+import exceptions.TaskException;
 import exceptions.TooManyIncompleteTasksException;
-import model.TaskList;
+import model.TaskListHashMap;
 
 import java.io.IOException;
 
 public interface Loadable {
-    void load(TaskList taskList, String file) throws IOException, TooManyIncompleteTasksException;
+    void load(TaskListHashMap taskListHashMap, String file) throws IOException, TaskException;
 }

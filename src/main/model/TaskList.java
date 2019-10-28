@@ -1,38 +1,57 @@
 package model;
 
-import exceptions.EmptyListException;
-import exceptions.TaskDoesNotExistException;
-import exceptions.TooManyIncompleteTasksException;
-
+import exceptions.*;
 import java.util.*;
 
 public class TaskList {
 
     private ArrayList<Task> taskList;
+    private String name;
     static final int maxSize = 10;
 
     //MODIFIES: this
     //EFFECTS: Constructs a new taskList as an ArrayList.
-    public TaskList() {
+    public TaskList(String name) {
         taskList = new ArrayList<>();
+        this.name = name;
     }
 
     //MODIFIES: this
     //EFFECTS: Inserts a task to the current task list
-    public void storeTask(Task task) throws TooManyIncompleteTasksException {
-        if (filterOutCompleted().size() > maxSize) {
-            if (!(task instanceof CompletedTask)) {
-                throw new TooManyIncompleteTasksException();
+    public void storeTask(Task task) throws TaskException {
+
+        if (!taskList.contains(task)) {
+            if (filterOutCompleted().size() > maxSize) {
+                if (!(task instanceof CompletedTask)) {
+                    throw new TooManyIncompleteTasksException();
+                } else {
+                    taskList.add(task);
+                    task.setTaskList(this);
+                }
             } else {
                 taskList.add(task);
+                task.setTaskList(this);
             }
         } else {
-            taskList.add(task);
+            throw new DuplicateTaskException();
         }
     }
 
+    //EFFECTS: returns the name of this list
+    public String getName() {
+        return name;
+    }
+
+/*
+    //MODIFIES: this
+    //EFFECTS: sets the name of this list to the given name
+    public void setName(String name) {
+        this.name = name;
+    }
+*/
+
     //EFFECTS: Returns the ArrayList that stores the current task list
-    public ArrayList getTaskList() {
+    public ArrayList<Task> getTaskList() {
         return taskList;
     }
 
@@ -44,12 +63,15 @@ public class TaskList {
     //REQUIRES: index must refer to an existing index in the list of tasks
     //MODIFIES: this
     //EFFECTS: Removes a task in the current task list based on an index that starts at 1.
-    public void deleteTask(int index) throws TaskDoesNotExistException {
+    public void deleteTask(int index) throws TaskDoesNotExistException, TaskException {
+        Task task;
         try {
+            task = taskList.get(index - 1);
             taskList.remove(index - 1);
         } catch (IndexOutOfBoundsException e) {
             throw new TaskDoesNotExistException();
         }
+        task.setTaskList(null);
     }
 
     //MODIFIES: this
@@ -114,8 +136,8 @@ public class TaskList {
 
     //EFFECTS: Returns a new task list that contains all tasks in the current task list
     //         with the specified urgency level.
-    public TaskList getTaskByUrgency(String urgency) throws TooManyIncompleteTasksException {
-        TaskList tempList = new TaskList();
+    public TaskList getTaskByUrgency(String urgency) throws TaskException {
+        TaskList tempList = new TaskList("");
         for (Task task : filterOutCompleted()) {
             if (((IncompleteTask) task).getUrgency().equalsIgnoreCase(urgency)) {
                 tempList.storeTask(task);
@@ -146,5 +168,25 @@ public class TaskList {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        TaskList taskList1 = (TaskList) o;
+
+        return Objects.equals(taskList, taskList1.taskList);
+    }
+
+    @Override
+    public int hashCode() {
+        return taskList != null ? taskList.hashCode() : 0;
     }
 }

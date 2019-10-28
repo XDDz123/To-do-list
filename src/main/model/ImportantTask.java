@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.TaskException;
 import java.time.LocalDate;
 
 public class ImportantTask extends IncompleteTask {
@@ -8,8 +9,12 @@ public class ImportantTask extends IncompleteTask {
 
     //MODIFIES: this
     //EFFECTS: Constructs an important task
-    public ImportantTask(String taskContent, LocalDate taskDueDate, String taskUrgency, String taskImportance) {
-        super(taskContent, taskDueDate, taskUrgency);
+    public ImportantTask(TaskList taskList,
+                         String taskContent,
+                         LocalDate taskDueDate,
+                         String taskUrgency,
+                         String taskImportance) throws TaskException {
+        super(taskList, taskContent, taskDueDate, taskUrgency);
         this.taskImportance = taskImportance;
     }
 

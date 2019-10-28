@@ -22,6 +22,12 @@ class UserInputDecisions extends SetTaskInputDecisions {
         return (keyboard.nextLine()).equalsIgnoreCase("exit");
     }
 
+    private Boolean checkExitList() {
+        continueMessageForList();
+        Scanner keyboard = new Scanner(System.in);
+        return (keyboard.nextLine()).equalsIgnoreCase("exit");
+    }
+
     //EFFECTS: Takes in user selection in the form of a number and decides between:
     //         (1) enter a new task
     //         (2) view entered tasks
@@ -30,7 +36,8 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         (5) sort the list of tasks
     //         (6) save list of tasks to file or clear previous save
     //         else output error message for not an option
-    private void userSelection(TaskList taskList) throws NotAnOptionException {
+    //         returns on boolean depending on whether the user decides to exit
+    private boolean userSelection(TaskList taskList) throws NotAnOptionException, TaskException {
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
 
@@ -44,14 +51,13 @@ class UserInputDecisions extends SetTaskInputDecisions {
             selectModifyTask(taskList);
         } else if ((input.equals("5"))) {
             sortTaskList(taskList);
-        } else if ((input.equals("6"))) {
-            saveAndClearSave(taskList);
         } else {
             throw new NotAnOptionException();
         }
+        return checkExitList();
     }
 
-    //MODIFIES: save.txt
+/*    //MODIFIES: save.txt
     //EFFECTS: Prompts the user to select either:
     //        (1) save current list of task to file
     //        (2) clear/format the current save file
@@ -76,7 +82,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
         } catch (IOException e) {
             fileNotFoundError();
         }
-    }
+    }*/
 
     //MODIFIES: taskList
     //EFFECTS: Prompts the user to select between:
@@ -227,16 +233,18 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         Stores this completed task in the list of all tasks.
     private void setTaskComplete(TaskList taskList, int index) {
         Task task = taskList.getTask(index);
-        CompletedTask completedTask;
-        completedTask = new CompletedTask(task.getContent(), task.getDueDateObj(), task.getDate(LocalDate.now()));
         try {
-            taskList.storeTask(completedTask);
-        } catch (TooManyIncompleteTasksException e) {
+            new CompletedTask(
+                    taskList,
+                    task.getContent(),
+                    task.getDueDateObj(),
+                    task.getDate(LocalDate.now()));
+        } catch (TaskException e) {
             exceptionErrorMessage(e);
         }
         try {
             taskList.deleteTask(index);
-        } catch (TaskDoesNotExistException e) {
+        } catch (TaskDoesNotExistException | TaskException e) {
             exceptionErrorMessage(e);
         }
     }
@@ -246,8 +254,8 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         Prompts the user to assign or enter task information.
     //         Adds this new task to the list of tasks.
     //         Else returns not an option error.
-    private void selectEnterTask(TaskList taskList) throws NotAnOptionException {
-        String taskContent = "empty IncompleteTask";
+    private void selectEnterTask(TaskList taskList) throws NotAnOptionException, TaskException {
+        String taskContent = "empty task";
         LocalDate taskDueDate = LocalDate.now();
         String taskUrgency = "unassigned";
         String taskImportance = "important";
@@ -257,10 +265,11 @@ class UserInputDecisions extends SetTaskInputDecisions {
         String input = keyboard.nextLine();
 
         if ((input.equals("1"))) {
-            IncompleteTask incompleteTask = new IncompleteTask(taskContent, taskDueDate, taskUrgency);
+            IncompleteTask incompleteTask = new IncompleteTask(null, taskContent, taskDueDate, taskUrgency);
             setIncompleteTask(taskList, incompleteTask);
         } else if ((input.equals("2"))) {
-            ImportantTask importantTask = new ImportantTask(taskContent, taskDueDate, taskUrgency, taskImportance);
+            ImportantTask importantTask =
+                    new ImportantTask(null, taskContent, taskDueDate, taskUrgency, taskImportance);
             setIncompleteTask(taskList, importantTask);
             importantTask.setImportance(setImportanceDecision(importantTask.getImportance()));
         } else {
@@ -283,7 +292,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
 
         try {
             taskList.storeTask(incompleteTask);
-        } catch (TooManyIncompleteTasksException e) {
+        } catch (TaskException e) {
             exceptionErrorMessage(e);
         }
 
@@ -322,7 +331,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
         if (input.equalsIgnoreCase(high) || input.equalsIgnoreCase(mid) || input.equalsIgnoreCase(low)) {
             try {
                 printIncompleteTasksList(taskList.getTaskByUrgency(input));
-            } catch (TooManyIncompleteTasksException e) {
+            } catch (TaskException e) {
                 exceptionErrorMessage(e);
             }
         } else {
@@ -345,7 +354,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
             }
         } catch (InputMismatchException e) {
             notIntegerError();
-        } catch (TaskDoesNotExistException e) {
+        } catch (TaskDoesNotExistException | TaskException e) {
             exceptionErrorMessage(e);
         }
 
@@ -366,16 +375,92 @@ class UserInputDecisions extends SetTaskInputDecisions {
 
     //MODIFIES: taskList
     //EFFECTS: Attempts to load task info from save
-    private void tryLoad(TaskList taskList) {
+    private void tryLoad(TaskListHashMap taskListHashMap) {
         Loadable loadTasks = new SaveAndLoad();
         try {
-            loadTasks.load(taskList, fileName);
+            loadTasks.load(taskListHashMap, fileName);
         } catch (NoSuchFileException e) {
             fileNotFoundError();
-        } catch (TooManyIncompleteTasksException | IOException e) {
+        } catch (TaskException | IOException e) {
             exceptionErrorMessage(e);
+        //} catch (Exception e) {
+       //     System.out.println("bad formatting");
         } finally {
             loadAttemptedMessage();
+        }
+    }
+
+    private void selectListOptions(TaskListHashMap taskListHashMap) throws NotAnOptionException {
+        Scanner keyboard = new Scanner(System.in);
+        selectListOptionsMessage();
+        String input = keyboard.nextLine();
+
+        if ((input.equals("1"))) {
+            try {
+                selectExistingTaskLists(taskListHashMap);
+            } catch (NoListsFoundException e) {
+                exceptionErrorMessage(e);
+            }
+        } else if ((input.equals("2"))) {
+            createNewTaskList(taskListHashMap);
+        } else if ((input.equals("3"))) {
+            deleteTaskList(taskListHashMap);
+        } else {
+            throw new NotAnOptionException();
+        }
+    }
+
+    private void deleteTaskList(TaskListHashMap taskListHashMap) {
+        Scanner keyboard = new Scanner(System.in);
+        deleteListMessage(taskListHashMap);
+        String key = keyboard.nextLine();
+
+        if (taskListHashMap.getKeys().contains(key)) {
+            taskListHashMap.removeTaskList(key);
+        }
+    }
+
+    private void selectExistingTaskLists(TaskListHashMap taskListHashMap)
+            throws NotAnOptionException, NoListsFoundException {
+        Scanner keyboard = new Scanner(System.in);
+
+        if (!taskListHashMap.getKeys().isEmpty()) {
+            selectListMessage(taskListHashMap);
+            String input = keyboard.nextLine();
+            if (taskListHashMap.getTaskList(input) != null) {
+                runUserSelection(taskListHashMap.getTaskList(input));
+            } else {
+                throw new NotAnOptionException();
+            }
+        } else {
+            throw new NoListsFoundException();
+        }
+    }
+
+    private void createNewTaskList(TaskListHashMap taskListHashMap) {
+        Scanner keyboard = new Scanner(System.in);
+        createNewListMessage();
+        String input = keyboard.nextLine();
+
+        if (! taskListHashMap.getKeys().contains(input)) {
+            TaskList taskList = new TaskList(input);
+            taskListHashMap.storeTaskList(taskList);
+            runUserSelection(taskListHashMap.getTaskList(input));
+        } else {
+            nameAlreadyExistsError();
+        }
+    }
+
+    private void runUserSelection(TaskList taskList) {
+        boolean stop = false;
+        while (!stop) {
+            optionsMessage();
+            try {
+                stop = userSelection(taskList);
+            } catch (NotAnOptionException | TaskException e) {
+                exceptionErrorMessage(e);
+                stop = checkExitList();
+            }
         }
     }
 
@@ -385,22 +470,21 @@ class UserInputDecisions extends SetTaskInputDecisions {
     void run() {
         welcomeMessage();
 
-        TaskList taskList = new TaskList();
+        TaskListHashMap taskListHashMap = new TaskListHashMap();
         Savable saveTasks = new SaveAndLoad();
 
-        tryLoad(taskList);
+        tryLoad(taskListHashMap);
 
         do {
-            optionsMessage();
             try {
-                userSelection(taskList);
+                selectListOptions(taskListHashMap);
             } catch (NotAnOptionException e) {
                 exceptionErrorMessage(e);
             }
         } while (!checkExit());
 
         try {
-            saveTasks.save(taskList, fileName);
+            saveTasks.save(taskListHashMap, fileName);
         } catch (IOException e) {
             fileNotFoundError();
         }
