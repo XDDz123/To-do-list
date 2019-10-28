@@ -1,11 +1,7 @@
 package io;
 
 import exceptions.TaskException;
-import exceptions.TooManyIncompleteTasksException;
-import model.CompletedTask;
-import model.ImportantTask;
-import model.Task;
-import model.TaskList;
+import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -125,5 +121,20 @@ class SaveAndLoadTest {
             fail();
         }
         assertEquals(((ImportantTask) taskList.get(0)).getTimeLeft(), "1 months 1 days");
+    }
+
+    @Test
+    void loadInToHashMapTest() {
+        TaskListHashMap taskListHashMap = new TaskListHashMap();
+        ArrayList<String> partsOfLine = new ArrayList<>();
+        partsOfLine.add("a");
+        partsOfLine.add("a");
+        try {
+            taskList.add(new IncompleteTask(null,"", LocalDate.now(), ""));
+            taskList.add(new IncompleteTask(null,"", LocalDate.now(), ""));
+            saveAndLoad.loadIntoHashMap(taskListHashMap, taskList, partsOfLine);
+        } catch (TaskException e) {
+            fail();
+        }
     }
 }

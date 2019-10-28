@@ -4,8 +4,8 @@ import exceptions.TaskException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class TaskTest {
@@ -60,5 +60,133 @@ class TaskTest {
     void printTaskContentAndDateTest() {
         assertEquals(task.printTaskContentAndDate(), "empty task"  + "  " + "Due: " + LocalDate.now().getMonthValue()
                 + "/" + LocalDate.now().getDayOfMonth() + "  ");
+    }
+
+    @Test
+    void getTaskListTest() {
+        assertNull(task.getTaskList());
+    }
+
+    @Test
+    void setTaskListTest() {
+        TaskList taskList = new TaskList("list");
+        try {
+            task.setTaskList(taskList);
+        } catch (TaskException e) {
+            fail();
+        }
+        assertEquals(task.getTaskList(), taskList);
+        assertEquals(taskList.getTask(1), task);
+    }
+
+    @Test
+    void setTaskListDuplicateTest() {
+        TaskList taskList = new TaskList("list");
+        try {
+            Task task1 = new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned");
+        } catch (TaskException e) {
+            fail();
+        }
+
+        try {
+            task.setTaskList(taskList);
+            fail();
+        } catch (TaskException e) {
+            System.out.println("Test passed!");
+        }
+    }
+
+    @Test
+    void equalsNull() {
+        Task task1;
+        ImportantTask task2;
+        Task task3 = null;
+        ImportantTask task4 = null;
+        TaskList taskList = null;
+        try {
+            task2 = new ImportantTask(null,"empty task", taskDueDate, "unassigned", "unassigned");
+            assertFalse(task.equals(task2));
+        } catch (TaskException e) {
+            fail();
+        }
+
+        assertFalse(task.equals(task3));
+        assertFalse(task.equals(task4));
+        assertFalse(task.equals(taskList));
+    }
+
+    @Test
+    void equalsList() {
+        TaskList taskList = new TaskList("");
+        try {
+            Task task1 = new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned");
+            Task task2 = new ImportantTask(null,"empty task", taskDueDate, "unassigned", "unassigned");
+            assertFalse(task1.equals(task2));
+        } catch (TaskException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void hashCodeTest() {
+        TaskList taskList = null;
+        String taskContent = "empty task";
+
+        int result = taskList != null ? taskList.hashCode() : 0;
+        result = 31 * result + (taskContent != null ? taskContent.hashCode() : 0);
+        result = 31 * result + (taskDueDate != null ? taskDueDate.hashCode() : 0);
+
+        assertEquals(task.hashCode(), result);
+    }
+
+    @Test
+    void hashCodeTestNullList() {
+        TaskList taskList = null;
+        String taskContent = "empty task";
+
+        int result = taskList != null ? taskList.hashCode() : 0;
+        result = 31 * result + (taskContent != null ? taskContent.hashCode() : 0);
+        result = 31 * result + (taskDueDate != null ? taskDueDate.hashCode() : 0);
+
+        assertEquals(task.hashCode(), result);
+    }
+
+    @Test
+    void hashCodeTestNullContent() {
+        TaskList taskList = new TaskList("");
+        String taskContent = null;
+
+        Task task1 = null;
+        try {
+            task1 = new IncompleteTask(taskList,null, taskDueDate, "unassigned");
+        } catch (TaskException e) {
+            fail();
+        }
+
+        int result = taskList != null ? taskList.hashCode() : 0;
+        result = 31 * result + (taskContent != null ? taskContent.hashCode() : 0);
+        result = 31 * result + (taskDueDate != null ? taskDueDate.hashCode() : 0);
+
+        assertEquals(task1.hashCode(), result);
+    }
+
+    @Test
+    void hashCodeTestNullDueDate() {
+        TaskList taskList = new TaskList("");
+        String taskContent = "empty task";
+        taskDueDate = null;
+
+        Task task1 = null;
+        try {
+            task1 = new IncompleteTask(taskList,"empty task", null, "unassigned");
+        } catch (TaskException e) {
+            fail();
+        }
+
+        int result = taskList != null ? taskList.hashCode() : 0;
+        result = 31 * result + (taskContent != null ? taskContent.hashCode() : 0);
+        result = 31 * result + (taskDueDate != null ? taskDueDate.hashCode() : 0);
+
+        assertEquals(task1.hashCode(), result);
     }
 }

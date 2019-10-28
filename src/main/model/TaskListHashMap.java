@@ -36,8 +36,7 @@ public class TaskListHashMap {
     }
     */
 
-    /*
     public HashMap<String, TaskList> getTaskListMap() {
         return taskListHashMap;
-    }*/
+    }
 }

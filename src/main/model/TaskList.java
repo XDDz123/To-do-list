@@ -169,24 +169,4 @@ public class TaskList {
             }
         });
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        TaskList taskList1 = (TaskList) o;
-
-        return Objects.equals(taskList, taskList1.taskList);
-    }
-
-    @Override
-    public int hashCode() {
-        return taskList != null ? taskList.hashCode() : 0;
-    }
 }
