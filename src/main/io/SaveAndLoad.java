@@ -22,11 +22,11 @@ public class SaveAndLoad implements Loadable, Savable {
     //REQUIRES: save.txt to exist and follow the expected format
     //MODIFIES: taskList
     //EFFECTS: Reads information from save file to create tasks with said information
-    //         Adds these tasks to the taskList, the list of tasks.
+    //         Adds these tasks to the given HashMap, a HashMap of lists of tasks.
     //         "*" denotes an important task
     //         "@" denotes an incomplete task
     //         else task is completed task, also denoted by "#"
-    //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3
+    //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3 (example given on edx)
     @Override
     public void load(TaskListHashMap taskListHashMap, String file)
             throws IOException, TaskException, NumberFormatException {
@@ -49,6 +49,11 @@ public class SaveAndLoad implements Loadable, Savable {
         loadIntoHashMap(taskListHashMap, taskList, listOfKeys);
     }
 
+    //MODIFIES: taskListHashMap
+    //EFFECTS: Creates TaskLists for each key and maps them into the HashMap.
+    //         Stores the given list of tasks using the given list of keys in their
+    //         respective TaskList (with the same name) in the given HashMap.
+    //         Tasks and keys are mapped linearly, with index to index, i.e. task 0 --> key 0.
     void loadIntoHashMap(TaskListHashMap taskListHashMap, ArrayList<Task> taskList, ArrayList<String> listOfKeys) {
         for (String key: eliminateDuplicates(listOfKeys)) {
             TaskList taskListTemp = new TaskList(key);
@@ -64,6 +69,7 @@ public class SaveAndLoad implements Loadable, Savable {
         }
     }
 
+    //EFFECTS: Returns a new list of strings by eliminating any duplicate strings in the given list of strings.
     //inspired by https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/
     List<String> eliminateDuplicates(ArrayList<String> list) {
         return list.stream()
@@ -71,7 +77,6 @@ public class SaveAndLoad implements Loadable, Savable {
                 .collect(Collectors.toList());
     }
 
-    //MODIFIES: taskList
     //EFFECTS: If the year found in the loaded input matches the current year, then
     //              -If the due date is before the current date then create a completed task from the given info
     //              -else create a task from the given info and sets the time until using the current year
@@ -91,7 +96,6 @@ public class SaveAndLoad implements Loadable, Savable {
         }
     }
 
-    //MODIFIES: taskList
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new completed task
     //         if the given information of an important task shows it is past due
     //         Stores the created task in the list of tasks.
@@ -100,7 +104,7 @@ public class SaveAndLoad implements Loadable, Savable {
         //taskList.storeTask(completedTask);
     }
 
-    //MODIFIES: taskList
+    //MODIFIES: this
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new completed task.
     //         Stores the created task in the list of tasks.
     private void createCompletedTaskFromLoad(ArrayList<String> partsOfLine,  ArrayList<Task> taskList)
@@ -110,7 +114,7 @@ public class SaveAndLoad implements Loadable, Savable {
         //taskList.storeTask(new CompletedTask(taskList, taskContent, taskDueDate, completionStatus));
     }
 
-    //MODIFIES: taskList
+    //MODIFIES: this
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new incomplete task.
     //         Stores the created task in the list of tasks.
     private void createIncompleteTaskFromLoad(ArrayList<String> partsOfLine, ArrayList<Task> taskList)
@@ -121,7 +125,7 @@ public class SaveAndLoad implements Loadable, Savable {
         //taskList.storeTask(new IncompleteTask(taskList, taskContent, taskDueDate, taskUrgency));
     }
 
-    //MODIFIES: taskList, this
+    //MODIFIES: this
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new important task.
     //         Stores the created task in the list of tasks.
     private void createImportantTaskFromLoad(ArrayList<String> partsOfLine, ArrayList<Task> taskList)
@@ -154,7 +158,8 @@ public class SaveAndLoad implements Loadable, Savable {
 
     //REQUIRES: save.txt to exist
     //MODIFIES: save.txt
-    //EFFECTS: Takes current task list and writes the included information in the following format to save.txt.
+    //EFFECTS: Takes current hash map of task lists and writes the included information
+    //         in the following format to save.txt.
     //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3
     @Override
     public void save(TaskListHashMap taskListHashMap, String file) throws IOException {

@@ -84,7 +84,7 @@ class TaskTest {
     void setTaskListDuplicateTest() {
         TaskList taskList = new TaskList("list");
         try {
-            Task task1 = new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned");
+            new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned");
         } catch (TaskException e) {
             fail();
         }
@@ -99,7 +99,6 @@ class TaskTest {
 
     @Test
     void equalsNull() {
-        Task task1;
         ImportantTask task2;
         Task task3 = null;
         ImportantTask task4 = null;

@@ -220,12 +220,12 @@ class TaskListTest {
     @Test
     void sortByDueDateAlt() {
         try {
+            new CompletedTask(taskList,"empty task 11", LocalDate.now(), "tbd");
             new ImportantTask(taskList,
                     "empty task 10",
                     LocalDate.of(2019,3,4),
                     "tbd",
                     "tbd");
-            new CompletedTask(taskList,"empty task 11", LocalDate.now(), "tbd");
         } catch (TaskException e) {
             fail();
         }

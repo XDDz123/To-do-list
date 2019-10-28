@@ -16,8 +16,12 @@ public class TaskList {
         this.name = name;
     }
 
-    //MODIFIES: this
+    //MODIFIES: this, task
     //EFFECTS: Inserts a task to the current task list
+    //         If an identical task already exists in this list, throw DuplicateTaskException
+    //         If the size of this list is greater than maxSize and the given task is an incomplete task,
+    //         then throwTooManyIncompleteTasksException
+    //         else insert the task into this list and modify TaskList of the given task to this list
     public void storeTask(Task task) throws TaskException {
 
         if (!taskList.contains(task)) {
@@ -61,8 +65,9 @@ public class TaskList {
     }
 
     //REQUIRES: index must refer to an existing index in the list of tasks
-    //MODIFIES: this
+    //MODIFIES: this, task
     //EFFECTS: Removes a task in the current task list based on an index that starts at 1.
+    //         Sets this task's TaskList to null
     public void deleteTask(int index) throws TaskDoesNotExistException, TaskException {
         Task task;
         try {

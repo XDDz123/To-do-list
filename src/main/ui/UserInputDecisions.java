@@ -22,6 +22,8 @@ class UserInputDecisions extends SetTaskInputDecisions {
         return (keyboard.nextLine()).equalsIgnoreCase("exit");
     }
 
+    //EFFECTS: Checks if keyboard input is equal to "exit".
+    //         Used for exiting the menus of lists
     private Boolean checkExitList() {
         continueMessageForList();
         Scanner keyboard = new Scanner(System.in);
@@ -34,7 +36,6 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         (3) delete a task or all tasks
     //         (4) modify a task
     //         (5) sort the list of tasks
-    //         (6) save list of tasks to file or clear previous save
     //         else output error message for not an option
     //         returns on boolean depending on whether the user decides to exit
     private boolean userSelection(TaskList taskList) throws NotAnOptionException, TaskException {
@@ -390,6 +391,12 @@ class UserInputDecisions extends SetTaskInputDecisions {
         }
     }
 
+    //MODIFIES: taskListHashMap
+    //EFFECTS: menu selection for the user to select between:
+    //         (1) Select an existing taskList
+    //         (2) Create a new taskList
+    //         (3) Delete an existing taskList
+    //         else throw not an option error
     private void selectListOptions(TaskListHashMap taskListHashMap) throws NotAnOptionException {
         Scanner keyboard = new Scanner(System.in);
         selectListOptionsMessage();
@@ -410,6 +417,8 @@ class UserInputDecisions extends SetTaskInputDecisions {
         }
     }
 
+    //MODIFIES: taskListHashMap
+    //EFFECTS: removes the corresponding key and TaskList based on user input
     private void deleteTaskList(TaskListHashMap taskListHashMap) {
         Scanner keyboard = new Scanner(System.in);
         deleteListMessage(taskListHashMap);
@@ -420,6 +429,8 @@ class UserInputDecisions extends SetTaskInputDecisions {
         }
     }
 
+    //MODIFIES: taskListHashMap
+    //EFFECTS: Prompts the user to select an existing TaskList stored in the given HashMap
     private void selectExistingTaskLists(TaskListHashMap taskListHashMap)
             throws NotAnOptionException, NoListsFoundException {
         Scanner keyboard = new Scanner(System.in);
@@ -437,6 +448,9 @@ class UserInputDecisions extends SetTaskInputDecisions {
         }
     }
 
+    //MODIFIES: taskListHashMap
+    //EFFECTS: creates a new TaskList based on user input and stores it in the given HashMap
+    //         If the user enters a name already taken by a TaskList, then output error message
     private void createNewTaskList(TaskListHashMap taskListHashMap) {
         Scanner keyboard = new Scanner(System.in);
         createNewListMessage();
@@ -451,6 +465,10 @@ class UserInputDecisions extends SetTaskInputDecisions {
         }
     }
 
+    //MODIFIES: taskList
+    //EFFECTS: Runs the userSelection menu for the given TaskList
+    //         Does not stop upon not an option errors
+    //         Stops when the user enters "exit"
     private void runUserSelection(TaskList taskList) {
         boolean stop = false;
         while (!stop) {
