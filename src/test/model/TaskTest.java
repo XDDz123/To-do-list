@@ -25,6 +25,7 @@ class TaskTest {
     void setContentTest() {
         task.setContent("this is a test!");
         assertEquals(task.getContent(), "this is a test!");
+
     }
 
     @Test
