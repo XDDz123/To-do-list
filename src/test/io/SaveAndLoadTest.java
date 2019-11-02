@@ -56,8 +56,8 @@ class SaveAndLoadTest {
         partsOfLine.add("*");
         partsOfLine.add("unassigned");
         partsOfLine.add("list");
-        partsOfLine.add(String.valueOf(MonthDay.now().getMonthValue() - 1));
-        partsOfLine.add(String.valueOf(MonthDay.now().getDayOfMonth() - 1));
+        partsOfLine.add(String.valueOf(LocalDate.now().getMonth().minus(1).getValue()));
+        partsOfLine.add(String.valueOf(LocalDate.now().getDayOfMonth()));
         partsOfLine.add("2019");
         partsOfLine.add("high");
         partsOfLine.add("High Importance");
@@ -69,8 +69,8 @@ class SaveAndLoadTest {
             fail();
         }
         assertEquals(taskList.get(0).getContent(), "unassigned");
-        assertEquals(taskList.get(0).getDueDate(), (MonthDay.now().getMonthValue() - 1)
-        + "/" + (MonthDay.now().getDayOfMonth() - 1));
+        assertEquals(taskList.get(0).getDueDate(), (LocalDate.now().getMonth().minus(1).getValue())
+        + "/" + (MonthDay.now().getDayOfMonth()));
         assertEquals(((CompletedTask) taskList.get(0)).getCompletionStatus(), "past due.");
         assertTrue(taskList.get(0) instanceof CompletedTask);
     }
@@ -81,8 +81,8 @@ class SaveAndLoadTest {
         partsOfLine.add("*");
         partsOfLine.add("unassigned");
         partsOfLine.add("list");
-        partsOfLine.add(String.valueOf(MonthDay.now().getMonthValue() - 1));
-        partsOfLine.add(String.valueOf(MonthDay.now().getDayOfMonth() - 1));
+        partsOfLine.add(String.valueOf(LocalDate.now().getMonth().minus(1).getValue()));
+        partsOfLine.add(String.valueOf(MonthDay.now().getDayOfMonth()));
         partsOfLine.add("2020");
         partsOfLine.add("high");
         partsOfLine.add("High Importance");

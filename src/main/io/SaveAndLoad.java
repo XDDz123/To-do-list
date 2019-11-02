@@ -55,11 +55,13 @@ public class SaveAndLoad implements Loadable, Savable {
     //         respective TaskList (with the same name) in the given HashMap.
     //         Tasks and keys are mapped linearly, with index to index, i.e. task 0 --> key 0.
     void loadIntoHashMap(TaskListHashMap taskListHashMap, ArrayList<Task> taskList, ArrayList<String> listOfKeys) {
+        //creates TaskLists with the name of each unique key
         for (String key: eliminateDuplicates(listOfKeys)) {
             TaskList taskListTemp = new TaskList(key);
             taskListHashMap.storeTaskList(taskListTemp);
         }
 
+        //stores Tasks in the given ArrayList
         for (int i = 0; i < listOfKeys.size(); i++) {
             try {
                 taskListHashMap.getTaskList(listOfKeys.get(i)).storeTask(taskList.get(i));

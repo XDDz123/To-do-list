@@ -58,33 +58,6 @@ class UserInputDecisions extends SetTaskInputDecisions {
         return checkExitList();
     }
 
-/*    //MODIFIES: save.txt
-    //EFFECTS: Prompts the user to select either:
-    //        (1) save current list of task to file
-    //        (2) clear/format the current save file
-    //        (0) close current menu
-    //        to make adjustments to the save file
-    private void saveAndClearSave(TaskList taskList) throws NotAnOptionException {
-        SaveAndLoad saveTasks = new SaveAndLoad();
-        Scanner selection = new Scanner(System.in);
-        saveAndClearSaveMessage();
-        String input = selection.nextLine();
-
-        try {
-            if (!input.equals("0")) {
-                if (input.equals("1")) {
-                    saveTasks.save(taskList, fileName);
-                } else if (input.equals("2")) {
-                    saveTasks.clearSave(fileName, taskList);
-                } else {
-                    throw new NotAnOptionException();
-                }
-            }
-        } catch (IOException e) {
-            fileNotFoundError();
-        }
-    }*/
-
     //MODIFIES: taskList
     //EFFECTS: Prompts the user to select between:
     //         (1) delete a task from the current list of tasks
@@ -507,4 +480,32 @@ class UserInputDecisions extends SetTaskInputDecisions {
             fileNotFoundError();
         }
     }
+
+    /*
+    //MODIFIES: save.txt
+    //EFFECTS: Prompts the user to select either:
+    //        (1) save current list of task to file
+    //        (2) clear/format the current save file
+    //        (0) close current menu
+    //        to make adjustments to the save file
+    private void saveAndClearSave(TaskList taskList) throws NotAnOptionException {
+        SaveAndLoad saveTasks = new SaveAndLoad();
+        Scanner selection = new Scanner(System.in);
+        saveAndClearSaveMessage();
+        String input = selection.nextLine();
+
+        try {
+            if (!input.equals("0")) {
+                if (input.equals("1")) {
+                    saveTasks.save(taskList, fileName);
+                } else if (input.equals("2")) {
+                    saveTasks.clearSave(fileName, taskList);
+                } else {
+                    throw new NotAnOptionException();
+                }
+            }
+        } catch (IOException e) {
+            fileNotFoundError();
+        }
+    }*/
 }
