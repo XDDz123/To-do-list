@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.DuplicateTaskException;
 import exceptions.TaskException;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -33,6 +34,9 @@ public abstract class Task {
     public void setTaskList(TaskList taskList) throws TaskException {
         try {
             if (!taskList.getTaskList().contains(this)) {
+                if (this.taskList != null) {
+                    this.taskList.getTaskList().remove(this);
+                }
                 this.taskList = taskList;
                 taskList.storeTask(this);
             }

@@ -23,15 +23,9 @@ public class TaskList {
     //         then throwTooManyIncompleteTasksException
     //         else insert the task into this list and modify TaskList of the given task to this list
     public void storeTask(Task task) throws TaskException {
-
         if (!taskList.contains(task)) {
-            if (filterOutCompleted().size() > maxSize) {
-                if (!(task instanceof CompletedTask)) {
-                    throw new TooManyIncompleteTasksException();
-                } else {
-                    taskList.add(task);
-                    task.setTaskList(this);
-                }
+            if (filterOutCompleted().size() > maxSize && !(task instanceof CompletedTask)) {
+                throw new TooManyIncompleteTasksException();
             } else {
                 taskList.add(task);
                 task.setTaskList(this);

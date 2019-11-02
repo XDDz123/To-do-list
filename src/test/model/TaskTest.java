@@ -78,6 +78,16 @@ class TaskTest {
         }
         assertEquals(task.getTaskList(), taskList);
         assertEquals(taskList.getTask(1), task);
+
+        TaskList taskList1 = new TaskList("list1");
+        try {
+            task.setTaskList(taskList1);
+        } catch (TaskException e) {
+            fail();
+        }
+        assertTrue(taskList1.getTaskList().contains(task));
+        assertFalse(taskList.getTaskList().contains(task));
+        assertEquals(taskList1, task.getTaskList());
     }
 
     @Test
