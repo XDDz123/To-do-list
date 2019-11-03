@@ -93,4 +93,9 @@ class IncompleteTaskTest {
         incompleteTask.setTimeLeft();
         assertEquals(incompleteTask.getTimeLeft(),1 + " months " + 1 + " days");
     }
+
+    @Test
+    void getTaskDueDateTest() {
+        assertEquals(incompleteTask.getTaskDueDate(), LocalDate.now());
+    }
 }

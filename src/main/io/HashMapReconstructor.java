@@ -15,21 +15,18 @@ class HashMapReconstructor {
     //         Stores the given list of tasks using the given list of keys in their
     //         respective TaskList (with the same name) in the given HashMap.
     //         Tasks and keys are mapped linearly, with index to index, i.e. task 0 --> key 0.
-    void loadIntoHashMap(TaskListHashMap taskListHashMap, ArrayList<Task> taskList, ArrayList<String> listOfKeys) {
+    void loadIntoHashMap(TaskListHashMap taskListHashMap, ArrayList<Task> taskList, ArrayList<String> listOfKeys)
+            throws TaskException {
         createTaskLists(taskListHashMap, listOfKeys);
         storeTasks(taskListHashMap, taskList, listOfKeys);
-
     }
 
     //MODIFIES: taskListHashMap
     //EFFECTS: loads tasks in the given list of tasks into their respective lists in the give HashMap
-    private void storeTasks(TaskListHashMap taskListHashMap, ArrayList<Task> taskList, ArrayList<String> listOfKeys) {
+    private void storeTasks(TaskListHashMap taskListHashMap, ArrayList<Task> taskList, ArrayList<String> listOfKeys)
+            throws TaskException {
         for (int i = 0; i < listOfKeys.size(); i++) {
-            try {
-                taskListHashMap.getTaskList(listOfKeys.get(i)).storeTask(taskList.get(i));
-            } catch (TaskException e) {
-                System.out.println(e.getMessage());
-            }
+            taskListHashMap.getTaskList(listOfKeys.get(i)).storeTask(taskList.get(i));
         }
     }
 
