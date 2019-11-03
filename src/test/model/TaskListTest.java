@@ -7,6 +7,9 @@ import exceptions.UIException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskListTest {
@@ -58,11 +61,12 @@ class TaskListTest {
     void duplicateTaskTest() {
         try {
             new IncompleteTask(taskList, taskContent, taskDueDate, taskUrgency);
-            fail();
+            //fail();
         } catch (TooManyIncompleteTasksException e) {
             fail();
         } catch (TaskException e) {
-            System.out.println("Test passed.");
+            fail();
+            //System.out.println("Test passed.");
         }
     }
 
@@ -141,11 +145,12 @@ class TaskListTest {
     @Test
     void getTaskByUrgencyTestHigh() {
         runBeforeGetTaskByAndSortAndPrint();
+        ArrayList<Task> list = new ArrayList<>();
 
         try {
-            taskList1.storeTask(task);
-            taskList1.storeTask(task1);
-            assertEquals(taskList.getTaskByUrgency("high").getTaskList(), taskList1.getTaskList());
+            list.add(task);
+            list.add(task1);
+            assertEquals(taskList.getTaskByUrgency("high").getTaskList(), list);
         } catch (TaskException e) {
             fail();
         }
@@ -154,9 +159,11 @@ class TaskListTest {
     @Test
     void getTaskByUrgencyTestMid() {
         runBeforeGetTaskByAndSortAndPrint();
+        ArrayList<Task> list = new ArrayList<>();
+
         try {
-            taskList2.storeTask(task2);
-            assertEquals(taskList.getTaskByUrgency("mid").getTaskList(), taskList2.getTaskList());
+            list.add(task2);
+            assertEquals(taskList.getTaskByUrgency("mid").getTaskList(), list);
         } catch (TaskException e) {
             fail();
         }
@@ -180,7 +187,8 @@ class TaskListTest {
         ImportantTask task7;
         CompletedTask task8;
         CompletedTask task9;
-        TaskList taskList5 = new TaskList("");
+        ArrayList<Task> list1;
+        ArrayList<Task> list;
 
         try {
             task5= new CompletedTask(taskList,"empty task 5", LocalDate.now(), "tbd");
@@ -199,22 +207,26 @@ class TaskListTest {
             task8 = new CompletedTask(taskList,"empty task 8", LocalDate.now(), "tbd");
             task9 = new CompletedTask(taskList,"empty task 9", LocalDate.now(), "tbd");
 
-            taskList5.storeTask(task);
-            taskList5.storeTask(task2);
-            taskList5.storeTask(task1);
-            taskList5.storeTask(task6);
-            taskList5.storeTask(task7);
-            taskList5.storeTask(task4);
-            taskList5.storeTask(task3);
-            taskList5.storeTask(task5);
-            taskList5.storeTask(task8);
-            taskList5.storeTask(task9);
+            list1 = new ArrayList<>();
+
+            list1.add(task);
+            list1.add(task2);
+            list1.add(task1);
+            list1.add(task6);
+            list1.add(task7);
+            list1.add(task4);
+            list1.add(task3);
+            list1.add(task5);
+            list1.add(task8);
+            list1.add(task9);
+
+            taskList.sortByDueDate();
+            list = new ArrayList<>(taskList.getTaskList());
+
+            assertEquals(list, list1);
         } catch (TaskException e) {
             fail();
         }
-
-        taskList.sortByDueDate();
-        assertEquals(taskList.getTaskList(), taskList5.getTaskList());
     }
 
     @Test

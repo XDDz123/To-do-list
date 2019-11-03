@@ -235,4 +235,9 @@ class Messages {
     void fileNotFoundError() {
         System.out.println("File not found!");
     }
+
+    //EFFECTS: Prints the following.
+    void badFormattingError() {
+        System.out.println("bad formatting");
+    }
 }

@@ -53,6 +53,11 @@ class LoadableTest {
         assertEquals(taskListHashMap.getTaskList("b").getTask(3).getDueDateObj(), LocalDate.of(2020,10,3));
         assertEquals(((ImportantTask) taskListHashMap.getTaskList("b").getTask(3)).getUrgency(), "mid");
         assertEquals(((ImportantTask) taskListHashMap.getTaskList("b").getTask(3)).getImportance(), "High Importance");
+
+        assertEquals(taskListHashMap.getTaskList("b").getTask(4).getContent(), "task VI");
+        assertEquals(taskListHashMap.getTaskList("b").getTask(4).getDueDateObj(), LocalDate.of(2020,10,3));
+        assertEquals(((ImportantTask) taskListHashMap.getTaskList("b").getTask(4)).getUrgency(), "mid");
+        assertEquals(((ImportantTask) taskListHashMap.getTaskList("b").getTask(4)).getImportance(), "High Importance");
     }
 
 }

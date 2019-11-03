@@ -5,7 +5,7 @@ import java.time.Month;
 import java.time.Year;
 import java.util.Scanner;
 
-class SetTaskInputDecisions extends Messages {
+class TaskInputDecisions {
 
     private static final String high = "high";
     private static final String mid = "mid";
@@ -18,6 +18,8 @@ class SetTaskInputDecisions extends Messages {
     private static final String importanceHigh = "High Importance";
     private static final String importanceMid = "Medium Importance";
 
+    private final Messages messages = new Messages();
+
 
     //MODIFIES: this
     //EFFECTS: Checks the validity of the user input and returns a task urgency based on user input:
@@ -26,7 +28,7 @@ class SetTaskInputDecisions extends Messages {
     //         (3) low
     //         else displays error message and restarts the method.
     String setUrgencyDecision(String taskUrgency) {
-        setUrgencyMessage();
+        messages.setUrgencyMessage();
         Scanner keyboard = new Scanner(System.in);
 
         if (keyboard.hasNextInt()) {
@@ -48,21 +50,21 @@ class SetTaskInputDecisions extends Messages {
 
     //EFFECTS: Displays error message and starts the method that prompts the user to set urgency.
     private String setUrgencyError(String taskUrgency) {
-        notAnOptionTryAgainError();
+        messages.notAnOptionTryAgainError();
         setUrgencyDecision(taskUrgency);
         return this.taskUrgency;
     }
 
     //EFFECTS: Prompts user to set due date. Returns a new LocalDate created from user input.
     LocalDate setMonthAndDay(LocalDate taskDueDate) {
-        setDueDateMessage();
+        messages.setDueDateMessage();
         return setYear(setDay(setMonth(taskDueDate)));
     }
 
     //MODIFIES: this
     //EFFECTS: Checks the validity of the user input and returns a LocalDate with modified month based on user input.
     private LocalDate setMonth(LocalDate taskDueDate) {
-        enterMonthMessage();
+        messages.enterMonthMessage();
         Scanner keyboard = new Scanner(System.in);
         int month;
         if (keyboard.hasNextInt()) {
@@ -74,7 +76,7 @@ class SetTaskInputDecisions extends Messages {
                 return this.taskDueDate;
             }
         } else {
-            dayMonthError();
+            messages.dayMonthError();
             setMonth(taskDueDate);
             return this.taskDueDate;
         }
@@ -83,7 +85,7 @@ class SetTaskInputDecisions extends Messages {
     //MODIFIES: this
     //EFFECTS: Checks the validity of the user input and returns a LocalDate with modified day based on user input:
     private LocalDate setDay(LocalDate taskDueDate) {
-        enterDayMessage();
+        messages.enterDayMessage();
         Scanner keyboard = new Scanner(System.in);
         int day;
         if (keyboard.hasNextInt()) {
@@ -96,7 +98,7 @@ class SetTaskInputDecisions extends Messages {
                 return this.taskDueDate;
             }
         } else {
-            dayMonthError();
+            messages.dayMonthError();
             setDay(taskDueDate);
             return this.taskDueDate;
         }
@@ -142,14 +144,14 @@ class SetTaskInputDecisions extends Messages {
 
     //EFFECTS: Prints not a day or month error message, returns false.
     private boolean checkDayMonthHelper() {
-        dayMonthError();
+        messages.dayMonthError();
         return false;
     }
 
     //EFFECTS: Prompts the user to enter the task content of a task.
     //         Returns the user input.
     String setTaskContentDecisions() {
-        taskMessage();
+        messages.taskMessage();
         Scanner keyboard = new Scanner(System.in);
         return keyboard.nextLine();
     }
@@ -161,7 +163,7 @@ class SetTaskInputDecisions extends Messages {
     //         (3) Medium Importance
     //         else displays error message and restarts the method.
     String setImportanceDecision(String taskImportance) {
-        setImportanceMessage();
+        messages.setImportanceMessage();
 
         Scanner keyboard = new Scanner(System.in);
 
@@ -184,7 +186,7 @@ class SetTaskInputDecisions extends Messages {
 
     //EFFECTS: Displays error message and starts the method that prompts the user to set importance.
     private String setImportanceError(String taskImportance) {
-        notAnOptionTryAgainError();
+        messages.notAnOptionTryAgainError();
         setImportanceDecision(taskImportance);
         return this.taskImportance;
     }

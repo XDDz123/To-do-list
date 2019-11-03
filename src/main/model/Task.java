@@ -1,6 +1,5 @@
 package model;
 
-import exceptions.DuplicateTaskException;
 import exceptions.TaskException;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -33,7 +32,7 @@ public abstract class Task {
     //EFFECTS: Sets the taskList of this task to the given taskList
     public void setTaskList(TaskList taskList) throws TaskException {
         try {
-            if (!taskList.getTaskList().contains(this)) {
+            if (!taskList.equals(this.taskList)) {
                 if (this.taskList != null) {
                     this.taskList.getTaskList().remove(this);
                 }
@@ -44,21 +43,6 @@ public abstract class Task {
             this.taskList = null;
         }
     }
-
-    /*
-    //MODIFIES: this, taskList
-    //EFFECTS: Removes this task's taskList and removes this task from the taskList
-    public void removeTaskList() throws TooManyIncompleteTasksException {
-        taskList.deleteTask(this);
-        this.taskList = null;
-    }
-
-    //MODIFIES: this, taskList, newList
-    //EFFECTS: changes the taskList of this task to another taskList
-    public void changeTaskList(TaskList newList) throws TooManyIncompleteTasksException {
-        removeTaskList();
-        setTaskList(newList);
-    }*/
 
     //MODIFIES: this
     //EFFECTS: Changes this task's task content to given content.
@@ -134,4 +118,21 @@ public abstract class Task {
         result = 31 * result + (taskDueDate != null ? taskDueDate.hashCode() : 0);
         return result;
     }
+
+
+    /*
+    //MODIFIES: this, taskList
+    //EFFECTS: Removes this task's taskList and removes this task from the taskList
+    public void removeTaskList() throws TooManyIncompleteTasksException {
+        taskList.deleteTask(this);
+        this.taskList = null;
+    }
+
+    //MODIFIES: this, taskList, newList
+    //EFFECTS: changes the taskList of this task to another taskList
+    public void changeTaskList(TaskList newList) throws TooManyIncompleteTasksException {
+        removeTaskList();
+        setTaskList(newList);
+    }*/
+
 }

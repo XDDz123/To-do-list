@@ -6,6 +6,7 @@ import java.time.LocalDate;
 public class CompletedTask extends Task {
 
     private String completionStatus;
+    public static final String pastDue = "past due";
 
     //MODIFIES: this
     //EFFECTS: Constructs a completed task

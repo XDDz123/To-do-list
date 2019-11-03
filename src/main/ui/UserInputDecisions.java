@@ -11,13 +11,15 @@ import java.nio.file.NoSuchFileException;
 import java.time.LocalDate;
 import java.util.*;
 
-class UserInputDecisions extends SetTaskInputDecisions {
+class UserInputDecisions {
 
     private final String fileName = "save.txt";
+    private final Messages messages = new Messages();
+    private final TaskInputDecisions taskInputDecisions = new TaskInputDecisions();
 
     //EFFECTS: Checks if keyboard input is equal to "exit".
     private Boolean checkExit() {
-        continueMessage();
+        messages.continueMessage();
         Scanner keyboard = new Scanner(System.in);
         return (keyboard.nextLine()).equalsIgnoreCase("exit");
     }
@@ -25,7 +27,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //EFFECTS: Checks if keyboard input is equal to "exit".
     //         Used for exiting the menus of lists
     private Boolean checkExitList() {
-        continueMessageForList();
+        messages.continueMessageForList();
         Scanner keyboard = new Scanner(System.in);
         return (keyboard.nextLine()).equalsIgnoreCase("exit");
     }
@@ -66,7 +68,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         to delete task(s) from the current list of tasks
     private void selectDeleteTasks(TaskList taskList) throws NotAnOptionException {
         Scanner selection = new Scanner(System.in);
-        selectDeleteTaskMessage();
+        messages.selectDeleteTaskMessage();
         String input = selection.nextLine();
 
         if (!input.equals("0")) {
@@ -85,7 +87,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         Prints out sorted list of tasks.
     private void sortTaskList(TaskList taskList) {
         taskList.sortByDueDate();
-        printList(taskList);
+        messages.printList(taskList);
     }
 
     //MODIFIES: taskList.get(index)
@@ -93,7 +95,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     private void selectModifyTask(TaskList taskList) {
         Scanner keyboard = new Scanner(System.in);
         int input;
-        selectTaskMessage(taskList);
+        messages.selectTaskMessage(taskList);
 
         try {
             input = keyboard.nextInt();
@@ -102,13 +104,13 @@ class UserInputDecisions extends SetTaskInputDecisions {
                 try {
                     attemptModifyTask(taskList, input);
                 } catch (IndexOutOfBoundsException e) {
-                    outOfBoundsError();
+                    messages.outOfBoundsError();
                 } catch (UIException e) {
-                    exceptionErrorMessage(e);
+                    messages.exceptionErrorMessage(e);
                 }
             }
         } catch (InputMismatchException e) {
-            notIntegerError();
+            messages.notIntegerError();
         }
     }
 
@@ -129,14 +131,14 @@ class UserInputDecisions extends SetTaskInputDecisions {
             setTaskComplete(taskList, index);
         } else if ((input.equals("2"))) {
             //change due date
-            task.setDueDate(setMonthAndDay(task.getDueDateObj()));
+            task.setDueDate(taskInputDecisions.setMonthAndDay(task.getDueDateObj()));
             task.setTimeLeft();
         } else if ((input.equals("3"))) {
             //change urgency
-            task.setUrgency(setUrgencyDecision(task.getUrgency()));
+            task.setUrgency(taskInputDecisions.setUrgencyDecision(task.getUrgency()));
         } else if ((input.equals("4"))) {
             //change content
-            task.setContent(setTaskContentDecisions());
+            task.setContent(taskInputDecisions.setTaskContentDecisions());
         } else if ((input.equals("0"))) {
             //return to prev
             selectModifyTask(taskList);
@@ -153,7 +155,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //EFFECTS: Prompts the user to select which field of a incomplete task to modify
     //         Prints not an option error message if the user did not select a valid option
     private void modifyIncompleteTask(TaskList taskList, int index) throws NotAnOptionException {
-        modifyIncompleteTaskMessage();
+        messages.modifyIncompleteTaskMessage();
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
 
@@ -171,7 +173,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         Prints not an option error message if the user did not select a valid option.
     private void modifyImportantTask(TaskList taskList, int index) throws NotAnOptionException {
 
-        modifyImportantTaskMessage();
+        messages.modifyImportantTaskMessage();
 
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
@@ -180,7 +182,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
 
         if (! modifyTask(input, index, importantTask, taskList)) {
             if ((input.equals("5"))) {
-                importantTask.setImportance(setImportanceDecision(importantTask.getImportance()));
+                importantTask.setImportance(taskInputDecisions.setImportanceDecision(importantTask.getImportance()));
             } else {
                 throw new NotAnOptionException();
             }
@@ -214,12 +216,12 @@ class UserInputDecisions extends SetTaskInputDecisions {
                     task.getDueDateObj(),
                     task.getDate(LocalDate.now()));
         } catch (TaskException e) {
-            exceptionErrorMessage(e);
+            messages.exceptionErrorMessage(e);
         }
         try {
             taskList.deleteTask(index);
         } catch (TaskDoesNotExistException | TaskException e) {
-            exceptionErrorMessage(e);
+            messages.exceptionErrorMessage(e);
         }
     }
 
@@ -235,7 +237,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
         String taskImportance = "important";
 
         Scanner keyboard = new Scanner(System.in);
-        selectTaskTypeMessage();
+        messages.selectTaskTypeMessage();
         String input = keyboard.nextLine();
 
         if ((input.equals("1"))) {
@@ -245,7 +247,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
             ImportantTask importantTask =
                     new ImportantTask(null, taskContent, taskDueDate, taskUrgency, taskImportance);
             setIncompleteTask(taskList, importantTask);
-            importantTask.setImportance(setImportanceDecision(importantTask.getImportance()));
+            importantTask.setImportance(taskInputDecisions.setImportanceDecision(importantTask.getImportance()));
         } else {
             throw new NotAnOptionException();
         }
@@ -257,17 +259,17 @@ class UserInputDecisions extends SetTaskInputDecisions {
     private void setIncompleteTask(TaskList taskList, IncompleteTask incompleteTask) {
         Scanner keyboard = new Scanner(System.in);
 
-        incompleteTask.setContent(setTaskContentDecisions());
-        incompleteTask.setUrgency(setUrgencyDecision(incompleteTask.getUrgency()));
-        useDefaultDateMessage();
+        incompleteTask.setContent(taskInputDecisions.setTaskContentDecisions());
+        incompleteTask.setUrgency(taskInputDecisions.setUrgencyDecision(incompleteTask.getUrgency()));
+        messages.useDefaultDateMessage();
         if ((keyboard.nextLine()).equalsIgnoreCase("y")) {
-            incompleteTask.setDueDate(setMonthAndDay(incompleteTask.getDueDateObj()));
+            incompleteTask.setDueDate(taskInputDecisions.setMonthAndDay(incompleteTask.getDueDateObj()));
         }
 
         try {
             taskList.storeTask(incompleteTask);
         } catch (TaskException e) {
-            exceptionErrorMessage(e);
+            messages.exceptionErrorMessage(e);
         }
 
         incompleteTask.setTimeLeft();
@@ -278,12 +280,12 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         (2) Prints tasks in the current task list based on urgency
     //         else display not an option error and restarts the method
     private void selectViewTasksBy(TaskList taskList) throws NotAnOptionException {
-        selectViewTasksByMessage();
+        messages.selectViewTasksByMessage();
 
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
         if (input.equals("1")) {
-            printList(taskList);
+            messages.printList(taskList);
         } else if (input.equals("2")) {
             selectViewTaskByUrgency(taskList);
         } else {
@@ -300,13 +302,13 @@ class UserInputDecisions extends SetTaskInputDecisions {
         String low = "low";
 
         Scanner keyboard = new Scanner(System.in);
-        selectUrgencyMessage();
+        messages.selectUrgencyMessage();
         String input = keyboard.nextLine();
         if (input.equalsIgnoreCase(high) || input.equalsIgnoreCase(mid) || input.equalsIgnoreCase(low)) {
             try {
-                printIncompleteTasksList(taskList.getTaskByUrgency(input));
+                messages.printIncompleteTasksList(taskList.getTaskByUrgency(input));
             } catch (TaskException e) {
-                exceptionErrorMessage(e);
+                messages.exceptionErrorMessage(e);
             }
         } else {
             throw new NotAnOptionException();
@@ -319,7 +321,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     private void selectToDeleteTask(TaskList taskList) {
         Scanner keyboard = new Scanner(System.in);
         int input;
-        selectTaskMessage(taskList);
+        messages.selectTaskMessage(taskList);
 
         try {
             input = keyboard.nextInt();
@@ -327,23 +329,23 @@ class UserInputDecisions extends SetTaskInputDecisions {
                 taskList.deleteTask(input);
             }
         } catch (InputMismatchException e) {
-            notIntegerError();
+            messages.notIntegerError();
         } catch (TaskDoesNotExistException | TaskException e) {
-            exceptionErrorMessage(e);
+            messages.exceptionErrorMessage(e);
         }
 
-        printList(taskList);
+        messages.printList(taskList);
     }
 
     //MODIFIES: taskList
     //EFFECTS: removes all tasks from the current list of tasks
     private void selectDeleteAllTasks(TaskList taskList) {
         Scanner keyboard = new Scanner(System.in);
-        checkBeforeDeleteAll();
+        messages.checkBeforeDeleteAll();
         if (keyboard.nextLine().equals("yes")) {
             taskList.clearTaskList();
-            taskDeletedMessage();
-            printList(taskList);
+            messages.taskDeletedMessage();
+            messages.printList(taskList);
         }
     }
 
@@ -354,13 +356,13 @@ class UserInputDecisions extends SetTaskInputDecisions {
         try {
             loadTasks.load(taskListHashMap, fileName);
         } catch (NoSuchFileException e) {
-            fileNotFoundError();
+            messages.fileNotFoundError();
         } catch (TaskException | IOException e) {
-            exceptionErrorMessage(e);
-        //} catch (Exception e) {
-       //     System.out.println("bad formatting");
+            messages.exceptionErrorMessage(e);
+        } catch (Exception e) {
+            messages.badFormattingError();
         } finally {
-            loadAttemptedMessage();
+            messages.loadAttemptedMessage();
         }
     }
 
@@ -372,14 +374,14 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         else throw not an option error
     private void selectListOptions(TaskListHashMap taskListHashMap) throws NotAnOptionException {
         Scanner keyboard = new Scanner(System.in);
-        selectListOptionsMessage();
+        messages.selectListOptionsMessage();
         String input = keyboard.nextLine();
 
         if ((input.equals("1"))) {
             try {
                 selectExistingTaskLists(taskListHashMap);
             } catch (NoListsFoundException e) {
-                exceptionErrorMessage(e);
+                messages.exceptionErrorMessage(e);
             }
         } else if ((input.equals("2"))) {
             createNewTaskList(taskListHashMap);
@@ -394,7 +396,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //EFFECTS: removes the corresponding key and TaskList based on user input
     private void deleteTaskList(TaskListHashMap taskListHashMap) {
         Scanner keyboard = new Scanner(System.in);
-        deleteListMessage(taskListHashMap);
+        messages.deleteListMessage(taskListHashMap);
         String key = keyboard.nextLine();
 
         if (taskListHashMap.getKeys().contains(key)) {
@@ -409,7 +411,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
         Scanner keyboard = new Scanner(System.in);
 
         if (!taskListHashMap.getKeys().isEmpty()) {
-            selectListMessage(taskListHashMap);
+            messages.selectListMessage(taskListHashMap);
             String input = keyboard.nextLine();
             if (taskListHashMap.getTaskList(input) != null) {
                 runUserSelection(taskListHashMap.getTaskList(input));
@@ -426,7 +428,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         If the user enters a name already taken by a TaskList, then output error message
     private void createNewTaskList(TaskListHashMap taskListHashMap) {
         Scanner keyboard = new Scanner(System.in);
-        createNewListMessage();
+        messages.createNewListMessage();
         String input = keyboard.nextLine();
 
         if (! taskListHashMap.getKeys().contains(input)) {
@@ -434,7 +436,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
             taskListHashMap.storeTaskList(taskList);
             runUserSelection(taskListHashMap.getTaskList(input));
         } else {
-            nameAlreadyExistsError();
+            messages.nameAlreadyExistsError();
         }
     }
 
@@ -445,11 +447,11 @@ class UserInputDecisions extends SetTaskInputDecisions {
     private void runUserSelection(TaskList taskList) {
         boolean stop = false;
         while (!stop) {
-            optionsMessage();
+            messages.optionsMessage();
             try {
                 stop = userSelection(taskList);
             } catch (NotAnOptionException | TaskException e) {
-                exceptionErrorMessage(e);
+                messages.exceptionErrorMessage(e);
                 stop = checkExitList();
             }
         }
@@ -459,7 +461,7 @@ class UserInputDecisions extends SetTaskInputDecisions {
     //         Load list of tasks from save file, displays file not found error if file not found
     //         Saves list of tasks once the user selects exit.
     void run() {
-        welcomeMessage();
+        messages.welcomeMessage();
 
         TaskListHashMap taskListHashMap = new TaskListHashMap();
         Savable saveTasks = new SaveAndLoad();
@@ -470,42 +472,14 @@ class UserInputDecisions extends SetTaskInputDecisions {
             try {
                 selectListOptions(taskListHashMap);
             } catch (NotAnOptionException e) {
-                exceptionErrorMessage(e);
+                messages.exceptionErrorMessage(e);
             }
         } while (!checkExit());
 
         try {
             saveTasks.save(taskListHashMap, fileName);
         } catch (IOException e) {
-            fileNotFoundError();
+            messages.fileNotFoundError();
         }
     }
-
-    /*
-    //MODIFIES: save.txt
-    //EFFECTS: Prompts the user to select either:
-    //        (1) save current list of task to file
-    //        (2) clear/format the current save file
-    //        (0) close current menu
-    //        to make adjustments to the save file
-    private void saveAndClearSave(TaskList taskList) throws NotAnOptionException {
-        SaveAndLoad saveTasks = new SaveAndLoad();
-        Scanner selection = new Scanner(System.in);
-        saveAndClearSaveMessage();
-        String input = selection.nextLine();
-
-        try {
-            if (!input.equals("0")) {
-                if (input.equals("1")) {
-                    saveTasks.save(taskList, fileName);
-                } else if (input.equals("2")) {
-                    saveTasks.clearSave(fileName, taskList);
-                } else {
-                    throw new NotAnOptionException();
-                }
-            }
-        } catch (IOException e) {
-            fileNotFoundError();
-        }
-    }*/
 }

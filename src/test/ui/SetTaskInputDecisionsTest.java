@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class SetTaskInputDecisionsTest {
-    private SetTaskInputDecisions taskBehavior;
+    private TaskInputDecisions taskBehavior;
     private LocalDate localDate;
 
     @BeforeEach
     void runBefore() {
-        taskBehavior = new SetTaskInputDecisions();
+        taskBehavior = new TaskInputDecisions();
         localDate = LocalDate.of(2019, MonthDay.now().getMonthValue(), MonthDay.now().getDayOfMonth());
     }
 

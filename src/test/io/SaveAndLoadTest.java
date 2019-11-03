@@ -33,27 +33,28 @@ class SaveAndLoadTest {
     @Test
     void separateOnTildeTest() {
         String line = "task I~high~2~3~false";
-        assertEquals(saveAndLoad.separateOnTilde(line).get(0), "task I");
-        assertEquals(saveAndLoad.separateOnTilde(line).get(1), "high");
-        assertEquals(saveAndLoad.separateOnTilde(line).get(2), "2");
-        assertEquals(saveAndLoad.separateOnTilde(line).get(3), "3");
-        assertEquals(saveAndLoad.separateOnTilde(line).get(4), "false");
+        assertEquals(saveAndLoad.separateLine(line).get(0), "task I");
+        assertEquals(saveAndLoad.separateLine(line).get(1), "high");
+        assertEquals(saveAndLoad.separateLine(line).get(2), "2");
+        assertEquals(saveAndLoad.separateLine(line).get(3), "3");
+        assertEquals(saveAndLoad.separateLine(line).get(4), "false");
     }
 
     @Test
     void createPastDueFromImportantTest() {
+        TaskReconstructor taskReconstructor = new TaskReconstructor();
         try {
-            saveAndLoad.createPastDueFromLoad(taskList);
+            taskReconstructor.createPastDueTask(taskList);
         } catch (TaskException e) {
             fail();
         }
-        assertEquals(((CompletedTask) taskList.get(0)).getCompletionStatus(), "past due.");
+        assertEquals(((CompletedTask) taskList.get(0)).getCompletionStatus(), CompletedTask.pastDue);
     }
 
     @Test
     void checkImportantTaskLoadPastDueTest() {
         ArrayList<String> partsOfLine = new ArrayList<>();
-        partsOfLine.add("*");
+        partsOfLine.add(TaskReconstructor.importantTaskIdentifier);
         partsOfLine.add("unassigned");
         partsOfLine.add("list");
         partsOfLine.add(String.valueOf(LocalDate.now().getMonth().minus(1).getValue()));
@@ -61,24 +62,26 @@ class SaveAndLoadTest {
         partsOfLine.add("2019");
         partsOfLine.add("high");
         partsOfLine.add("High Importance");
-        saveAndLoad.setGeneralTaskField(partsOfLine);
+        TaskReconstructor taskReconstructor = new TaskReconstructor();
+
+        taskReconstructor.setGeneralTaskField(partsOfLine);
 
         try {
-            saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
+            taskReconstructor.createTaskSetYear(partsOfLine, taskList, TaskReconstructor.importantTaskIdentifier);
         } catch (TaskException e) {
             fail();
         }
         assertEquals(taskList.get(0).getContent(), "unassigned");
         assertEquals(taskList.get(0).getDueDate(), (LocalDate.now().getMonth().minus(1).getValue())
         + "/" + (MonthDay.now().getDayOfMonth()));
-        assertEquals(((CompletedTask) taskList.get(0)).getCompletionStatus(), "past due.");
+        assertEquals(((CompletedTask) taskList.get(0)).getCompletionStatus(), CompletedTask.pastDue);
         assertTrue(taskList.get(0) instanceof CompletedTask);
     }
 
     @Test
     void checkImportantTaskNextYear() {
         ArrayList<String> partsOfLine = new ArrayList<>();
-        partsOfLine.add("*");
+        partsOfLine.add(TaskReconstructor.importantTaskIdentifier);
         partsOfLine.add("unassigned");
         partsOfLine.add("list");
         partsOfLine.add(String.valueOf(LocalDate.now().getMonth().minus(1).getValue()));
@@ -87,10 +90,11 @@ class SaveAndLoadTest {
         partsOfLine.add("high");
         partsOfLine.add("High Importance");
 
-        saveAndLoad.setGeneralTaskField(partsOfLine);
+        TaskReconstructor taskReconstructor = new TaskReconstructor();
+        taskReconstructor.setGeneralTaskField(partsOfLine);
 
         try {
-            saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
+            taskReconstructor.createTaskSetYear(partsOfLine, taskList, TaskReconstructor.importantTaskIdentifier);
         } catch (TaskException e) {
             fail();
         }
@@ -104,7 +108,7 @@ class SaveAndLoadTest {
     @Test
     void checkImportantTaskCurrentYear() {
         ArrayList<String> partsOfLine = new ArrayList<>();
-        partsOfLine.add("*");
+        partsOfLine.add(TaskReconstructor.importantTaskIdentifier);
         partsOfLine.add("unassigned");
         partsOfLine.add("list");
         partsOfLine.add(String.valueOf(MonthDay.now().getMonthValue() + 1));
@@ -113,10 +117,12 @@ class SaveAndLoadTest {
         partsOfLine.add("high");
         partsOfLine.add("High Importance");
 
-        saveAndLoad.setGeneralTaskField(partsOfLine);
+        TaskReconstructor taskReconstructor = new TaskReconstructor();
+
+        taskReconstructor.setGeneralTaskField(partsOfLine);
 
         try {
-            saveAndLoad.createTaskSetYearFromLoad(partsOfLine, taskList, "*");
+            taskReconstructor.createTaskSetYear(partsOfLine, taskList, TaskReconstructor.importantTaskIdentifier);
         } catch (TaskException e) {
             fail();
         }
@@ -129,10 +135,11 @@ class SaveAndLoadTest {
         ArrayList<String> partsOfLine = new ArrayList<>();
         partsOfLine.add("a");
         partsOfLine.add("a");
+        HashMapReconstructor hashMapReconstructor = new HashMapReconstructor();
         try {
             taskList.add(new IncompleteTask(null,"", LocalDate.now(), ""));
             taskList.add(new IncompleteTask(null,"", LocalDate.now(), ""));
-            saveAndLoad.loadIntoHashMap(taskListHashMap, taskList, partsOfLine);
+            hashMapReconstructor.loadIntoHashMap(taskListHashMap, taskList, partsOfLine);
         } catch (TaskException e) {
             fail();
         }

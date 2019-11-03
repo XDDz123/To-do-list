@@ -5,6 +5,8 @@ import java.util.*;
 
 public class TaskList {
 
+    private final TaskListSorter taskListFilterAndSorter = new TaskListSorter();
+    private final TaskListToString taskListToString = new TaskListToString();
     private ArrayList<Task> taskList;
     private String name;
     static final int maxSize = 10;
@@ -30,8 +32,6 @@ public class TaskList {
                 taskList.add(task);
                 task.setTaskList(this);
             }
-        } else {
-            throw new DuplicateTaskException();
         }
     }
 
@@ -39,14 +39,6 @@ public class TaskList {
     public String getName() {
         return name;
     }
-
-/*
-    //MODIFIES: this
-    //EFFECTS: sets the name of this list to the given name
-    public void setName(String name) {
-        this.name = name;
-    }
-*/
 
     //EFFECTS: Returns the ArrayList that stores the current task list
     public ArrayList<Task> getTaskList() {
@@ -80,69 +72,29 @@ public class TaskList {
     }
 
     //EFFECTS: Returns true if task list is empty, false otherwise.
-    public boolean isTaskListEmpty() {
+    boolean isTaskListEmpty() {
         return taskList.isEmpty();
     }
 
     //EFFECTS: Returns the size of the current task list
-    public int getTaskListSize() {
+    int getTaskListSize() {
         return taskList.size();
     }
 
     //EFFECTS: Prints the contents of incomplete tasks in the list
     public String printIncompleteTasks() {
-        try {
-            return printTaskList(filterOutCompleted());
-        } catch (EmptyListException e) {
-            return e.getMessage();
-        }
+        return taskListToString.printIncompleteTasks(this);
     }
 
     //EFFECTS: Prints the contents of the current task list
     public String printTaskList() {
-        try {
-            return printTaskList(taskList);
-        } catch (EmptyListException e) {
-            return e.getMessage();
-        }
-    }
-
-    //EFFECTS: Returns "No tasks found." if current task list is empty, returns all tasks in the current task list ow.
-    private String printTaskList(ArrayList<Task> list) throws EmptyListException {
-        StringBuilder taskListPrint = new StringBuilder();
-
-        if (isTaskListEmpty()) {
-            throw new EmptyListException();
-        } else {
-            for (int i = 0; i < list.size(); i++) {
-                taskListPrint.append(i + 1).append(" : ").append((list.get(i)).printTask()).append("\n");
-            }
-            //substring to -1 removes the last line break
-            return taskListPrint.substring(0, taskListPrint.length() - 1);
-        }
-    }
-
-    //EFFECTS: takes in an list of tasks, returns a new list with only incomplete tasks.
-    private ArrayList<Task> filterOutCompleted() {
-        ArrayList<Task> filteredList = new ArrayList<>();
-        for (Task task : taskList) {
-            if (!(task instanceof CompletedTask)) {
-                filteredList.add(task);
-            }
-        }
-        return filteredList;
+        return taskListToString.printTaskList(this);
     }
 
     //EFFECTS: Returns a new task list that contains all tasks in the current task list
     //         with the specified urgency level.
     public TaskList getTaskByUrgency(String urgency) throws TaskException {
-        TaskList tempList = new TaskList("");
-        for (Task task : filterOutCompleted()) {
-            if (((IncompleteTask) task).getUrgency().equalsIgnoreCase(urgency)) {
-                tempList.storeTask(task);
-            }
-        }
-        return tempList;
+        return taskListFilterAndSorter.getTaskByUrgency(urgency, this);
     }
 
     //inspired by post by user zb226 @ https://stackoverflow.com/questions/16252269/how-to-sort-an-arraylist
@@ -150,22 +102,26 @@ public class TaskList {
     //MODIFIES: this
     //EFFECTS: Sorts the current task list chronologically based on due dates. Starts from most recently due.
     public void sortByDueDate() {
-        taskList.sort((a, b) -> {
-            if (a instanceof CompletedTask && b instanceof CompletedTask) {
-                return 0;
-            } else if (a instanceof CompletedTask) {
-                return 1;
-            } else if (b instanceof CompletedTask) {
-                return -1;
-            } else {
-                if (a.getDueDateObj().isBefore(b.getDueDateObj())) {
-                    return -1;
-                } else if (a.getDueDateObj().isAfter(b.getDueDateObj())) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        });
+        taskListFilterAndSorter.sortByDueDate(this);
     }
+
+    //EFFECTS: takes in an list of tasks, returns a new list with only incomplete tasks.
+    ArrayList<Task> filterOutCompleted() {
+        return taskListFilterAndSorter.filterOutCompleted(this);
+    }
+
+    /*
+    //MODIFIES: this
+    //EFFECTS: sets the name of this list to the given name
+    public void setName(String name) {
+        this.name = name;
+    }
+    */
+
+    /*
+    //EFFECTS: Returns "No tasks found." if current task list is empty, returns all tasks in the current task list ow.
+    private String printTaskList(ArrayList<Task> list) throws EmptyListException {
+        return taskListToString.printTaskList(list);
+    }
+    */
 }

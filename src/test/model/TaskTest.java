@@ -101,9 +101,10 @@ class TaskTest {
 
         try {
             task.setTaskList(taskList);
-            fail();
+            //fail();
         } catch (TaskException e) {
-            System.out.println("Test passed!");
+            fail();
+            //System.out.println("Test passed!");
         }
     }
 
