@@ -39,13 +39,4 @@ public class TaskListHashMap {
     HashMap<String, TaskList> getTaskListMap() {
         return taskListHashMap;
     }
-
-    /*
-    public void remapTaskList(String oldKey, String newKey) {
-        TaskList taskList = taskListHashMap.get(oldKey);
-        taskListHashMap.remove(oldKey);
-        taskList.setName(newKey);
-        taskListHashMap.put(newKey, taskList);
-    }
-    */
 }

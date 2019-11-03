@@ -118,21 +118,4 @@ public abstract class Task {
         result = 31 * result + (taskDueDate != null ? taskDueDate.hashCode() : 0);
         return result;
     }
-
-
-    /*
-    //MODIFIES: this, taskList
-    //EFFECTS: Removes this task's taskList and removes this task from the taskList
-    public void removeTaskList() throws TooManyIncompleteTasksException {
-        taskList.deleteTask(this);
-        this.taskList = null;
-    }
-
-    //MODIFIES: this, taskList, newList
-    //EFFECTS: changes the taskList of this task to another taskList
-    public void changeTaskList(TaskList newList) throws TooManyIncompleteTasksException {
-        removeTaskList();
-        setTaskList(newList);
-    }*/
-
 }

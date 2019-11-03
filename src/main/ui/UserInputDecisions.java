@@ -431,7 +431,7 @@ class UserInputDecisions {
         messages.createNewListMessage();
         String input = keyboard.nextLine();
 
-        if (! taskListHashMap.getKeys().contains(input)) {
+        if (!taskListHashMap.getKeys().contains(input)) {
             TaskList taskList = new TaskList(input);
             taskListHashMap.storeTaskList(taskList);
             runUserSelection(taskListHashMap.getTaskList(input));

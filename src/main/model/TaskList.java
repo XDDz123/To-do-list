@@ -109,19 +109,4 @@ public class TaskList {
     ArrayList<Task> filterOutCompleted() {
         return taskListFilterAndSorter.filterOutCompleted(this);
     }
-
-    /*
-    //MODIFIES: this
-    //EFFECTS: sets the name of this list to the given name
-    public void setName(String name) {
-        this.name = name;
-    }
-    */
-
-    /*
-    //EFFECTS: Returns "No tasks found." if current task list is empty, returns all tasks in the current task list ow.
-    private String printTaskList(ArrayList<Task> list) throws EmptyListException {
-        return taskListToString.printTaskList(list);
-    }
-    */
 }
