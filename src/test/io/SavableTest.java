@@ -11,17 +11,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class SavableTest {
-    private TaskList taskList;
-    private TaskList taskList1;
 
     private TaskListHashMap taskListHashMap;
     private TaskListHashMap taskListHashMap1;
-    private Savable savable;
+    private Save save;
 
     @BeforeEach
     void runBefore() {
-        taskList = new TaskList("a");
-        taskList1 = new TaskList("b");
+        TaskList taskList = new TaskList("a");
+        TaskList taskList1 = new TaskList("b");
         taskListHashMap = new TaskListHashMap();
         taskListHashMap1 = new TaskListHashMap();
 
@@ -44,7 +42,7 @@ class SavableTest {
             fail();
         }
 
-        savable = new SaveAndLoad();
+        save = new Save();
         taskListHashMap.storeTaskList(taskList);
         taskListHashMap.storeTaskList(taskList1);
     }
@@ -52,9 +50,9 @@ class SavableTest {
     @Test
     void saveTest() throws IOException {
 
-        savable.save(taskListHashMap, "saveTest.txt");
+        save.save(taskListHashMap, "saveTest.txt");
         try {
-            ((SaveAndLoad) savable).load(taskListHashMap1, "saveTest.txt");
+            (new Load()).load(taskListHashMap1, "saveTest.txt");
         } catch (TaskException e) {
             fail();
         }

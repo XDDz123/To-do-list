@@ -62,7 +62,6 @@ class Messages {
 
     void selectTaskTypeMessage() {
         System.out.println("Type in '1' to enter a task.");
-        System.out.println("Type in '2' to enter an important task.");
     }
 
     //EFFECTS: Prints the following.

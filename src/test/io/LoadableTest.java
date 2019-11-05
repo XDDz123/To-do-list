@@ -11,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LoadableTest {
 
-    private Loadable loadable;
+    private Load loadable;
     private TaskListHashMap taskListHashMap;
 
     @BeforeEach
     void runBefore() {
-        loadable = new SaveAndLoad();
+        loadable = new Load();
         taskListHashMap = new TaskListHashMap();
     }
 

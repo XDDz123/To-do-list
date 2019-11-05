@@ -2,7 +2,6 @@ package model;
 
 import exceptions.TaskDoesNotExistException;
 import exceptions.TaskException;
-import exceptions.TooManyIncompleteTasksException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -13,8 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TaskListTest {
     private TaskList taskList;
-    private TaskList taskList1;
-    private TaskList taskList2;
     private TaskList taskList3;
     private IncompleteTask task;
     private IncompleteTask task1;
@@ -62,12 +59,10 @@ class TaskListTest {
         try {
             new IncompleteTask(taskList, taskContent, taskDueDate, taskUrgency, starred);
             //fail();
-        } catch (TooManyIncompleteTasksException e) {
-            fail();
         } catch (TaskException e) {
             fail();
-            //System.out.println("Test passed.");
-        }
+        }//System.out.println("Test passed.");
+
     }
 
     @Test
@@ -128,10 +123,6 @@ class TaskListTest {
         task.setUrgency("high");
         task1.setUrgency("high");
         task2.setUrgency("mid");
-
-
-        taskList1 = new TaskList("");
-        taskList2 = new TaskList("");
         taskList3 = new TaskList("");
 
 

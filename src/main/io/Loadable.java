@@ -1,3 +1,4 @@
+/*
 package io;
 
 import exceptions.TaskException;
@@ -9,3 +10,4 @@ public interface Loadable {
     //EFFECTS: Loads information from file at the given destination to recreate the HashMap
     void load(TaskListHashMap taskListHashMap, String file) throws IOException, TaskException;
 }
+*/

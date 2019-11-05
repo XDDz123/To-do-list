@@ -1,9 +1,8 @@
 package ui;
 
 import exceptions.*;
-import io.Loadable;
-import io.Savable;
-import io.SaveAndLoad;
+import io.Load;
+import io.Save;
 import model.*;
 
 import java.io.IOException;
@@ -235,28 +234,12 @@ class UserInputDecisions {
     //         Prompts the user to assign or enter task information.
     //         Adds this new task to the list of tasks.
     //         Else returns not an option error.
-    private void selectEnterTask(TaskList taskList) throws NotAnOptionException, TaskException {
+    private void selectEnterTask(TaskList taskList) throws TaskException {
         String taskContent = "empty task";
         LocalDate taskDueDate = LocalDate.now();
         String taskUrgency = "unassigned";
-        //String taskImportance = "important";
-
-        Scanner keyboard = new Scanner(System.in);
-        messages.selectTaskTypeMessage();
-        String input = keyboard.nextLine();
-
-        if ((input.equals("1"))) {
-            IncompleteTask incompleteTask = new IncompleteTask(null, taskContent, taskDueDate, taskUrgency, false);
-            setIncompleteTask(taskList, incompleteTask);
-        } else {
-            throw new NotAnOptionException();
-        }
-
-         /*else if ((input.equals("2"))) {
-            ImportantTask importantTask =
-                    new ImportantTask(null, taskContent, taskDueDate, taskUrgency, taskImportance);
-            setIncompleteTask(taskList, importantTask);
-            importantTask.setImportance(taskInputDecisions.setImportanceDecision(importantTask.getImportance()));*/
+        IncompleteTask incompleteTask = new IncompleteTask(null, taskContent, taskDueDate, taskUrgency, false);
+        setIncompleteTask(taskList, incompleteTask);
     }
 
     //MODIFIES: taskList, incompleteTask
@@ -358,20 +341,18 @@ class UserInputDecisions {
     //MODIFIES: taskList
     //EFFECTS: Attempts to load task info from save
     private void tryLoad(TaskListHashMap taskListHashMap) {
-        Loadable loadTasks = new SaveAndLoad();
+        Load loadTasks = new Load();
         try {
             loadTasks.load(taskListHashMap, fileName);
         } catch (NoSuchFileException e) {
             messages.fileNotFoundError();
         } catch (TaskException | IOException e) {
             messages.exceptionErrorMessage(e);
+        } catch (Exception e) {
+            messages.badFormattingError();
         } finally {
             messages.loadAttemptedMessage();
         }
-
-/*        catch (Exception e) {
-            messages.badFormattingError();
-        }*/
     }
 
     //MODIFIES: taskListHashMap
@@ -472,7 +453,7 @@ class UserInputDecisions {
         messages.welcomeMessage();
 
         TaskListHashMap taskListHashMap = new TaskListHashMap();
-        Savable saveTasks = new SaveAndLoad();
+        Save saveTasks = new Save();
 
         tryLoad(taskListHashMap);
 

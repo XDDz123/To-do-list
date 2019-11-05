@@ -11,14 +11,14 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SaveAndLoadTest {
+class SaveAndLoadHelperTest {
 
-    private SaveAndLoad saveAndLoad;
+    private Load load;
     private ArrayList<Task> taskList;
 
     @BeforeEach
     void runBefore() {
-        saveAndLoad = new SaveAndLoad();
+        load = new Load();
         taskList = new ArrayList<>();
     }
 
@@ -33,11 +33,11 @@ class SaveAndLoadTest {
     @Test
     void separateOnTildeTest() {
         String line = "task I~high~2~3~false";
-        assertEquals(saveAndLoad.separateLine(line).get(0), "task I");
-        assertEquals(saveAndLoad.separateLine(line).get(1), "high");
-        assertEquals(saveAndLoad.separateLine(line).get(2), "2");
-        assertEquals(saveAndLoad.separateLine(line).get(3), "3");
-        assertEquals(saveAndLoad.separateLine(line).get(4), "false");
+        assertEquals(load.separateLine(line).get(0), "task I");
+        assertEquals(load.separateLine(line).get(1), "high");
+        assertEquals(load.separateLine(line).get(2), "2");
+        assertEquals(load.separateLine(line).get(3), "3");
+        assertEquals(load.separateLine(line).get(4), "false");
     }
 
     @Test
