@@ -15,7 +15,7 @@ class TaskTest {
     @BeforeEach
     void runBefore() {
         try {
-            task = new IncompleteTask(null,"empty task", taskDueDate, "unassigned");
+            task = new IncompleteTask(null,"empty task", taskDueDate, "unassigned", false);
         } catch (TaskException e) {
             fail();
         }
@@ -94,7 +94,7 @@ class TaskTest {
     void setTaskListDuplicateTest() {
         TaskList taskList = new TaskList("list");
         try {
-            new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned");
+            new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned", false);
         } catch (TaskException e) {
             fail();
         }
@@ -110,12 +110,12 @@ class TaskTest {
 
     @Test
     void equalsNull() {
-        ImportantTask task2;
+        CompletedTask task2;
         Task task3 = null;
-        ImportantTask task4 = null;
+        CompletedTask task4 = null;
         TaskList taskList = null;
         try {
-            task2 = new ImportantTask(null,"empty task", taskDueDate, "unassigned", "unassigned");
+            task2 = new CompletedTask(null,"empty task", taskDueDate, "unassigned");
             assertFalse(task.equals(task2));
         } catch (TaskException e) {
             fail();
@@ -130,8 +130,8 @@ class TaskTest {
     void equalsList() {
         TaskList taskList = new TaskList("");
         try {
-            Task task1 = new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned");
-            Task task2 = new ImportantTask(null,"empty task", taskDueDate, "unassigned", "unassigned");
+            Task task1 = new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned", false);
+            Task task2 = new CompletedTask(null,"empty task", taskDueDate, "unassigned");
             assertFalse(task1.equals(task2));
         } catch (TaskException e) {
             fail();
@@ -169,7 +169,7 @@ class TaskTest {
 
         Task task1 = null;
         try {
-            task1 = new IncompleteTask(taskList,null, taskDueDate, "unassigned");
+            task1 = new IncompleteTask(taskList,null, taskDueDate, "unassigned", false);
         } catch (TaskException e) {
             fail();
         }
@@ -189,7 +189,7 @@ class TaskTest {
 
         Task task1 = null;
         try {
-            task1 = new IncompleteTask(taskList,"empty task", null, "unassigned");
+            task1 = new IncompleteTask(taskList,"empty task", null, "unassigned", false);
         } catch (TaskException e) {
             fail();
         }

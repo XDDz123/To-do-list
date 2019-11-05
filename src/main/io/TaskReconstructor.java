@@ -2,7 +2,6 @@ package io;
 
 import exceptions.TaskException;
 import model.CompletedTask;
-import model.ImportantTask;
 import model.IncompleteTask;
 import model.Task;
 
@@ -11,7 +10,8 @@ import java.util.ArrayList;
 
 class TaskReconstructor {
 
-    private static final int taskImportanceIndex = 7;
+    private static final int starredIndex = 7;
+    //private static final int taskImportanceIndex = 7;
     private static final int completionStatusIndex = 6;
     private static final int taskUrgencyIndex = 6;
     private static final int yearIndex = 5;
@@ -19,13 +19,14 @@ class TaskReconstructor {
     private static final int monthIndex = 3;
     private static final int taskContentIndex = 1;
 
-    static final String importantTaskIdentifier = "*";
+    //static final String importantTaskIdentifier = "*";
     static final String incompleteTaskIdentifier = "@";
     static final String completedTaskIdentifier = "#";
 
     private String taskContent;
     private LocalDate taskDueDate;
     private String completionStatus;
+    private Boolean starred;
 
     //EFFECTS: If the year found in the loaded input matches the current year, then
     //              -If the due date is before the current date then create a completed task from the given info
@@ -37,19 +38,23 @@ class TaskReconstructor {
         if (taskDueDate.isBefore(LocalDate.now())) {
             createPastDueTask(taskList);
         } else {
-            if (taskType.equals(importantTaskIdentifier)) {
-                createImportantTask(partsOfLine, taskList);
-            } else {
-                createIncompleteTask(partsOfLine, taskList);
-            }
-            //fetches and updates most recent/the last entry in the list
+            createIncompleteTask(partsOfLine, taskList);
             ((IncompleteTask) taskList.get(taskList.size() - 1)).setTimeLeft();
         }
     }
 
+    //from above
+    /*            if (taskType.equals(importantTaskIdentifier)) {
+                createImportantTask(partsOfLine, taskList);
+            } else {
+                createIncompleteTask(partsOfLine, taskList);
+            }*/
+    //fetches and updates most recent/the last entry in the list
+
     //EFFECTS: returns true if given identifier equals importantTaskIdentifier or incompleteTaskIdentifier
     private boolean checkIdentifier(String identifier) {
-        return identifier.equals(importantTaskIdentifier) || identifier.equals(incompleteTaskIdentifier);
+        //return identifier.equals(importantTaskIdentifier) || identifier.equals(incompleteTaskIdentifier);
+        return identifier.equals(incompleteTaskIdentifier);
     }
 
     //EFFECTS: creates tasks from information in the save file
@@ -85,11 +90,11 @@ class TaskReconstructor {
     //         Stores the created task in the list of tasks.
     private void createIncompleteTask(ArrayList<String> partsOfLine, ArrayList<Task> taskList)
             throws TaskException {
-        setGeneralTaskField(partsOfLine);
-        taskList.add(new IncompleteTask(null, taskContent, taskDueDate, partsOfLine.get(taskUrgencyIndex)));
+        setIncompleteTaskField(partsOfLine);
+        taskList.add(new IncompleteTask(null, taskContent, taskDueDate, partsOfLine.get(taskUrgencyIndex), starred));
     }
 
-    //MODIFIES: this
+/*    //MODIFIES: this
     //EFFECTS: Uses the given information stored in the list partsOfLine to create a new important task.
     //         Stores the created task in the list of tasks.
     private void createImportantTask(ArrayList<String> partsOfLine, ArrayList<Task> taskList)
@@ -100,7 +105,7 @@ class TaskReconstructor {
                 taskDueDate,
                 partsOfLine.get(taskUrgencyIndex),
                 partsOfLine.get(taskImportanceIndex)));
-    }
+    }*/
 
     //MODIFIES: this
     //EFFECTS: Loads information from the list partsOfLine into the temporary variables of:
@@ -110,8 +115,12 @@ class TaskReconstructor {
         int month = Integer.parseInt(partsOfLine.get(monthIndex));
         int day = Integer.parseInt(partsOfLine.get(dayIndex));
         int year = Integer.parseInt(partsOfLine.get(yearIndex));
-
         taskDueDate = LocalDate.of(year, month, day);
+    }
+
+    private void setIncompleteTaskField(ArrayList<String> partsOfLine) {
+        setGeneralTaskField(partsOfLine);
+        starred = Boolean.parseBoolean(partsOfLine.get(starredIndex));
     }
 
     //MODIFIES: this

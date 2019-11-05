@@ -10,9 +10,10 @@ class SaveInfoFormatter {
 
     //EFFECTS: Saves information in tasks onto the save file
     void saveTaskInfo(PrintWriter writer, Task task) {
-        if (task instanceof ImportantTask) {
+/*        if (task instanceof ImportantTask) {
             writer.println(formatImportantTaskInfo(task));
-        } else if (task instanceof IncompleteTask) {
+        } else */
+        if (task instanceof IncompleteTask) {
             writer.println(formatIncompleteTaskInfo(task));
         } else {
             writer.println(formatCompletedTaskInfo(task));
@@ -31,15 +32,16 @@ class SaveInfoFormatter {
     private String formatGeneralTaskInfo(Task task) {
         return task.getContent() + separator
                 + formatTaskDueDateInfo(task) + separator
-                + ((IncompleteTask) task).getUrgency();
+                + ((IncompleteTask) task).getUrgency() + separator
+                + ((IncompleteTask) task).getStarred();
     }
 
-    //EFFECTS: Returns information in an important task in the following format
+/*    //EFFECTS: Returns information in an important task in the following format
     private String formatImportantTaskInfo(Task task) {
         return TaskReconstructor.importantTaskIdentifier + separator
                 + formatGeneralTaskInfo(task) + separator
                 + ((ImportantTask) task).getImportance();
-    }
+    }*/
 
     //EFFECTS: Returns information in a incomplete task in the following format
     private String formatIncompleteTaskInfo(Task task) {

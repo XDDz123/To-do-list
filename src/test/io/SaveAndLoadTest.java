@@ -52,9 +52,9 @@ class SaveAndLoadTest {
     }
 
     @Test
-    void checkImportantTaskLoadPastDueTest() {
+    void checkIncompleteTaskLoadPastDueTest() {
         ArrayList<String> partsOfLine = new ArrayList<>();
-        partsOfLine.add(TaskReconstructor.importantTaskIdentifier);
+        partsOfLine.add(TaskReconstructor.incompleteTaskIdentifier);
         partsOfLine.add("unassigned");
         partsOfLine.add("list");
         partsOfLine.add(String.valueOf(LocalDate.now().getMonth().minus(1).getValue()));
@@ -67,7 +67,7 @@ class SaveAndLoadTest {
         taskReconstructor.setGeneralTaskField(partsOfLine);
 
         try {
-            taskReconstructor.createTaskSetYear(partsOfLine, taskList, TaskReconstructor.importantTaskIdentifier);
+            taskReconstructor.createTaskSetYear(partsOfLine, taskList, TaskReconstructor.incompleteTaskIdentifier);
         } catch (TaskException e) {
             fail();
         }
@@ -79,9 +79,9 @@ class SaveAndLoadTest {
     }
 
     @Test
-    void checkImportantTaskNextYear() {
+    void checkIncompleteTaskNextYear() {
         ArrayList<String> partsOfLine = new ArrayList<>();
-        partsOfLine.add(TaskReconstructor.importantTaskIdentifier);
+        partsOfLine.add(TaskReconstructor.incompleteTaskIdentifier);
         partsOfLine.add("unassigned");
         partsOfLine.add("list");
         partsOfLine.add(String.valueOf(LocalDate.now().getMonth().minus(1).getValue()));
@@ -94,21 +94,21 @@ class SaveAndLoadTest {
         taskReconstructor.setGeneralTaskField(partsOfLine);
 
         try {
-            taskReconstructor.createTaskSetYear(partsOfLine, taskList, TaskReconstructor.importantTaskIdentifier);
+            taskReconstructor.createTaskSetYear(partsOfLine, taskList, TaskReconstructor.incompleteTaskIdentifier);
         } catch (TaskException e) {
             fail();
         }
 
         Period difference = Period.between((taskList.get(0)).getDueDateObj(), LocalDate.now());
 
-        assertEquals(((ImportantTask) taskList.get(0)).getTimeLeft(),
+        assertEquals(((IncompleteTask) taskList.get(0)).getTimeLeft(),
                 Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days");
     }
 
     @Test
-    void checkImportantTaskCurrentYear() {
+    void checkIncompleteTaskCurrentYear() {
         ArrayList<String> partsOfLine = new ArrayList<>();
-        partsOfLine.add(TaskReconstructor.importantTaskIdentifier);
+        partsOfLine.add(TaskReconstructor.incompleteTaskIdentifier);
         partsOfLine.add("unassigned");
         partsOfLine.add("list");
         partsOfLine.add(String.valueOf(MonthDay.now().getMonthValue() + 1));
@@ -122,11 +122,11 @@ class SaveAndLoadTest {
         taskReconstructor.setGeneralTaskField(partsOfLine);
 
         try {
-            taskReconstructor.createTaskSetYear(partsOfLine, taskList, TaskReconstructor.importantTaskIdentifier);
+            taskReconstructor.createTaskSetYear(partsOfLine, taskList, TaskReconstructor.incompleteTaskIdentifier);
         } catch (TaskException e) {
             fail();
         }
-        assertEquals(((ImportantTask) taskList.get(0)).getTimeLeft(), "1 months 1 days");
+        assertEquals(((IncompleteTask) taskList.get(0)).getTimeLeft(), "1 months 1 days");
     }
 
     @Test
@@ -137,8 +137,8 @@ class SaveAndLoadTest {
         partsOfLine.add("a");
         HashMapReconstructor hashMapReconstructor = new HashMapReconstructor();
         try {
-            taskList.add(new IncompleteTask(null,"", LocalDate.now(), ""));
-            taskList.add(new IncompleteTask(null,"", LocalDate.now(), ""));
+            taskList.add(new IncompleteTask(null,"", LocalDate.now(), "", false));
+            taskList.add(new IncompleteTask(null,"", LocalDate.now(), "", false));
             hashMapReconstructor.loadIntoHashMap(taskListHashMap, taskList, partsOfLine);
         } catch (TaskException e) {
             fail();

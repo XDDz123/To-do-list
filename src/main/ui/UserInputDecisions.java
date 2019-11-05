@@ -139,6 +139,10 @@ class UserInputDecisions {
         } else if ((input.equals("4"))) {
             //change content
             task.setContent(taskInputDecisions.setTaskContentDecisions());
+        } else if ((input.equals("5"))) {
+            //sets starred to un-starred if starred, sets un-starred to stared
+            task.setStarred(taskInputDecisions.setStarredDecisions(task.getStarred()));
+            messages.printTask(task);
         } else if ((input.equals("0"))) {
             //return to prev
             selectModifyTask(taskList);
@@ -161,12 +165,12 @@ class UserInputDecisions {
 
         IncompleteTask incompleteTask = (IncompleteTask)(taskList.getTask(index));
 
-        if (! modifyTask(input, index, incompleteTask, taskList)) {
+        if (!modifyTask(input, index, incompleteTask, taskList)) {
             throw new NotAnOptionException();
         }
     }
 
-    //REQUIRES: taskList.get(index) instanceOf ImportantTask
+/*    //REQUIRES: taskList.get(index) instanceOf ImportantTask
     //MODIFIES: taskList.get(index)
     //EFFECTS: Prompts the user to select which field of a incomplete task to modify.
     //         Displays a change importance option in addition to options displayed in modifyTask().
@@ -187,16 +191,17 @@ class UserInputDecisions {
                 throw new NotAnOptionException();
             }
         }
-    }
+    }*/
 
     //MODIFIES: taskList.get(index)
     //EFFECTS: Prompts the user to modify important task is taskList.get(index) is an ImportantTask.
     //         Prompts the user to modify incomplete task if taskList.get(index) is a IncompleteTask.
     //         Else return cannot modify completed task error message.
     private void attemptModifyTask(TaskList taskList, int index) throws UIException {
-        if (taskList.getTask(index) instanceof ImportantTask) {
+        /*if (taskList.getTask(index) instanceof ImportantTask) {
             modifyImportantTask(taskList, index);
-        } else if (taskList.getTask(index) instanceof IncompleteTask) {
+        } else */
+        if (taskList.getTask(index) instanceof IncompleteTask) {
             modifyIncompleteTask(taskList, index);
         } else {
             throw new ModifyCompletedTaskException();
@@ -234,23 +239,24 @@ class UserInputDecisions {
         String taskContent = "empty task";
         LocalDate taskDueDate = LocalDate.now();
         String taskUrgency = "unassigned";
-        String taskImportance = "important";
+        //String taskImportance = "important";
 
         Scanner keyboard = new Scanner(System.in);
         messages.selectTaskTypeMessage();
         String input = keyboard.nextLine();
 
         if ((input.equals("1"))) {
-            IncompleteTask incompleteTask = new IncompleteTask(null, taskContent, taskDueDate, taskUrgency);
+            IncompleteTask incompleteTask = new IncompleteTask(null, taskContent, taskDueDate, taskUrgency, false);
             setIncompleteTask(taskList, incompleteTask);
-        } else if ((input.equals("2"))) {
-            ImportantTask importantTask =
-                    new ImportantTask(null, taskContent, taskDueDate, taskUrgency, taskImportance);
-            setIncompleteTask(taskList, importantTask);
-            importantTask.setImportance(taskInputDecisions.setImportanceDecision(importantTask.getImportance()));
         } else {
             throw new NotAnOptionException();
         }
+
+         /*else if ((input.equals("2"))) {
+            ImportantTask importantTask =
+                    new ImportantTask(null, taskContent, taskDueDate, taskUrgency, taskImportance);
+            setIncompleteTask(taskList, importantTask);
+            importantTask.setImportance(taskInputDecisions.setImportanceDecision(importantTask.getImportance()));*/
     }
 
     //MODIFIES: taskList, incompleteTask
@@ -359,11 +365,13 @@ class UserInputDecisions {
             messages.fileNotFoundError();
         } catch (TaskException | IOException e) {
             messages.exceptionErrorMessage(e);
-        } catch (Exception e) {
-            messages.badFormattingError();
         } finally {
             messages.loadAttemptedMessage();
         }
+
+/*        catch (Exception e) {
+            messages.badFormattingError();
+        }*/
     }
 
     //MODIFIES: taskListHashMap

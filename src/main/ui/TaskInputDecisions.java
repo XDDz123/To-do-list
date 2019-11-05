@@ -12,11 +12,14 @@ class TaskInputDecisions {
     private static final String low = "low";
     private String taskUrgency = "unassigned";
     private LocalDate taskDueDate;
+
+    /*
     private String taskImportance = "unassigned";
 
     private static final String importanceExtreme = "Extreme Importance";
     private static final String importanceHigh = "High Importance";
     private static final String importanceMid = "Medium Importance";
+    */
 
     private final Messages messages = new Messages();
 
@@ -156,7 +159,19 @@ class TaskInputDecisions {
         return keyboard.nextLine();
     }
 
-    //EFFECTS: Prompts the user to set the level of importance of a task
+    //MODIFIES: task
+    //EFFECTS: Prompts the user to star or un-star the given task
+    //         Inverts starred to un-starred and vise versa, returns the corresponding boolean
+    Boolean setStarredDecisions(Boolean starred) {
+        if (starred) {
+            messages.unStarTaskMessage();
+        } else {
+            messages.starTaskMessage();
+        }
+        return !starred;
+    }
+
+/*    //EFFECTS: Prompts the user to set the level of importance of a task
     //         Returns the selected level of importance
     //         (1) Extreme Importance
     //         (2) High Importance
@@ -189,5 +204,5 @@ class TaskInputDecisions {
         messages.notAnOptionTryAgainError();
         setImportanceDecision(taskImportance);
         return this.taskImportance;
-    }
+    }*/
 }

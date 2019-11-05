@@ -1,9 +1,9 @@
-#~task II~List~10~27~2019~past due.
-#~task I~List~11~1~2019~past due.
-#~task III~List~11~1~2019~past due.
-#~task IV~List~10~27~2019~past due.
-@~task~List~12~1~2019~high
-@~task~List~12~1~2019~high
-#~task III~List 2~10~27~2019~past due.
-*~tasks II~List 2~12~2~2019~mid~mid
-#~task I~List 2~11~1~2019~past due.
+#~task II~List~10~27~2019~past due
+#~task I~List~11~1~2019~past due
+#~task III~List~11~1~2019~past due
+#~task IV~List~10~27~2019~past due
+@~task~List~12~1~2019~high~true
+@~task~List~12~1~2019~high~false
+#~task III~List 2~10~27~2019~past due
+@~tasks II~List 2~12~2~2019~mid~false
+#~task I~List 2~11~1~2019~past due

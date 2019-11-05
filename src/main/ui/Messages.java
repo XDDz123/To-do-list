@@ -1,5 +1,6 @@
 package ui;
 
+import model.Task;
 import model.TaskList;
 import model.TaskListHashMap;
 
@@ -151,10 +152,11 @@ class Messages {
         System.out.println("Type in '2' to change task due date.");
         System.out.println("Type in '3' to change task urgency.");
         System.out.println("Type in '4' to change task content.");
+        System.out.println("Type in '5' to star or un-star task.");
         System.out.println("Type in '0' to return to the previous menu.");
     }
 
-    //EFFECTS: Prints the following.
+/*    //EFFECTS: Prints the following.
     void modifyImportantTaskMessage() {
         System.out.println("Type in '1' to set task as complete.");
         System.out.println("Type in '2' to change task due date.");
@@ -162,6 +164,13 @@ class Messages {
         System.out.println("Type in '4' to change task content.");
         System.out.println("Type in '5' to change task importance.");
         System.out.println("Type in '0' to return to the previous menu.");
+    }*/
+
+    //EFFECTS: Prints the following.
+    void printTask(Task task) {
+        System.out.println("-----------------------------------------------------------------------------------------");
+        System.out.println(task.printTask());
+        System.out.println("-----------------------------------------------------------------------------------------");
     }
 
     //EFFECTS: Prints the current task list in the following format.
@@ -186,14 +195,26 @@ class Messages {
         System.out.println("Selection: ");
     }
 
+    //EFFECTS: Prints the following.
     void checkBeforeDeleteAll() {
         System.out.println("Delete all tasks?");
         System.out.println("Type in 'yes' to delete all tasks.");
         System.out.println("Type in anything else to cancel.");
     }
 
+    //EFFECTS: Prints the following.
     void taskDeletedMessage() {
         System.out.println("Tasks deleted successfully.");
+    }
+
+    //EFFECTS: Prints the following.
+    void starTaskMessage() {
+        System.out.println("Task is now starred.");
+    }
+
+    //EFFECTS: Prints the following.
+    void unStarTaskMessage() {
+        System.out.println("Task is now un-starred.");
     }
 
 /*    //EFFECTS: Prints the current task list and the following text.

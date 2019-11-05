@@ -1,7 +1,7 @@
-@~task I~a~2~3~2020~high
-@~task III~a~4~3~2020~high
-#~task IV~a~10~4~2019~past due.
+@~task I~a~2~3~2020~high~true
+@~task III~a~4~3~2020~high~false
+#~task IV~a~10~4~2019~past due
 #~task VII~b~4~5~2019~4/5
-*~task V~b~12~2~2019~mid~High Importance
-*~task VI~b~10~3~2020~mid~High Importance
-*~task VI~b~10~3~2020~mid~High Importance
+@~task V~b~12~2~2019~mid~true
+@~task VI~b~10~3~2020~mid~false
+@~task VI~b~10~3~2020~mid~false

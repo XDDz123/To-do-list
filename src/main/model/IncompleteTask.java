@@ -8,13 +8,28 @@ public class IncompleteTask extends Task {
 
     private final TimeLeftUpdater timeLeftUpdater = new TimeLeftUpdater();
     private String taskUrgency;
+    private Boolean starred;
 
     //EFFECTS: Constructs a new incomplete task.
     //MODIFIES: this
-    public IncompleteTask(TaskList taskList, String taskContent, LocalDate taskDueDate, String taskUrgency)
+    public IncompleteTask(TaskList taskList, String taskContent, LocalDate taskDueDate, String taskUrgency,
+                          Boolean starred)
             throws TaskException {
         super(taskList, taskContent, taskDueDate);
         this.taskUrgency = taskUrgency;
+        this.starred = starred;
+    }
+
+
+    //EFFECTS: Returns whether this task is starred.
+    public Boolean getStarred() {
+        return starred;
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Sets stars this task if given starred is true, ow sets starred to false.
+    public void setStarred(Boolean starred) {
+        this.starred = starred;
     }
 
     //MODIFIES: this
@@ -33,7 +48,8 @@ public class IncompleteTask extends Task {
     public String printTask() {
         return super.printTaskContentAndDate()
                 + "Urgency: " + getUrgency() + "  "
-                + "Time left: " + getTimeLeft();
+                + "Time left: " + getTimeLeft() + "  "
+                + "Starred: " + starred;
     }
 
     //MODIFIES: this

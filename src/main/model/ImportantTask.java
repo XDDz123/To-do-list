@@ -1,3 +1,6 @@
+//Note: no longer used.
+
+/*
 package model;
 
 import exceptions.TaskException;
@@ -36,3 +39,4 @@ public class ImportantTask extends IncompleteTask {
         return super.printTask() + "  " + "*" + getImportance() + "*";
     }
 }
+*/

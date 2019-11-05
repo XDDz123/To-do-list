@@ -4,8 +4,8 @@ import exceptions.TaskException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class IncompleteTaskTest {
 
@@ -16,10 +16,21 @@ class IncompleteTaskTest {
     void runBefore() {
         TaskList taskList = new TaskList("");
         try {
-            incompleteTask = new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned");
+            incompleteTask = new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned", false);
         } catch (TaskException e) {
             fail();
         }
+    }
+
+    @Test
+    void getStarredTest() {
+        assertFalse(incompleteTask.getStarred());
+    }
+
+    @Test
+    void setStarredTest() {
+        incompleteTask.setStarred(true);
+        assertTrue(incompleteTask.getStarred());
     }
 
     @Test
@@ -36,7 +47,8 @@ class IncompleteTaskTest {
     @Test
     void printTaskTest() {
         assertEquals(incompleteTask.printTask(), "empty task"  + "  " + "Due: " + LocalDate.now().getMonthValue()
-                + "/" + LocalDate.now().getDayOfMonth() + "  " + "Urgency: " + "unassigned" + "  " + "Time left: tbd");
+                + "/" + LocalDate.now().getDayOfMonth() + "  " + "Urgency: " + "unassigned" + "  " + "Time left: tbd"
+                + "  " + "Starred: false");
     }
 
 

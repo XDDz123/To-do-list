@@ -3,12 +3,11 @@ package model;
 import exceptions.TaskDoesNotExistException;
 import exceptions.TaskException;
 import exceptions.TooManyIncompleteTasksException;
-import exceptions.UIException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,12 +25,13 @@ class TaskListTest {
     private String taskContent = "empty task";
     private LocalDate taskDueDate = LocalDate.now();
     private String taskUrgency = "unassigned";
+    private Boolean starred = false;
 
     @BeforeEach
     void runBefore() {
         taskList = new TaskList("");
         try {
-            task = new IncompleteTask(taskList, taskContent, taskDueDate, taskUrgency);
+            task = new IncompleteTask(taskList, taskContent, taskDueDate, taskUrgency, starred);
         } catch (TaskException e) {
             fail();
         }
@@ -48,9 +48,9 @@ class TaskListTest {
         assertEquals(taskList.getTaskListSize(), 1);
 
         try {
-            task1 = new IncompleteTask(taskList, "a", taskDueDate, taskUrgency);
+            task1 = new IncompleteTask(taskList, "a", taskDueDate, taskUrgency, starred);
             assertEquals(taskList.getTaskListSize(), 2);
-            task2 = new IncompleteTask(taskList, "b", taskDueDate, taskUrgency);
+            task2 = new IncompleteTask(taskList, "b", taskDueDate, taskUrgency, starred);
         } catch (TaskException e) {
             fail();
         }
@@ -60,7 +60,7 @@ class TaskListTest {
     @Test
     void duplicateTaskTest() {
         try {
-            new IncompleteTask(taskList, taskContent, taskDueDate, taskUrgency);
+            new IncompleteTask(taskList, taskContent, taskDueDate, taskUrgency, starred);
             //fail();
         } catch (TooManyIncompleteTasksException e) {
             fail();
@@ -117,10 +117,10 @@ class TaskListTest {
     void runBeforeGetTaskByAndSortAndPrint() {
 
         try {
-            task1 = new IncompleteTask(taskList, "a", taskDueDate, taskUrgency);
-            task2 = new IncompleteTask(taskList, "b", taskDueDate, taskUrgency);
-            task3 = new IncompleteTask(taskList, "c", taskDueDate, taskUrgency);
-            task4 = new IncompleteTask(taskList, "d", taskDueDate, taskUrgency);
+            task1 = new IncompleteTask(taskList, "a", taskDueDate, taskUrgency, starred);
+            task2 = new IncompleteTask(taskList, "b", taskDueDate, taskUrgency, starred);
+            task3 = new IncompleteTask(taskList, "c", taskDueDate, taskUrgency, starred);
+            task4 = new IncompleteTask(taskList, "d", taskDueDate, taskUrgency, starred);
         } catch (TaskException e) {
             fail();
         }
@@ -183,8 +183,8 @@ class TaskListTest {
     void sortByDueDateTest() {
         runBeforeGetTaskByAndSortAndPrint();
         CompletedTask task5;
-        ImportantTask task6;
-        ImportantTask task7;
+        IncompleteTask task6;
+        IncompleteTask task7;
         CompletedTask task8;
         CompletedTask task9;
         ArrayList<Task> list1;
@@ -192,18 +192,18 @@ class TaskListTest {
 
         try {
             task5= new CompletedTask(taskList,"empty task 5", LocalDate.now(), "tbd");
-            task6 = new ImportantTask(
+            task6 = new IncompleteTask(
                     taskList,
                     "empty task 6",
                     LocalDate.of(2019,3,4),
                     "tbd",
-                    "tbd");
-            task7 = new ImportantTask(
+                    starred);
+            task7 = new IncompleteTask(
                     taskList,
                     "empty task 7",
                     LocalDate.of(2019,3,5),
                     "tbd",
-                    "tbd");
+                    starred);
             task8 = new CompletedTask(taskList,"empty task 8", LocalDate.now(), "tbd");
             task9 = new CompletedTask(taskList,"empty task 9", LocalDate.now(), "tbd");
 
@@ -233,11 +233,11 @@ class TaskListTest {
     void sortByDueDateAlt() {
         try {
             new CompletedTask(taskList,"empty task 11", LocalDate.now(), "tbd");
-            new ImportantTask(taskList,
+            new IncompleteTask(taskList,
                     "empty task 10",
                     LocalDate.of(2019,3,4),
                     "tbd",
-                    "tbd");
+                    starred);
         } catch (TaskException e) {
             fail();
         }
@@ -250,11 +250,11 @@ class TaskListTest {
     void printTaskListTest() {
         runBeforeGetTaskByAndSortAndPrint();
         assertEquals(taskList.printTaskList(),
-                "1 : empty task  Due: 1/2  Urgency: high  Time left: tbd\n" +
-                "2 : a  Due: 3/4  Urgency: high  Time left: tbd\n" +
-                "3 : b  Due: 2/3  Urgency: mid  Time left: tbd\n" +
-                "4 : c  Due: 6/7  Urgency: unassigned  Time left: tbd\n" +
-                "5 : d  Due: 5/6  Urgency: unassigned  Time left: tbd");
+                "1 : empty task  Due: 1/2  Urgency: high  Time left: tbd  Starred: false\n" +
+                "2 : a  Due: 3/4  Urgency: high  Time left: tbd  Starred: false\n" +
+                "3 : b  Due: 2/3  Urgency: mid  Time left: tbd  Starred: false\n" +
+                "4 : c  Due: 6/7  Urgency: unassigned  Time left: tbd  Starred: false\n" +
+                "5 : d  Due: 5/6  Urgency: unassigned  Time left: tbd  Starred: false");
     }
 
     @Test
@@ -275,11 +275,11 @@ class TaskListTest {
 
         System.out.println(taskList.printIncompleteTasks());
         assertEquals(taskList.printIncompleteTasks(),
-                "1 : empty task  Due: 1/2  Urgency: high  Time left: tbd\n" +
-                        "2 : a  Due: 3/4  Urgency: high  Time left: tbd\n" +
-                        "3 : b  Due: 2/3  Urgency: mid  Time left: tbd\n" +
-                        "4 : c  Due: 6/7  Urgency: unassigned  Time left: tbd\n" +
-                        "5 : d  Due: 5/6  Urgency: unassigned  Time left: tbd");
+                "1 : empty task  Due: 1/2  Urgency: high  Time left: tbd  Starred: false\n" +
+                        "2 : a  Due: 3/4  Urgency: high  Time left: tbd  Starred: false\n" +
+                        "3 : b  Due: 2/3  Urgency: mid  Time left: tbd  Starred: false\n" +
+                        "4 : c  Due: 6/7  Urgency: unassigned  Time left: tbd  Starred: false\n" +
+                        "5 : d  Due: 5/6  Urgency: unassigned  Time left: tbd  Starred: false");
 
         taskList.clearTaskList();
         assertEquals(taskList.printIncompleteTasks(), "No tasks found.");
@@ -289,7 +289,7 @@ class TaskListTest {
     void overLoadInsertExceptionTest() {
         try {
             for (int i = 0; i <= TaskList.maxSize; i++) {
-                task = new IncompleteTask(taskList, Integer.toString(i), taskDueDate, taskUrgency);
+                task = new IncompleteTask(taskList, Integer.toString(i), taskDueDate, taskUrgency, starred);
             }
         } catch (TaskException e) {
             assertEquals(e.getMessage(), "Too many incomplete tasks!");
