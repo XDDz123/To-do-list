@@ -33,13 +33,6 @@ class SaveInfoFormatter {
                 + ((IncompleteTask) task).getStarred();
     }
 
-/*    //EFFECTS: Returns information in an important task in the following format
-    private String formatImportantTaskInfo(Task task) {
-        return TaskReconstructor.importantTaskIdentifier + separator
-                + formatGeneralTaskInfo(task) + separator
-                + ((ImportantTask) task).getImportance();
-    }*/
-
     //EFFECTS: Returns information in a incomplete task in the following format
     private String formatIncompleteTaskInfo(Task task) {
         return TaskReconstructor.incompleteTaskIdentifier + separator
