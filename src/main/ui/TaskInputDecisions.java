@@ -170,39 +170,4 @@ class TaskInputDecisions {
         }
         return !starred;
     }
-
-/*    //EFFECTS: Prompts the user to set the level of importance of a task
-    //         Returns the selected level of importance
-    //         (1) Extreme Importance
-    //         (2) High Importance
-    //         (3) Medium Importance
-    //         else displays error message and restarts the method.
-    String setImportanceDecision(String taskImportance) {
-        messages.setImportanceMessage();
-
-        Scanner keyboard = new Scanner(System.in);
-
-        if (keyboard.hasNextInt()) {
-            int input = keyboard.nextInt();
-
-            if (input == 1) {
-                return this.taskImportance = importanceExtreme;
-            } else if (input == 2) {
-                return this.taskImportance = importanceHigh;
-            } else if (input == 3) {
-                return this.taskImportance = importanceMid;
-            } else {
-                return setImportanceError(taskImportance);
-            }
-        } else {
-            return setImportanceError(taskImportance);
-        }
-    }
-
-    //EFFECTS: Displays error message and starts the method that prompts the user to set importance.
-    private String setImportanceError(String taskImportance) {
-        messages.notAnOptionTryAgainError();
-        setImportanceDecision(taskImportance);
-        return this.taskImportance;
-    }*/
 }

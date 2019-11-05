@@ -11,7 +11,6 @@ import java.util.ArrayList;
 class TaskReconstructor {
 
     private static final int starredIndex = 7;
-    //private static final int taskImportanceIndex = 7;
     private static final int completionStatusIndex = 6;
     private static final int taskUrgencyIndex = 6;
     private static final int yearIndex = 5;
@@ -19,7 +18,6 @@ class TaskReconstructor {
     private static final int monthIndex = 3;
     private static final int taskContentIndex = 1;
 
-    //static final String importantTaskIdentifier = "*";
     static final String incompleteTaskIdentifier = "@";
     static final String completedTaskIdentifier = "#";
 
@@ -33,7 +31,7 @@ class TaskReconstructor {
     //              -else create a task from the given info and sets the time until using the current year
     //         else create an important task from the given info and sets the time until due using the next year.
     //         Stores created tasks in the given taskList.
-    void createTaskSetYear(ArrayList<String> partsOfLine, ArrayList<Task> taskList, String taskType)
+    void createTaskSetYear(ArrayList<String> partsOfLine, ArrayList<Task> taskList)
             throws TaskException {
         if (taskDueDate.isBefore(LocalDate.now())) {
             createPastDueTask(taskList);
@@ -43,17 +41,8 @@ class TaskReconstructor {
         }
     }
 
-    //from above
-    /*            if (taskType.equals(importantTaskIdentifier)) {
-                createImportantTask(partsOfLine, taskList);
-            } else {
-                createIncompleteTask(partsOfLine, taskList);
-            }*/
-    //fetches and updates most recent/the last entry in the list
-
     //EFFECTS: returns true if given identifier equals importantTaskIdentifier or incompleteTaskIdentifier
     private boolean checkIdentifier(String identifier) {
-        //return identifier.equals(importantTaskIdentifier) || identifier.equals(incompleteTaskIdentifier);
         return identifier.equals(incompleteTaskIdentifier);
     }
 
@@ -62,7 +51,7 @@ class TaskReconstructor {
             throws TaskException {
         if (checkIdentifier(identifier)) {
             setGeneralTaskField(partsOfLine);
-            createTaskSetYear(partsOfLine, taskList, identifier);
+            createTaskSetYear(partsOfLine, taskList);
         } else {
             createCompletedTask(partsOfLine, taskList);
         }
@@ -93,19 +82,6 @@ class TaskReconstructor {
         setIncompleteTaskField(partsOfLine);
         taskList.add(new IncompleteTask(null, taskContent, taskDueDate, partsOfLine.get(taskUrgencyIndex), starred));
     }
-
-/*    //MODIFIES: this
-    //EFFECTS: Uses the given information stored in the list partsOfLine to create a new important task.
-    //         Stores the created task in the list of tasks.
-    private void createImportantTask(ArrayList<String> partsOfLine, ArrayList<Task> taskList)
-            throws TaskException {
-        taskList.add(new ImportantTask(
-                null,
-                taskContent,
-                taskDueDate,
-                partsOfLine.get(taskUrgencyIndex),
-                partsOfLine.get(taskImportanceIndex)));
-    }*/
 
     //MODIFIES: this
     //EFFECTS: Loads information from the list partsOfLine into the temporary variables of:

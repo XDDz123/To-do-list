@@ -22,14 +22,6 @@ class SaveAndLoadHelperTest {
         taskList = new ArrayList<>();
     }
 
-/*    @Test
-    void clearSaveTest() throws IOException {
-        File file = new File("clearTest.txt");
-        saveAndLoad.clearSave("clearTest.txt", taskList);
-        assertEquals(file.length(), 0);
-        assertTrue(taskList.isTaskListEmpty());
-    }*/
-
     @Test
     void separateOnTildeTest() {
         String line = "task I~high~2~3~false";
@@ -67,7 +59,7 @@ class SaveAndLoadHelperTest {
         taskReconstructor.setGeneralTaskField(partsOfLine);
 
         try {
-            taskReconstructor.createTaskSetYear(partsOfLine, taskList, TaskReconstructor.incompleteTaskIdentifier);
+            taskReconstructor.createTaskSetYear(partsOfLine, taskList);
         } catch (TaskException e) {
             fail();
         }
@@ -94,7 +86,7 @@ class SaveAndLoadHelperTest {
         taskReconstructor.setGeneralTaskField(partsOfLine);
 
         try {
-            taskReconstructor.createTaskSetYear(partsOfLine, taskList, TaskReconstructor.incompleteTaskIdentifier);
+            taskReconstructor.createTaskSetYear(partsOfLine, taskList);
         } catch (TaskException e) {
             fail();
         }
@@ -122,7 +114,7 @@ class SaveAndLoadHelperTest {
         taskReconstructor.setGeneralTaskField(partsOfLine);
 
         try {
-            taskReconstructor.createTaskSetYear(partsOfLine, taskList, TaskReconstructor.incompleteTaskIdentifier);
+            taskReconstructor.createTaskSetYear(partsOfLine, taskList);
         } catch (TaskException e) {
             fail();
         }

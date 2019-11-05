@@ -60,29 +60,12 @@ class Messages {
         System.out.println("Press enter to continue or type 'exit' to exit from the current list.");
     }
 
-    void selectTaskTypeMessage() {
-        System.out.println("Type in '1' to enter a task.");
-    }
-
     //EFFECTS: Prints the following.
     void selectDeleteTaskMessage() {
         System.out.println("Type in '1' to delete a task.");
         System.out.println("Type in '2' to delete all tasks.");
         System.out.println("Type in '0' to return to the previous menu.");
     }
-
-/*
-    //EFFECTS: Prints the following.
-    void saveAndClearSaveMessage() {
-        System.out.println("Type in '1' to save current list of tasks.");
-        System.out.println("Type in '2' to clear the previous save.");
-        System.out.println("Type in '0' to return to the previous menu.");
-    }
-*/
-
-/*    public void savedMessage() {
-        System.out.println("Tasks saved successfully.");
-    }*/
 
     //EFFECTS: Prints the following.
     void selectViewTasksByMessage() {
@@ -104,14 +87,6 @@ class Messages {
     void notAnOptionTryAgainError() {
         System.out.println("Not an option. Please try again.");
         System.out.println("  ");
-    }
-
-    //EFFECTS: Prints the following.
-    void setImportanceMessage() {
-        System.out.println("Set importance.");
-        System.out.println("Type in '1' for extreme importance.");
-        System.out.println("Type in '2' for high importance");
-        System.out.println("Type in '3' for medium importance");
     }
 
     //EFFECTS: Prints the following.
@@ -235,11 +210,6 @@ class Messages {
     void notIntegerError() {
         System.out.println("Error enter an integer!");
     }
-
-/*    //EFFECTS: Prints the following.
-    void notAnOptionError() {
-        System.out.println("Error! Not an option.");
-    }*/
 
     //EFFECTS: Prints the following.
     void exceptionErrorMessage(Exception e) {

@@ -169,29 +169,6 @@ class UserInputDecisions {
         }
     }
 
-/*    //REQUIRES: taskList.get(index) instanceOf ImportantTask
-    //MODIFIES: taskList.get(index)
-    //EFFECTS: Prompts the user to select which field of a incomplete task to modify.
-    //         Displays a change importance option in addition to options displayed in modifyTask().
-    //         Prints not an option error message if the user did not select a valid option.
-    private void modifyImportantTask(TaskList taskList, int index) throws NotAnOptionException {
-
-        messages.modifyImportantTaskMessage();
-
-        Scanner keyboard = new Scanner(System.in);
-        String input = keyboard.nextLine();
-
-        ImportantTask importantTask = (ImportantTask) (taskList.getTask(index));
-
-        if (! modifyTask(input, index, importantTask, taskList)) {
-            if ((input.equals("5"))) {
-                importantTask.setImportance(taskInputDecisions.setImportanceDecision(importantTask.getImportance()));
-            } else {
-                throw new NotAnOptionException();
-            }
-        }
-    }*/
-
     //MODIFIES: taskList.get(index)
     //EFFECTS: Prompts the user to modify important task is taskList.get(index) is an ImportantTask.
     //         Prompts the user to modify incomplete task if taskList.get(index) is a IncompleteTask.

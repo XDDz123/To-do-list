@@ -6,13 +6,10 @@ import java.io.PrintWriter;
 
 class SaveInfoFormatter {
 
-    private String separator = SaveAndLoad.separator;
+    private String separator = Load.separator;
 
     //EFFECTS: Saves information in tasks onto the save file
     void saveTaskInfo(PrintWriter writer, Task task) {
-/*        if (task instanceof ImportantTask) {
-            writer.println(formatImportantTaskInfo(task));
-        } else */
         if (task instanceof IncompleteTask) {
             writer.println(formatIncompleteTaskInfo(task));
         } else {

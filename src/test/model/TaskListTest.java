@@ -58,11 +58,9 @@ class TaskListTest {
     void duplicateTaskTest() {
         try {
             new IncompleteTask(taskList, taskContent, taskDueDate, taskUrgency, starred);
-            //fail();
         } catch (TaskException e) {
             fail();
-        }//System.out.println("Test passed.");
-
+        }
     }
 
     @Test
