@@ -174,9 +174,6 @@ class UserInputDecisions {
     //         Prompts the user to modify incomplete task if taskList.get(index) is a IncompleteTask.
     //         Else return cannot modify completed task error message.
     private void attemptModifyTask(TaskList taskList, int index) throws UIException {
-        /*if (taskList.getTask(index) instanceof ImportantTask) {
-            modifyImportantTask(taskList, index);
-        } else */
         if (taskList.getTask(index) instanceof IncompleteTask) {
             modifyIncompleteTask(taskList, index);
         } else {

@@ -130,16 +130,6 @@ class Messages {
         System.out.println("Type in '0' to return to the previous menu.");
     }
 
-/*    //EFFECTS: Prints the following.
-    void modifyImportantTaskMessage() {
-        System.out.println("Type in '1' to set task as complete.");
-        System.out.println("Type in '2' to change task due date.");
-        System.out.println("Type in '3' to change task urgency.");
-        System.out.println("Type in '4' to change task content.");
-        System.out.println("Type in '5' to change task importance.");
-        System.out.println("Type in '0' to return to the previous menu.");
-    }*/
-
     //EFFECTS: Prints the following.
     void printTask(Task task) {
         System.out.println("-----------------------------------------------------------------------------------------");
@@ -190,11 +180,6 @@ class Messages {
     void unStarTaskMessage() {
         System.out.println("Task is now un-starred.");
     }
-
-/*    //EFFECTS: Prints the current task list and the following text.
-    void cantModifyCompletedTaskError() {
-        System.out.println("Error! Completed tasks can not be modified.");
-    }*/
 
     //EFFECTS: Prints the following.
     void nameAlreadyExistsError() {

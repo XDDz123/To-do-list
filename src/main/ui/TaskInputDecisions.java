@@ -12,17 +12,7 @@ class TaskInputDecisions {
     private static final String low = "low";
     private String taskUrgency = "unassigned";
     private LocalDate taskDueDate;
-
-    /*
-    private String taskImportance = "unassigned";
-
-    private static final String importanceExtreme = "Extreme Importance";
-    private static final String importanceHigh = "High Importance";
-    private static final String importanceMid = "Medium Importance";
-    */
-
     private final Messages messages = new Messages();
-
 
     //MODIFIES: this
     //EFFECTS: Checks the validity of the user input and returns a task urgency based on user input:

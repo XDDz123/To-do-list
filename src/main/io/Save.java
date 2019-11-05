@@ -3,12 +3,10 @@ package io;
 import model.Task;
 import model.TaskList;
 import model.TaskListHashMap;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 
 public class Save {
-
     private final SaveInfoFormatter saveInfoFormatter = new SaveInfoFormatter();
 
     //REQUIRES: save.txt to exist
