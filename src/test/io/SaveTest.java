@@ -53,7 +53,7 @@ class SaveTest {
         save.save(taskListHashMap, "saveTest.txt", "keyList");
         try {
             (new Load()).load(taskListHashMap1, "saveTest.txt", "keyList");
-        } catch (TaskException e) {
+        } catch (TaskException | ClassNotFoundException e) {
             fail();
         }
 

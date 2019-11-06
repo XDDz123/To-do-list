@@ -23,7 +23,7 @@ public class Load {
     //inspired by https://www.mkyong.com/java/how-to-read-and-write-java-object-to-a-file/
     //inspired by https://www.geeksforgeeks.org/customized-serialization-and-deserialization-in-java/
     public void load(TaskListHashMap taskListHashMap, String saveFile, String keyList)
-            throws IOException, TaskException, NumberFormatException {
+            throws IOException, TaskException, NumberFormatException, ClassNotFoundException {
 
         List<String> lines = Files.readAllLines(Paths.get(keyList));
         ArrayList<Task> taskList = new ArrayList<>();
@@ -41,7 +41,8 @@ public class Load {
 
     //MODIFIES: taskList
     //EFFECTS: Loops until save file is out of tasks to de-serialize or errors are encountered during de-serialization
-    private void populateTaskList(ArrayList<Task> taskList, ObjectInputStream objectInputStream) {
+    private void populateTaskList(ArrayList<Task> taskList, ObjectInputStream objectInputStream)
+            throws TaskException, ClassNotFoundException {
         boolean run = true;
         while (run) {
             run = createTask(taskList, objectInputStream);
@@ -56,13 +57,11 @@ public class Load {
     //         If there are too many tasks already in the list, catch TaskException, return false.
     //inspired by https://www.mkyong.com/java/how-to-read-and-write-java-object-to-a-file/
     //inspired by https://www.geeksforgeeks.org/customized-serialization-and-deserialization-in-java/
-    private boolean createTask(ArrayList<Task> taskList, ObjectInputStream objectInputStream) {
+    private boolean createTask(ArrayList<Task> taskList, ObjectInputStream objectInputStream)
+            throws TaskException, ClassNotFoundException {
         try {
             readTaskObject(taskList, objectInputStream);
         } catch (NullPointerException | IOException e) {
-            return false;
-        } catch (ClassNotFoundException | TaskException e) {
-            System.out.println("Something went wrong!");
             return false;
         }
         return true;

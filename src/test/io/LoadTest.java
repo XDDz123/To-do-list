@@ -24,7 +24,7 @@ class LoadTest {
     void loadTest() throws IOException {
         try {
             loadable.load(taskListHashMap, "loadTest.txt", "keyList");
-        } catch (TaskException e) {
+        } catch (TaskException | ClassNotFoundException e) {
             assertEquals(e.getMessage(), "Too many incomplete tasks.");
         }
 
