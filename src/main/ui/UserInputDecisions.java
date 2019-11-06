@@ -323,15 +323,11 @@ class UserInputDecisions {
             messages.fileNotFoundError();
         } catch (TaskException | IOException e) {
             messages.exceptionErrorMessage(e);
-        } catch (ClassNotFoundException e) {
-            System.out.println("class not found");;
+        } catch (Exception e) {
+            messages.badFormattingError();
         } finally {
             messages.loadAttemptedMessage();
         }
-/*
-        catch (Exception e) {
-            messages.badFormattingError();
-        }*/
     }
 
     //MODIFIES: taskListHashMap

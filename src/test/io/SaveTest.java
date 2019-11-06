@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-class SavableTest {
+class SaveTest {
 
     private TaskListHashMap taskListHashMap;
     private TaskListHashMap taskListHashMap1;
@@ -32,7 +32,7 @@ class SavableTest {
             new CompletedTask(taskList,"task IV", (LocalDate.of(2019, 10, 4)), "past due");
             new CompletedTask(taskList1,"task VII", (LocalDate.of(2019, 4, 5)), "4/5");
 
-            new IncompleteTask(taskList1,"task V", (LocalDate.of(2019, 12, 2)),
+            new IncompleteTask(taskList1,"task V", (LocalDate.of(2019, 5, 2)),
                     "mid", true);
 
             new IncompleteTask(taskList1,"task VI", (LocalDate.of(2020, 10, 3)),
@@ -53,7 +53,7 @@ class SavableTest {
         save.save(taskListHashMap, "saveTest.txt", "keyList");
         try {
             (new Load()).load(taskListHashMap1, "saveTest.txt", "keyList");
-        } catch (TaskException | ClassNotFoundException e) {
+        } catch (TaskException e) {
             fail();
         }
 
@@ -76,7 +76,7 @@ class SavableTest {
         assertEquals(((CompletedTask) taskListHashMap.getTaskList("b").getTask(1)).getCompletionStatus(), "4/5");
 
         assertEquals(taskListHashMap.getTaskList("b").getTask(2).getContent(), "task V");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getDueDateObj(), LocalDate.of(2019,12,2));
+        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getDueDateObj(), LocalDate.of(2019,5,2));
         assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(2)).getUrgency(), "mid");
         assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(2)).getStarred(), true);
 

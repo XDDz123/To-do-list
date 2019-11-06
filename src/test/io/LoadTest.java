@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-class LoadableTest {
+class LoadTest {
 
     private Load loadable;
     private TaskListHashMap taskListHashMap;
@@ -23,8 +23,8 @@ class LoadableTest {
     @Test
     void loadTest() throws IOException {
         try {
-            loadable.load(taskListHashMap, "saveTest.txt", "keyList");
-        } catch (TaskException | ClassNotFoundException e) {
+            loadable.load(taskListHashMap, "loadTest.txt", "keyList");
+        } catch (TaskException e) {
             assertEquals(e.getMessage(), "Too many incomplete tasks.");
         }
 
@@ -47,9 +47,8 @@ class LoadableTest {
         assertEquals(((CompletedTask) taskListHashMap.getTaskList("b").getTask(1)).getCompletionStatus(), "4/5");
 
         assertEquals(taskListHashMap.getTaskList("b").getTask(2).getContent(), "task V");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getDueDateObj(), LocalDate.of(2019,12,2));
-        assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(2)).getUrgency(), "mid");
-        assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(2)).getStarred(), true);
+        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getDueDateObj(), LocalDate.of(2019,5,2));
+        assertEquals(((CompletedTask) taskListHashMap.getTaskList("b").getTask(2)).getCompletionStatus(), "past due");
 
         assertEquals(taskListHashMap.getTaskList("b").getTask(3).getContent(), "task VI");
         assertEquals(taskListHashMap.getTaskList("b").getTask(3).getDueDateObj(), LocalDate.of(2020,10,3));

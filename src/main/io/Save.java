@@ -10,13 +10,12 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 
 public class Save {
-    //private final SaveInfoFormatter saveInfoFormatter = new SaveInfoFormatter();
 
-    //REQUIRES: save.txt to exist
-    //MODIFIES: save.txt
-    //EFFECTS: Takes current hash map of task lists and writes the included information
+    //MODIFIES: save
+    //EFFECTS: Takes current hash map of task lists and writes (serializes) the included information
     //         in the following format to save.txt.
-    //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3
+    //inspired by https://www.mkyong.com/java/how-to-read-and-write-java-object-to-a-file/
+    //inspired by https://www.geeksforgeeks.org/customized-serialization-and-deserialization-in-java/
     public void save(TaskListHashMap taskListHashMap, String saveFile, String keyList) throws IOException {
         PrintWriter writer = new PrintWriter(keyList,"UTF-8");
         FileOutputStream fos = new FileOutputStream(saveFile);
@@ -27,7 +26,7 @@ public class Save {
         fos.close();
     }
 
-    //EFFECTS: saves the given HashMap onto the save file
+    //EFFECTS: Calls saveTaskList to serialize every taskList stored in the given HashMap
     private void saveHashMap(TaskListHashMap taskListHashMap, PrintWriter writer, ObjectOutputStream oos)
             throws IOException {
         for (Object key : taskListHashMap.getKeys()) {
@@ -36,10 +35,11 @@ public class Save {
         }
     }
 
-    //EFFECTS: saves the given taskList onto the save file
+    //EFFECTS: serializes tasks in the given taskList and writes the information to the save file
+    //inspired by https://www.mkyong.com/java/how-to-read-and-write-java-object-to-a-file/
+    //inspired by https://www.geeksforgeeks.org/customized-serialization-and-deserialization-in-java/
     private void saveTaskList(PrintWriter writer, TaskList taskList, ObjectOutputStream oos) throws IOException {
         for (Task task : taskList.getTaskList()) {
-            //saveInfoFormatter.saveTaskInfo(writer, task);
             writer.println(task.getTaskList().getName());
             oos.writeObject(task);
         }
