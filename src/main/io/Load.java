@@ -20,35 +20,27 @@ public class Load {
     public void load(TaskListHashMap taskListHashMap, String saveFile)
             throws IOException, TaskException, NumberFormatException, ClassNotFoundException {
 
-        ArrayList<Task> taskList = new ArrayList<>();
         FileInputStream fileInputStream = new FileInputStream(saveFile);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+
+        ArrayList<Task> taskList = new ArrayList<>();
         ArrayList<String> listOfKeys = new ArrayList<>();
-        populateTaskList(taskList, objectInputStream);
+        populateTaskList(taskList, objectInputStream, listOfKeys);
 
         objectInputStream.close();
         fileInputStream.close();
 
-        keyCollector(taskList, listOfKeys);
-
         hashMapReconstructor.loadIntoHashMap(taskListHashMap, taskList, listOfKeys);
-    }
-
-    //MODIFIES: listOfKeys
-    //EFFECTS: collects the key stored in every task in the taskList into the listOfKeys
-    private void keyCollector(ArrayList<Task> taskList, ArrayList<String> listOfKeys) {
-        for (Task task : taskList) {
-            listOfKeys.add(task.getKey());
-        }
     }
 
     //MODIFIES: taskList
     //EFFECTS: Loops until save file is out of tasks to de-serialize or errors are encountered during de-serialization
-    private void populateTaskList(ArrayList<Task> taskList, ObjectInputStream objectInputStream)
+    private void populateTaskList(ArrayList<Task> taskList, ObjectInputStream objectInputStream,
+                                  ArrayList<String> listOfKeys)
             throws TaskException, ClassNotFoundException {
         boolean run = true;
         while (run) {
-            run = createTask(taskList, objectInputStream);
+            run = createTask(taskList, objectInputStream, listOfKeys);
         }
     }
 
@@ -60,10 +52,11 @@ public class Load {
     //         If there are too many tasks already in the list, catch TaskException, return false.
     //inspired by https://www.mkyong.com/java/how-to-read-and-write-java-object-to-a-file/
     //inspired by https://www.geeksforgeeks.org/customized-serialization-and-deserialization-in-java/
-    private boolean createTask(ArrayList<Task> taskList, ObjectInputStream objectInputStream)
+    private boolean createTask(ArrayList<Task> taskList, ObjectInputStream objectInputStream,
+                               ArrayList<String> listOfKeys)
             throws TaskException, ClassNotFoundException {
         try {
-            readTaskObject(taskList, objectInputStream);
+            readTaskObject(taskList, objectInputStream, listOfKeys);
         } catch (NullPointerException | IOException e) {
             return false;
         }
@@ -76,9 +69,11 @@ public class Load {
     //         Otherwise creates a past due completed task with identical information and adds this
     //         completed task to taskList. If this task is an incomplete task, set/update time left
     //         for this task.
-    private void readTaskObject(ArrayList<Task> taskList, ObjectInputStream objectInputStream)
+    private void readTaskObject(ArrayList<Task> taskList, ObjectInputStream objectInputStream,
+                                ArrayList<String> listOfKeys)
             throws IOException, ClassNotFoundException, TaskException {
         Task task = (Task) objectInputStream.readObject();
+        listOfKeys.add(task.getKey());
         //check if task is past due
         task = checkTaskPastDue(task);
         //adds task to list
@@ -94,9 +89,7 @@ public class Load {
     //         created from the given task's information, ow return the original task.
     private Task checkTaskPastDue(Task task) throws TaskException {
         if (task.getDueDateObj().isBefore(LocalDate.now()) && task instanceof IncompleteTask) {
-            String tempKey = task.getKey();
             task = new CompletedTask(null, task.getContent(), task.getDueDateObj(), CompletedTask.pastDue);
-            task.setKey(tempKey);
         }
         return task;
     }

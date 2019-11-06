@@ -31,12 +31,6 @@ public abstract class Task implements Serializable {
         return key;
     }
 
-    //MODIFIES: this
-    //EFFECTS: Sets the key for this task to the given key
-    public void setKey(String key) {
-        this.key = key;
-    }
-
     //EFFECTS: Returns the taskList of this task
     public TaskList getTaskList() {
         return taskList;
