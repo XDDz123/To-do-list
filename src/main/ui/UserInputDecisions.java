@@ -12,7 +12,8 @@ import java.util.*;
 
 class UserInputDecisions {
 
-    private final String fileName = "save.txt";
+    private final String saveFile = "save";
+    private final String keyList = "keyList";
     private final Messages messages = new Messages();
     private final TaskInputDecisions taskInputDecisions = new TaskInputDecisions();
 
@@ -317,16 +318,20 @@ class UserInputDecisions {
     private void tryLoad(TaskListHashMap taskListHashMap) {
         Load loadTasks = new Load();
         try {
-            loadTasks.load(taskListHashMap, fileName);
+            loadTasks.load(taskListHashMap, saveFile, keyList);
         } catch (NoSuchFileException e) {
             messages.fileNotFoundError();
         } catch (TaskException | IOException e) {
             messages.exceptionErrorMessage(e);
-        } catch (Exception e) {
-            messages.badFormattingError();
+        } catch (ClassNotFoundException e) {
+            System.out.println("class not found");;
         } finally {
             messages.loadAttemptedMessage();
         }
+/*
+        catch (Exception e) {
+            messages.badFormattingError();
+        }*/
     }
 
     //MODIFIES: taskListHashMap
@@ -440,7 +445,7 @@ class UserInputDecisions {
         } while (!checkExit());
 
         try {
-            saveTasks.save(taskListHashMap, fileName);
+            saveTasks.save(taskListHashMap, saveFile, keyList);
         } catch (IOException e) {
             messages.fileNotFoundError();
         }

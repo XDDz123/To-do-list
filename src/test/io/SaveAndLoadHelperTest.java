@@ -22,7 +22,7 @@ class SaveAndLoadHelperTest {
         taskList = new ArrayList<>();
     }
 
-    @Test
+/*    @Test
     void separateOnTildeTest() {
         String line = "task I~high~2~3~false";
         assertEquals(load.separateLine(line).get(0), "task I");
@@ -119,7 +119,7 @@ class SaveAndLoadHelperTest {
             fail();
         }
         assertEquals(((IncompleteTask) taskList.get(0)).getTimeLeft(), "1 months 1 days");
-    }
+    }*/
 
     @Test
     void loadInToHashMapTest() {

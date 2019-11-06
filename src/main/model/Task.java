@@ -1,12 +1,13 @@
 package model;
 
 import exceptions.TaskException;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public abstract class Task {
+public abstract class Task implements Serializable {
 
-    private TaskList taskList;
+    protected transient TaskList taskList;
     private String taskContent;
     protected LocalDate taskDueDate;
 

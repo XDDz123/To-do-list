@@ -23,8 +23,8 @@ class LoadableTest {
     @Test
     void loadTest() throws IOException {
         try {
-            loadable.load(taskListHashMap, "loadTest.txt");
-        } catch (TaskException e) {
+            loadable.load(taskListHashMap, "saveTest.txt", "keyList");
+        } catch (TaskException | ClassNotFoundException e) {
             assertEquals(e.getMessage(), "Too many incomplete tasks.");
         }
 
@@ -55,11 +55,6 @@ class LoadableTest {
         assertEquals(taskListHashMap.getTaskList("b").getTask(3).getDueDateObj(), LocalDate.of(2020,10,3));
         assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(3)).getUrgency(), "mid");
         assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(3)).getStarred(), false);
-
-        assertEquals(taskListHashMap.getTaskList("b").getTask(4).getContent(), "task VI");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(4).getDueDateObj(), LocalDate.of(2020,10,3));
-        assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(4)).getUrgency(), "mid");
-        assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(4)).getStarred(), false);
     }
 
 }

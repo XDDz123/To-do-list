@@ -50,10 +50,10 @@ class SavableTest {
     @Test
     void saveTest() throws IOException {
 
-        save.save(taskListHashMap, "saveTest.txt");
+        save.save(taskListHashMap, "saveTest.txt", "keyList");
         try {
-            (new Load()).load(taskListHashMap1, "saveTest.txt");
-        } catch (TaskException e) {
+            (new Load()).load(taskListHashMap1, "saveTest.txt", "keyList");
+        } catch (TaskException | ClassNotFoundException e) {
             fail();
         }
 

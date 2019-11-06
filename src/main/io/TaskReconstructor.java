@@ -1,3 +1,4 @@
+/*
 package io;
 
 import exceptions.TaskException;
@@ -106,4 +107,4 @@ class TaskReconstructor {
         setGeneralTaskField(partsOfLine);
         completionStatus = partsOfLine.get(completionStatusIndex);
     }
-}
+}*/

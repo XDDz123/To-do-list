@@ -1,12 +1,12 @@
 package model;
 
 import exceptions.TaskException;
-
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class IncompleteTask extends Task {
+public class IncompleteTask extends Task implements Serializable {
 
-    private final TimeLeftUpdater timeLeftUpdater = new TimeLeftUpdater();
+    private transient TimeLeftUpdater timeLeftUpdater = new TimeLeftUpdater();
     private String taskUrgency;
     private Boolean starred;
 
@@ -55,6 +55,9 @@ public class IncompleteTask extends Task {
     //MODIFIES: this
     //EFFECTS: Updates time left until due to the most recent time left until due
     public void setTimeLeft() {
+        if (timeLeftUpdater == null) {
+            timeLeftUpdater = new TimeLeftUpdater();
+        }
         timeLeftUpdater.setTimeLeft(taskDueDate);
     }
 

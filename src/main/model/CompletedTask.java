@@ -1,9 +1,10 @@
 package model;
 
 import exceptions.TaskException;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class CompletedTask extends Task {
+public class CompletedTask extends Task implements Serializable {
 
     private String completionStatus;
     public static final String pastDue = "past due";
