@@ -9,7 +9,8 @@ public abstract class Task implements Serializable {
 
     protected transient TaskList taskList;
     private String taskContent;
-    protected LocalDate taskDueDate;
+    LocalDate taskDueDate;
+    private String key;
 
     //MODIFIES: this, taskList
     //EFFECTS: Constructs a new task.
@@ -21,7 +22,19 @@ public abstract class Task implements Serializable {
 
         if (taskList != null) {
             taskList.storeTask(this);
+            key = taskList.getName();
         }
+    }
+
+    //EFFECTS: Returns the key for this task
+    public String getKey() {
+        return key;
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Sets the key for this task to the given key
+    public void setKey(String key) {
+        this.key = key;
     }
 
     //EFFECTS: Returns the taskList of this task
@@ -38,10 +51,12 @@ public abstract class Task implements Serializable {
                     this.taskList.getTaskList().remove(this);
                 }
                 this.taskList = taskList;
+                this.key = taskList.getName();
                 taskList.storeTask(this);
             }
         } catch (NullPointerException e) {
             this.taskList = null;
+            this.key = null;
         }
     }
 
@@ -63,7 +78,7 @@ public abstract class Task implements Serializable {
     }
 
     //EFFECTS: Returns the due date of this task in the form of month/day. ie. 1/1
-    public String getDueDate() {
+    String getDueDate() {
         return getDate(taskDueDate);
     }
 

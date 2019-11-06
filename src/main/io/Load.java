@@ -1,17 +1,11 @@
 package io;
 
 import exceptions.TaskException;
-import model.CompletedTask;
-import model.IncompleteTask;
-import model.Task;
-import model.TaskListHashMap;
+import model.*;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Load {
 
@@ -22,21 +16,30 @@ public class Load {
     //         Adds these tasks to the given HashMap, a HashMap of lists of tasks.
     //inspired by https://www.mkyong.com/java/how-to-read-and-write-java-object-to-a-file/
     //inspired by https://www.geeksforgeeks.org/customized-serialization-and-deserialization-in-java/
-    public void load(TaskListHashMap taskListHashMap, String saveFile, String keyList)
+    //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3 (example given on edx)
+    public void load(TaskListHashMap taskListHashMap, String saveFile)
             throws IOException, TaskException, NumberFormatException, ClassNotFoundException {
 
-        List<String> lines = Files.readAllLines(Paths.get(keyList));
         ArrayList<Task> taskList = new ArrayList<>();
         FileInputStream fileInputStream = new FileInputStream(saveFile);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-        ArrayList<String> listOfKeys = new ArrayList<>(lines);
-
+        ArrayList<String> listOfKeys = new ArrayList<>();
         populateTaskList(taskList, objectInputStream);
 
         objectInputStream.close();
         fileInputStream.close();
 
+        keyCollector(taskList, listOfKeys);
+
         hashMapReconstructor.loadIntoHashMap(taskListHashMap, taskList, listOfKeys);
+    }
+
+    //MODIFIES: listOfKeys
+    //EFFECTS: collects the key stored in every task in the taskList into the listOfKeys
+    private void keyCollector(ArrayList<Task> taskList, ArrayList<String> listOfKeys) {
+        for (Task task : taskList) {
+            listOfKeys.add(task.getKey());
+        }
     }
 
     //MODIFIES: taskList
@@ -91,7 +94,9 @@ public class Load {
     //         created from the given task's information, ow return the original task.
     private Task checkTaskPastDue(Task task) throws TaskException {
         if (task.getDueDateObj().isBefore(LocalDate.now()) && task instanceof IncompleteTask) {
+            String tempKey = task.getKey();
             task = new CompletedTask(null, task.getContent(), task.getDueDateObj(), CompletedTask.pastDue);
+            task.setKey(tempKey);
         }
         return task;
     }

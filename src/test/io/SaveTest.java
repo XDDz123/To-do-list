@@ -50,9 +50,9 @@ class SaveTest {
     @Test
     void saveTest() throws IOException {
 
-        save.save(taskListHashMap, "saveTest.txt", "keyList");
+        save.save(taskListHashMap, "saveTest.txt");
         try {
-            (new Load()).load(taskListHashMap1, "saveTest.txt", "keyList");
+            (new Load()).load(taskListHashMap1, "saveTest.txt");
         } catch (TaskException | ClassNotFoundException e) {
             fail();
         }

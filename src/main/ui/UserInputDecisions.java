@@ -318,7 +318,7 @@ class UserInputDecisions {
     private void tryLoad(TaskListHashMap taskListHashMap) {
         Load loadTasks = new Load();
         try {
-            loadTasks.load(taskListHashMap, saveFile, keyList);
+            loadTasks.load(taskListHashMap, saveFile);
         } catch (NoSuchFileException e) {
             messages.fileNotFoundError();
         } catch (TaskException | IOException e) {
@@ -441,7 +441,7 @@ class UserInputDecisions {
         } while (!checkExit());
 
         try {
-            saveTasks.save(taskListHashMap, saveFile, keyList);
+            saveTasks.save(taskListHashMap, saveFile);
         } catch (IOException e) {
             messages.fileNotFoundError();
         }

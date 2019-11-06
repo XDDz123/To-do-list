@@ -23,7 +23,7 @@ class LoadTest {
     @Test
     void loadTest() throws IOException {
         try {
-            loadable.load(taskListHashMap, "loadTest.txt", "keyList");
+            loadable.load(taskListHashMap, "loadTest.txt");
         } catch (TaskException | ClassNotFoundException e) {
             assertEquals(e.getMessage(), "Too many incomplete tasks.");
         }
