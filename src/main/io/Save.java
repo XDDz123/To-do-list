@@ -1,7 +1,7 @@
 package io;
 
-import model.Task;
-import model.TaskList;
+import model.task.Task;
+import model.tasklist.TaskList;
 import model.TaskListHashMap;
 
 import java.io.FileOutputStream;

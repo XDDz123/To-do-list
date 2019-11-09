@@ -2,6 +2,9 @@ package io;
 
 import exceptions.TaskException;
 import model.*;
+import model.task.CompletedTask;
+import model.task.IncompleteTask;
+import model.task.Task;
 
 import java.io.*;
 import java.time.LocalDate;

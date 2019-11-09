@@ -1,8 +1,8 @@
 package io;
 
 import exceptions.TaskException;
-import model.Task;
-import model.TaskList;
+import model.task.Task;
+import model.tasklist.TaskList;
 import model.TaskListHashMap;
 import java.util.ArrayList;
 import java.util.List;

@@ -2,11 +2,14 @@ package io;
 
 import exceptions.TaskException;
 import model.*;
+import model.task.CompletedTask;
+import model.task.IncompleteTask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 class LoadTest {
@@ -23,9 +26,9 @@ class LoadTest {
     @Test
     void loadTest() throws IOException {
         try {
-            loadable.load(taskListHashMap, "loadTest.txt");
+            loadable.load(taskListHashMap, "saveTest.txt");
         } catch (TaskException | ClassNotFoundException e) {
-            assertEquals(e.getMessage(), "Too many incomplete tasks.");
+            fail();
         }
 
         assertEquals(taskListHashMap.getTaskList("a").getTask(1).getContent(),"task I");

@@ -1,6 +1,8 @@
-package model;
+package model.task;
 
 import exceptions.TaskException;
+import model.tasklist.TaskList;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 

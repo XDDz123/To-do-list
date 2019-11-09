@@ -1,6 +1,13 @@
-package model;
+package model.tasklist;
 
 import exceptions.*;
+import model.observer.ListSizeObserver;
+import model.observer.Observer;
+import model.observer.ObserverState;
+import model.task.CompletedTask;
+import model.task.IncompleteTask;
+import model.task.Task;
+
 import java.util.*;
 
 public class TaskList {
@@ -10,7 +17,7 @@ public class TaskList {
     private final Observer listSizeObserver = new ListSizeObserver();
     private ArrayList<Task> taskList;
     private String name;
-    static final int maxSize = 10;
+    public static final int maxSize = 10;
 
     //MODIFIES: this
     //EFFECTS: Constructs a new taskList as an ArrayList.
@@ -27,7 +34,7 @@ public class TaskList {
     //         else insert the task into this list and modify TaskList of the given task to this list
     public void storeTask(Task task) throws TaskException {
         if (!taskList.contains(task)) {
-            if (((ListSizeObserver) listSizeObserver).getSize() > maxSize && !(task instanceof CompletedTask)) {
+            if (filterOutCompleted().size() > maxSize && !(task instanceof CompletedTask)) {
                 throw new TooManyIncompleteTasksException();
             } else {
                 taskList.add(task);
@@ -80,12 +87,12 @@ public class TaskList {
     }
 
     //EFFECTS: Returns true if task list is empty, false otherwise.
-    boolean isTaskListEmpty() {
+    public boolean isTaskListEmpty() {
         return taskList.isEmpty();
     }
 
     //EFFECTS: Returns the size of the current task list
-    int getTaskListSize() {
+    public int getTaskListSize() {
         return taskList.size();
     }
 

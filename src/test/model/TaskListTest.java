@@ -2,6 +2,10 @@ package model;
 
 import exceptions.TaskDoesNotExistException;
 import exceptions.TaskException;
+import model.task.CompletedTask;
+import model.task.IncompleteTask;
+import model.task.Task;
+import model.tasklist.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -277,7 +281,7 @@ class TaskListTest {
     @Test
     void overLoadInsertExceptionTest() {
         try {
-            for (int i = 0; i <= TaskList.maxSize; i++) {
+            for (int i = 0; i <=  TaskList.maxSize; i++) {
                 task = new IncompleteTask(taskList, Integer.toString(i), taskDueDate, taskUrgency, starred);
             }
         } catch (TaskException e) {

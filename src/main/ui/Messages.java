@@ -1,10 +1,11 @@
 package ui;
 
-import model.Task;
-import model.TaskList;
+import model.observer.ObserverState;
+import model.task.Task;
+import model.tasklist.TaskList;
 import model.TaskListHashMap;
 
-class Messages {
+public class Messages {
 
     //EFFECTS: Prints the following.
     void welcomeMessage() {
@@ -214,5 +215,11 @@ class Messages {
     //EFFECTS: Prints the following.
     void badFormattingError() {
         System.out.println("bad formatting");
+    }
+
+    //EFFECTS: Prints the following.
+    public void listSizeObserverMessage(int size, String name) {
+        System.out.println("There are now " + size + " incomplete task(s) in the list named <"
+                + name + ">.");
     }
 }

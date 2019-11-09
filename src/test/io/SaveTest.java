@@ -2,6 +2,9 @@ package io;
 
 import exceptions.TaskException;
 import model.*;
+import model.task.CompletedTask;
+import model.task.IncompleteTask;
+import model.tasklist.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;

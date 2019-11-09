@@ -1,6 +1,8 @@
 package model;
 
 import exceptions.TaskException;
+import model.task.CompletedTask;
+import model.tasklist.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;

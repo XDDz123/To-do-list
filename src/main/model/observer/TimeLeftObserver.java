@@ -1,9 +1,9 @@
-package model;
+package model.observer;
 
 import java.time.LocalDate;
 import java.time.Period;
 
-class TimeLeftObserver implements Observer {
+public class TimeLeftObserver implements Observer {
 
     private String timeLeft;
 
@@ -17,7 +17,7 @@ class TimeLeftObserver implements Observer {
     }
 
     //EFFECTS: Returns how much time is left until the task is due
-    String getTimeLeft() {
+    public String getTimeLeft() {
         return timeLeft;
     }
 

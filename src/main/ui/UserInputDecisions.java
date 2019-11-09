@@ -4,6 +4,10 @@ import exceptions.*;
 import io.Load;
 import io.Save;
 import model.*;
+import model.task.CompletedTask;
+import model.task.IncompleteTask;
+import model.task.Task;
+import model.tasklist.TaskList;
 
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;

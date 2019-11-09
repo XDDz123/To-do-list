@@ -1,6 +1,8 @@
-package model;
+package model.task;
 
 import exceptions.TaskException;
+import model.tasklist.TaskList;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -72,7 +74,7 @@ public abstract class Task implements Serializable {
     }
 
     //EFFECTS: Returns the due date of this task in the form of month/day. ie. 1/1
-    String getDueDate() {
+    public String getDueDate() {
         return getDate(taskDueDate);
     }
 
@@ -90,7 +92,7 @@ public abstract class Task implements Serializable {
     public abstract String printTask();
 
     //EFFECTS: Prints the task content and due date in the following format
-    String printTaskContentAndDate() {
+    public String printTaskContentAndDate() {
         return getContent() + "  " + "Due: " + getDueDate() + "  ";
     }
 
