@@ -76,6 +76,11 @@ public class Load {
                                 ArrayList<String> listOfKeys)
             throws IOException, ClassNotFoundException, TaskException {
         Task task = (Task) objectInputStream.readObject();
+
+        if (task instanceof IncompleteTask) {
+            ((IncompleteTask) task).setTimeLeft();
+        }
+
         listOfKeys.add(task.getKey());
         //check if task is past due
         task = checkTaskPastDue(task);

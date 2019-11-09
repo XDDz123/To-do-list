@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 public class IncompleteTask extends Task implements Serializable {
 
-    private transient Observer timeLeftUpdater = new TimeLeftObserver();
+    private transient Observer timeLeftObserver = new TimeLeftObserver();
     private String taskUrgency;
     private Boolean starred;
 
@@ -23,9 +23,8 @@ public class IncompleteTask extends Task implements Serializable {
         super(taskList, taskContent, taskDueDate);
         this.taskUrgency = taskUrgency;
         this.starred = starred;
-        timeLeftUpdater.update(new ObserverState<>(taskDueDate));
+        notifyObserver(new ObserverState<>(taskDueDate), timeLeftObserver);
     }
-
 
     //EFFECTS: Returns whether this task is starred.
     public Boolean getStarred() {
@@ -63,15 +62,15 @@ public class IncompleteTask extends Task implements Serializable {
     //         Creates a new timeLeftUpdater if the current timeLeftUpdater is null
     //         new timeLeftUpdater should be called after deserialization
     public void setTimeLeft() {
-        if (timeLeftUpdater == null) {
-            timeLeftUpdater = new TimeLeftObserver();
+        if (timeLeftObserver == null) {
+            timeLeftObserver = new TimeLeftObserver();
         }
-        timeLeftUpdater.update(new ObserverState<>(taskDueDate));
+        notifyObserver(new ObserverState<>(taskDueDate), timeLeftObserver);
     }
 
     //EFFECTS: Returns how much time is left until the task is due
     public String getTimeLeft() {
-        return ((TimeLeftObserver) timeLeftUpdater).getTimeLeft();
+        return ((TimeLeftObserver) timeLeftObserver).getTimeLeft();
     }
 
     public LocalDate getTaskDueDate() {

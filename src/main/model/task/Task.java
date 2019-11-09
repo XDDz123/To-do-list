@@ -1,13 +1,14 @@
 package model.task;
 
 import exceptions.TaskException;
+import model.observer.Observable;
 import model.tasklist.TaskList;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public abstract class Task implements Serializable {
+public abstract class Task extends Observable implements Serializable {
 
     private String key;
     protected transient TaskList taskList;

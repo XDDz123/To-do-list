@@ -2,7 +2,6 @@ package model.tasklist;
 
 import exceptions.EmptyListException;
 import model.task.Task;
-
 import java.util.ArrayList;
 
 class TaskListToString {

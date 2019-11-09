@@ -2,7 +2,7 @@ package model.tasklist;
 
 import exceptions.*;
 import model.observer.ListSizeObserver;
-import model.observer.Observer;
+import model.observer.Observable;
 import model.observer.ObserverState;
 import model.task.CompletedTask;
 import model.task.IncompleteTask;
@@ -10,11 +10,11 @@ import model.task.Task;
 
 import java.util.*;
 
-public class TaskList {
+public class TaskList extends Observable {
 
     private final TaskListSorter taskListFilterAndSorter = new TaskListSorter();
     private final TaskListToString taskListToString = new TaskListToString();
-    private final Observer listSizeObserver = new ListSizeObserver();
+    private final ListSizeObserver listSizeObserver = new ListSizeObserver();
     private ArrayList<Task> taskList;
     private String name;
     public static final int maxSize = 10;
@@ -39,11 +39,44 @@ public class TaskList {
             } else {
                 taskList.add(task);
                 task.setTaskList(this);
-                if (task instanceof IncompleteTask) {
-                    listSizeObserver.update(new ObserverState<>(1, name));
-                }
+                notify(task, 1);
             }
         }
+    }
+
+    //REQUIRES: index must refer to an existing index in the list of tasks
+    //MODIFIES: this, task
+    //EFFECTS: Removes a task in the current task list based on an index that starts at 1.
+    //         Sets this task's TaskList to null
+    public void deleteTask(int index) throws TaskDoesNotExistException, TaskException {
+        Task task;
+        try {
+            task = taskList.get(index - 1);
+            taskList.remove(index - 1);
+            notify(task, -1);
+        } catch (IndexOutOfBoundsException e) {
+            throw new TaskDoesNotExistException();
+        }
+        task.setTaskList(null);
+    }
+
+    //EFFECTS: notifies the timeLeftObserver of the changes to the size of the list
+    private void notify(Task task, int i) {
+        if (task instanceof IncompleteTask) {
+            notify(i);
+        }
+    }
+
+    //EFFECTS: notifies the timeLeftObserver of the changes to the size of the list
+    private void notify(int i) {
+        notifyObserver(new ObserverState<>(i, name), listSizeObserver);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Removes all tasks in the current task list
+    public void clearTaskList() {
+        notify(-taskList.size());
+        taskList.clear();
     }
 
     //EFFECTS: returns the name of this list
@@ -59,31 +92,6 @@ public class TaskList {
     //EFFECTS: Returns a task store in the current task list based on an index that starts at 1.
     public Task getTask(int index) {
         return taskList.get(index - 1);
-    }
-
-    //REQUIRES: index must refer to an existing index in the list of tasks
-    //MODIFIES: this, task
-    //EFFECTS: Removes a task in the current task list based on an index that starts at 1.
-    //         Sets this task's TaskList to null
-    public void deleteTask(int index) throws TaskDoesNotExistException, TaskException {
-        Task task;
-        try {
-            task = taskList.get(index - 1);
-            taskList.remove(index - 1);
-            if (task instanceof IncompleteTask) {
-                listSizeObserver.update(new ObserverState<>(-1, name));
-            }
-        } catch (IndexOutOfBoundsException e) {
-            throw new TaskDoesNotExistException();
-        }
-        task.setTaskList(null);
-    }
-
-    //MODIFIES: this
-    //EFFECTS: Removes all tasks in the current task list
-    public void clearTaskList() {
-        listSizeObserver.update(new ObserverState<>(-taskList.size(), name));
-        taskList.clear();
     }
 
     //EFFECTS: Returns true if task list is empty, false otherwise.
