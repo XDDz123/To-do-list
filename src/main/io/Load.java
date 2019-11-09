@@ -78,10 +78,6 @@ public class Load {
         task = checkTaskPastDue(task);
         //adds task to list
         taskList.add(task);
-        //sets time left for incomplete task
-        if (task instanceof IncompleteTask) {
-            ((IncompleteTask) task).setTimeLeft();
-        }
     }
 
     //MODIFIES: task

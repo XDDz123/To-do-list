@@ -239,11 +239,11 @@ class TaskListTest {
     void printTaskListTest() {
         runBeforeGetTaskByAndSortAndPrint();
         assertEquals(taskList.printTaskList(),
-                "1 : empty task  Due: 1/2  Urgency: high  Time left: tbd  Starred: false\n" +
-                "2 : a  Due: 3/4  Urgency: high  Time left: tbd  Starred: false\n" +
-                "3 : b  Due: 2/3  Urgency: mid  Time left: tbd  Starred: false\n" +
-                "4 : c  Due: 6/7  Urgency: unassigned  Time left: tbd  Starred: false\n" +
-                "5 : d  Due: 5/6  Urgency: unassigned  Time left: tbd  Starred: false");
+                "1 : empty task  Due: 1/2  Urgency: high  Time left: due today  Starred: false\n" +
+                "2 : a  Due: 3/4  Urgency: high  Time left: due today  Starred: false\n" +
+                "3 : b  Due: 2/3  Urgency: mid  Time left: due today  Starred: false\n" +
+                "4 : c  Due: 6/7  Urgency: unassigned  Time left: due today  Starred: false\n" +
+                "5 : d  Due: 5/6  Urgency: unassigned  Time left: due today  Starred: false");
     }
 
     @Test
@@ -264,11 +264,11 @@ class TaskListTest {
 
         System.out.println(taskList.printIncompleteTasks());
         assertEquals(taskList.printIncompleteTasks(),
-                "1 : empty task  Due: 1/2  Urgency: high  Time left: tbd  Starred: false\n" +
-                        "2 : a  Due: 3/4  Urgency: high  Time left: tbd  Starred: false\n" +
-                        "3 : b  Due: 2/3  Urgency: mid  Time left: tbd  Starred: false\n" +
-                        "4 : c  Due: 6/7  Urgency: unassigned  Time left: tbd  Starred: false\n" +
-                        "5 : d  Due: 5/6  Urgency: unassigned  Time left: tbd  Starred: false");
+                "1 : empty task  Due: 1/2  Urgency: high  Time left: due today  Starred: false\n" +
+                        "2 : a  Due: 3/4  Urgency: high  Time left: due today  Starred: false\n" +
+                        "3 : b  Due: 2/3  Urgency: mid  Time left: due today  Starred: false\n" +
+                        "4 : c  Due: 6/7  Urgency: unassigned  Time left: due today  Starred: false\n" +
+                        "5 : d  Due: 5/6  Urgency: unassigned  Time left: due today  Starred: false");
 
         taskList.clearTaskList();
         assertEquals(taskList.printIncompleteTasks(), "No tasks found.");

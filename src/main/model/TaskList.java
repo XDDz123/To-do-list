@@ -7,6 +7,7 @@ public class TaskList {
 
     private final TaskListSorter taskListFilterAndSorter = new TaskListSorter();
     private final TaskListToString taskListToString = new TaskListToString();
+    private final Observer listSizeObserver = new ListSizeObserver();
     private ArrayList<Task> taskList;
     private String name;
     static final int maxSize = 10;
@@ -26,11 +27,14 @@ public class TaskList {
     //         else insert the task into this list and modify TaskList of the given task to this list
     public void storeTask(Task task) throws TaskException {
         if (!taskList.contains(task)) {
-            if (filterOutCompleted().size() > maxSize && !(task instanceof CompletedTask)) {
+            if (((ListSizeObserver) listSizeObserver).getSize() > maxSize && !(task instanceof CompletedTask)) {
                 throw new TooManyIncompleteTasksException();
             } else {
                 taskList.add(task);
                 task.setTaskList(this);
+                if (task instanceof IncompleteTask) {
+                    listSizeObserver.update(new ObserverState<>(1, name));
+                }
             }
         }
     }
@@ -59,6 +63,9 @@ public class TaskList {
         try {
             task = taskList.get(index - 1);
             taskList.remove(index - 1);
+            if (task instanceof IncompleteTask) {
+                listSizeObserver.update(new ObserverState<>(-1, name));
+            }
         } catch (IndexOutOfBoundsException e) {
             throw new TaskDoesNotExistException();
         }
@@ -68,6 +75,7 @@ public class TaskList {
     //MODIFIES: this
     //EFFECTS: Removes all tasks in the current task list
     public void clearTaskList() {
+        listSizeObserver.update(new ObserverState<>(-taskList.size(), name));
         taskList.clear();
     }
 

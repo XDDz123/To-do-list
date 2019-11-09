@@ -116,14 +116,14 @@ class TaskTest {
         TaskList taskList = null;
         try {
             task2 = new CompletedTask(null,"empty task", taskDueDate, "unassigned");
-            assertFalse(task.equals(task2));
+            assertNotEquals(task, task2);
         } catch (TaskException e) {
             fail();
         }
 
-        assertFalse(task.equals(task3));
-        assertFalse(task.equals(task4));
-        assertFalse(task.equals(taskList));
+        assertNotEquals(task, task3);
+        assertNotEquals(task, task4);
+        assertNotEquals(task, taskList);
     }
 
     @Test
@@ -132,7 +132,7 @@ class TaskTest {
         try {
             Task task1 = new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned", false);
             Task task2 = new CompletedTask(null,"empty task", taskDueDate, "unassigned");
-            assertFalse(task1.equals(task2));
+            assertNotEquals(task1, task2);
         } catch (TaskException e) {
             fail();
         }

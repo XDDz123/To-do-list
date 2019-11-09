@@ -7,10 +7,10 @@ import java.util.Objects;
 
 public abstract class Task implements Serializable {
 
+    private String key;
     protected transient TaskList taskList;
     private String taskContent;
     LocalDate taskDueDate;
-    private String key;
 
     //MODIFIES: this, taskList
     //EFFECTS: Constructs a new task.

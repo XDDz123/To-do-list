@@ -3,24 +3,17 @@ package model;
 import java.time.LocalDate;
 import java.time.Period;
 
-class TimeLeftUpdater {
+class TimeLeftObserver implements Observer {
 
     private String timeLeft;
 
-    TimeLeftUpdater() {
-        timeLeft = "tbd";
-    }
-
     //MODIFIES: this
     //EFFECTS: Updates time left until due to the most recent time left until due
-    void setTimeLeft(LocalDate dueDate) {
-        timeLeft = computeTimeLeft(dueDate);
-    }
-
-    //MODIFIES: this
-    //EFFECTS: Updates time left until due to the most recent time left until due
-    void changeTimeLeft(String timeLeft) {
-        this.timeLeft = timeLeft;
+    @Override
+    public void update(ObserverState observerState) {
+        if (observerState.getState() != null) {
+            timeLeft = computeTimeLeft((LocalDate) observerState.getState());
+        }
     }
 
     //EFFECTS: Returns how much time is left until the task is due
@@ -33,7 +26,6 @@ class TimeLeftUpdater {
     //         Returns the number of days left until due if due date is within a month from current date
     //         Returns the number of months and days otherwise.
     private String computeTimeLeft(LocalDate dueDate) {
-
         Period difference = Period.between(dueDate, LocalDate.now());
 
         if (dueDate.equals(LocalDate.now())) {
