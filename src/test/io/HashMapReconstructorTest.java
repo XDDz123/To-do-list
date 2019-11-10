@@ -21,7 +21,7 @@ class HashMapReconstructorTest {
     }
 
     @Test
-    void loadInToHashMapTest() {
+    void testLoadInToHashMap() {
         TaskListHashMap taskListHashMap = new TaskListHashMap();
         ArrayList<String> partsOfLine = new ArrayList<>();
         partsOfLine.add("a");

@@ -26,70 +26,69 @@ class IncompleteTaskTest {
     }
 
     @Test
-    void getStarredTest() {
+    void testGetStarred() {
         assertFalse(incompleteTask.getStarred());
     }
 
     @Test
-    void setStarredTest() {
+    void testSetStarred() {
         incompleteTask.setStarred(true);
         assertTrue(incompleteTask.getStarred());
     }
 
     @Test
-    void setUrgencyTest() {
+    void testSetUrgency() {
         incompleteTask.setUrgency(Urgency.HIGH);
         assertEquals(incompleteTask.getUrgency().getString(), "high");
     }
 
     @Test
-    void getUrgencyTest() {
+    void testGetUrgency() {
         assertEquals(incompleteTask.getUrgency(), Urgency.UNASSIGNED);
     }
 
     @Test
-    void printTaskTest() {
+    void testPrintTask() {
         assertEquals(incompleteTask.printTask(), "empty task"  + "  " + "Due: " + LocalDate.now().getMonthValue()
                 + "/" + LocalDate.now().getDayOfMonth() + "  " + "Urgency: " + "unassigned" + "  " + "Time left: due today"
                 + "  " + "Starred: false");
     }
 
-
     @Test
-    void setTimeLeftTest() {
+    void testSetTimeLeft() {
         incompleteTask.setTimeLeft();
         assertEquals(incompleteTask.getTimeLeft(), "due today");
     }
 
     @Test
-    void getTimeLeftTest() {
+    void testGetTimeLeft() {
         assertEquals(incompleteTask.getTimeLeft(), "due today");
         incompleteTask.setTimeLeft();
         assertEquals(incompleteTask.getTimeLeft(), "due today");
     }
 
     @Test
-    void computeTimeLeftDueTodayTest() {
+    void testComputeTimeLeftDueToday() {
         incompleteTask.setTimeLeft();
         assertEquals(incompleteTask.getTimeLeft(),"due today");
     }
 
     @Test
-    void computeTimeLeftInDaysTest() {
+    void testComputeTimeLeftInDays() {
         incompleteTask.setDueDate(LocalDate.of(2019, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth() + 1));
         incompleteTask.setTimeLeft();
         assertEquals(incompleteTask.getTimeLeft(),1 + " days");
     }
 
     @Test
-    void computeTimeLeftInMonthsTest() {
+    void testComputeTimeLeftInMonths() {
         incompleteTask.setDueDate(LocalDate.of(2019,LocalDate.now().getMonthValue() + 1, LocalDate.now().getDayOfMonth()));
         incompleteTask.setTimeLeft();
         assertEquals(incompleteTask.getTimeLeft(),1 + " months " + 0 + " days");
     }
 
     @Test
-    void computeTimeLeftInDaysAndMonthsTest() {
+    void testComputeTimeLeftInDaysAndMonths() {
         incompleteTask.setDueDate(LocalDate.of(2019,LocalDate.now().getMonthValue() + 1,
                 LocalDate.now().getDayOfMonth() + 1));
         incompleteTask.setTimeLeft();
@@ -97,7 +96,7 @@ class IncompleteTaskTest {
     }
 
     @Test
-    void getTaskDueDateTest() {
+    void tesGetTaskDueDate() {
         assertEquals(incompleteTask.getTaskDueDate(), LocalDate.now());
     }
 }

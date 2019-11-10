@@ -3,9 +3,9 @@ package exceptions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DuplicateTaskExceptionTest {
+class DuplicateTaskExceptionTest {
     @Test
-    void DuplicateTaskExceptionConstructorTest() {
+    void testDuplicateTaskExceptionConstructor() {
         Exception exception = new DuplicateTaskException();
         assertEquals(exception.getMessage(), "Error! Duplicate task.");
     }

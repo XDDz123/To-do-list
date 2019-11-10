@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TaskListHashMapTest {
+class TaskListHashMapTest {
     private TaskListHashMap taskListHashMap;
 
     @BeforeEach
@@ -14,14 +14,14 @@ public class TaskListHashMapTest {
     }
 
     @Test
-    void removeTaskListTest() {
+    void testRemoveTaskList() {
         taskListHashMap.storeTaskList(new TaskList("key"));
         taskListHashMap.removeTaskList("key");
         assertTrue(taskListHashMap.getTaskListMap().isEmpty());
     }
 
     @Test
-    void getTaskListMapTest() {
+    void testGetTaskListMap() {
         taskListHashMap.storeTaskList(new TaskList("key"));
         assertTrue(taskListHashMap.getTaskList("key").isTaskListEmpty());
     }

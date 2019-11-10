@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class UIExceptionTest {
 
     @Test
-    void UIExceptionConstructorTest() {
+    void testUIExceptionConstructor() {
         Exception exception = new UIException("msg");
         assertEquals(exception.getMessage(), "msg");
     }

@@ -25,12 +25,12 @@ class CompletedTaskTest {
     }
 
     @Test
-    void getCompletionStatus() {
+    void testGetCompletionStatus() {
         assertEquals(completedTask.getCompletionStatus(), "tbd");
     }
 
     @Test
-    void printTaskTest() {
+    void testPrintTask() {
         assertEquals(completedTask.printTask(), "empty task"  + "  " + "Due: " + MonthDay.now().getMonthValue()
                 + "/" + MonthDay.now().getDayOfMonth() + "  " + "Completed on: " + "tbd");
     }

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NoListsFoundExceptionTest {
     @Test
-    void noListsFoundExceptionTest() {
+    void testNoListsFoundException() {
         Exception exception = new NoListsFoundException();
         assertEquals(exception.getMessage(), "No lists found.");
     }

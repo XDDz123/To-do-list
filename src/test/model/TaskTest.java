@@ -12,7 +12,6 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 class TaskTest {
     private Task task;
     private LocalDate taskDueDate = LocalDate.now();
@@ -27,54 +26,54 @@ class TaskTest {
     }
 
     @Test
-    void setContentTest() {
+    void testSetContent() {
         task.setContent("this is a test!");
         assertEquals(task.getContent(), "this is a test!");
 
     }
 
     @Test
-    void setContentTestEmpty() {
+    void testSetContentEmpty() {
         task.setContent("");
         assertEquals(task.getContent(), "");
     }
 
     @Test
-    void getContentTest() {
+    void testGetContent() {
         assertEquals(task.getContent(), "empty task");
     }
 
     @Test
-    void setDueDateTest() {
+    void testSetDueDate() {
         LocalDate localDate = LocalDate.of(2019,1,2);
         task.setDueDate(localDate);
         assertEquals(task.getDueDateObj(), localDate);
     }
 
     @Test
-    void getDueDateObjTest() {
+    void testSetGetDueDateObj() {
         assertEquals(task.getDueDateObj(), LocalDate.now());
     }
 
     @Test
-    void getDueDateTest() {
+    void testGetDueDate() {
         LocalDate localDate = LocalDate.now();
         assertEquals(task.getDueDate(), localDate.getMonthValue() + "/" + localDate.getDayOfMonth());
     }
 
     @Test
-    void printTaskContentAndDateTest() {
+    void testPrintTaskContentAndDate() {
         assertEquals(task.printTaskContentAndDate(), "empty task"  + "  " + "Due: " + LocalDate.now().getMonthValue()
                 + "/" + LocalDate.now().getDayOfMonth() + "  ");
     }
 
     @Test
-    void getTaskListTest() {
+    void testGetTaskList() {
         assertNull(task.getTaskList());
     }
 
     @Test
-    void setTaskListTest() {
+    void testSetTaskList() {
         TaskList taskList = new TaskList("list");
         try {
             task.setTaskList(taskList);
@@ -96,7 +95,7 @@ class TaskTest {
     }
 
     @Test
-    void setTaskListDuplicateTest() {
+    void testSetTaskListDuplicate() {
         TaskList taskList = new TaskList("list");
         try {
             new IncompleteTask(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false);
@@ -106,15 +105,13 @@ class TaskTest {
 
         try {
             task.setTaskList(taskList);
-            //fail();
         } catch (TaskException e) {
             fail();
-            //System.out.println("Test passed!");
         }
     }
 
     @Test
-    void equalsNull() {
+    void testEqualsNull() {
         CompletedTask task2;
         Task task3 = null;
         CompletedTask task4 = null;
@@ -132,7 +129,7 @@ class TaskTest {
     }
 
     @Test
-    void equalsList() {
+    void testEqualsList() {
         TaskList taskList = new TaskList("");
         try {
             Task task1 = new IncompleteTask(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false);
@@ -144,7 +141,7 @@ class TaskTest {
     }
 
     @Test
-    void hashCodeTest() {
+    void testHashCode() {
         TaskList taskList = null;
         String taskContent = "empty task";
 
@@ -156,7 +153,7 @@ class TaskTest {
     }
 
     @Test
-    void hashCodeTestNullList() {
+    void testHashCodeNullList() {
         TaskList taskList = null;
         String taskContent = "empty task";
 
@@ -168,7 +165,7 @@ class TaskTest {
     }
 
     @Test
-    void hashCodeTestNullContent() {
+    void testHashCodeNullContent() {
         TaskList taskList = new TaskList("");
         String taskContent = null;
 
@@ -187,7 +184,7 @@ class TaskTest {
     }
 
     @Test
-    void hashCodeTestNullDueDate() {
+    void testHashCodeNullDueDate() {
         TaskList taskList = new TaskList("");
         String taskContent = "empty task";
         taskDueDate = null;

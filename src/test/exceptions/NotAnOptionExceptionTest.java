@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NotAnOptionExceptionTest {
     @Test
-    void NotAnOptionExceptionConstructorTest() {
+    void testNotAnOptionExceptionConstructor() {
         UIException exception = new NotAnOptionException();
         assertEquals(exception.getMessage(), "Error! Not an option.");
     }
