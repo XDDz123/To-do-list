@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,18 +42,7 @@ class TaskListSorterTest extends TaskListTestSetup{
         ArrayList<Task> list;
         ArrayList<Task> list1;
 
-        list1 = new ArrayList<>();
-
-        list1.add(task);
-        list1.add(task2);
-        list1.add(task1);
-        list1.add(task6);
-        list1.add(task7);
-        list1.add(task4);
-        list1.add(task3);
-        list1.add(task5);
-        list1.add(task8);
-        list1.add(task9);
+        list1 = new ArrayList<>(Arrays.asList(task, task2, task1, task6, task7, task4, task3, task5, task8, task9));
 
         taskList.sortByDueDate();
         list = new ArrayList<>(taskList.getTaskList());
