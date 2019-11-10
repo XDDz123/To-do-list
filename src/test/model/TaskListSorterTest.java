@@ -63,8 +63,8 @@ class TaskListSorterTest extends TaskListTestSetup{
     @Test
     void testSortByDueDateAlt() {
         try {
-            new CompletedTask(taskList,"k", LocalDate.now(), "tbd");
             new IncompleteTask(taskList, "l", LocalDate.of(2019,3,4), Urgency.UNASSIGNED, false);
+            new CompletedTask(taskList,"k", LocalDate.now(), "tbd");
         } catch (TaskException e) {
             fail();
         }
