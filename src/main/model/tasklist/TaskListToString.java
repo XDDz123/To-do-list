@@ -34,7 +34,7 @@ class TaskListToString {
             for (int i = 0; i < list.size(); i++) {
                 taskListPrint.append(i + 1).append(" : ").append((list.get(i)).printTask()).append("\n");
             }
-            //substring to -1 removes the last line break
+            //substring to -1 to remove the last line break
             return taskListPrint.substring(0, taskListPrint.length() - 1);
         }
     }

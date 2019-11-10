@@ -2,7 +2,6 @@ package model.task;
 
 import exceptions.TaskException;
 import model.tasklist.TaskList;
-import model.observer.Observer;
 import model.observer.ObserverState;
 import model.observer.TimeLeftObserver;
 
@@ -11,7 +10,7 @@ import java.time.LocalDate;
 
 public class IncompleteTask extends Task implements Serializable {
 
-    private transient Observer timeLeftObserver = new TimeLeftObserver();
+    private transient TimeLeftObserver timeLeftObserver = new TimeLeftObserver();
     private String taskUrgency;
     private Boolean starred;
 
@@ -70,7 +69,7 @@ public class IncompleteTask extends Task implements Serializable {
 
     //EFFECTS: Returns how much time is left until the task is due
     public String getTimeLeft() {
-        return ((TimeLeftObserver) timeLeftObserver).getTimeLeft();
+        return timeLeftObserver.getTimeLeft();
     }
 
     public LocalDate getTaskDueDate() {

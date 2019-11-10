@@ -12,4 +12,8 @@ public class ListSizeObserver implements Observer {
         size = size + (int) observerState.getState();
         messages.listSizeObserverMessage(size, (String) observerState.getStateOne());
     }
+
+    public int getSize() {
+        return size;
+    }
 }

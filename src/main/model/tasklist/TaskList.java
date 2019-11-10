@@ -12,7 +12,8 @@ import java.util.*;
 
 public class TaskList extends Observable {
 
-    private final TaskListSorter taskListFilterAndSorter = new TaskListSorter();
+    private final TaskListSorter taskListSorter = new TaskListSorter();
+    private final TaskListFilter taskListFilter = new TaskListFilter();
     private final TaskListToString taskListToString = new TaskListToString();
     private final ListSizeObserver listSizeObserver = new ListSizeObserver();
     private ArrayList<Task> taskList;
@@ -34,7 +35,7 @@ public class TaskList extends Observable {
     //         else insert the task into this list and modify TaskList of the given task to this list
     public void storeTask(Task task) throws TaskException {
         if (!taskList.contains(task)) {
-            if (filterOutCompleted().size() > maxSize && !(task instanceof CompletedTask)) {
+            if (listSizeObserver.getSize() > maxSize && !(task instanceof CompletedTask)) {
                 throw new TooManyIncompleteTasksException();
             } else {
                 taskList.add(task);
@@ -117,7 +118,7 @@ public class TaskList extends Observable {
     //EFFECTS: Returns a new task list that contains all tasks in the current task list
     //         with the specified urgency level.
     public TaskList getTaskByUrgency(String urgency) throws TaskException {
-        return taskListFilterAndSorter.getTaskByUrgency(urgency, this);
+        return taskListFilter.getTaskByUrgency(urgency, this);
     }
 
     //inspired by post by user zb226 @ https://stackoverflow.com/questions/16252269/how-to-sort-an-arraylist
@@ -125,11 +126,11 @@ public class TaskList extends Observable {
     //MODIFIES: this
     //EFFECTS: Sorts the current task list chronologically based on due dates. Starts from most recently due.
     public void sortByDueDate() {
-        taskListFilterAndSorter.sortByDueDate(this);
+        taskListSorter.sortByDueDate(this);
     }
 
     //EFFECTS: takes in an list of tasks, returns a new list with only incomplete tasks.
     ArrayList<Task> filterOutCompleted() {
-        return taskListFilterAndSorter.filterOutCompleted(this);
+        return taskListFilter.filterOutCompleted(this);
     }
 }

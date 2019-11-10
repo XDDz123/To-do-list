@@ -1,15 +1,17 @@
 package ui;
 
-import model.observer.ObserverState;
 import model.task.Task;
 import model.tasklist.TaskList;
 import model.TaskListHashMap;
+import network.WelcomeScreen;
 
 public class Messages {
 
     //EFFECTS: Prints the following.
     void welcomeMessage() {
         //System.out.println("Type in 'exit' to exit this program.");
+        System.out.println("  ");
+        System.out.println((new WelcomeScreen()).fetchWelcomeMessage());
         System.out.println("  ");
         System.out.println("Your data will be automatically saved after this session.");
         System.out.println("  ");

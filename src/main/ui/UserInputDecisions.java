@@ -10,6 +10,8 @@ import model.task.Task;
 import model.tasklist.TaskList;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.nio.file.NoSuchFileException;
 import java.time.LocalDate;
 import java.util.*;
@@ -322,7 +324,10 @@ class UserInputDecisions {
     private void tryLoad(TaskListHashMap taskListHashMap) {
         Load loadTasks = new Load();
         try {
+            PrintStream originalStream = System.out;
+            dummyStream();
             loadTasks.load(taskListHashMap, saveFile);
+            System.setOut(originalStream);
         } catch (NoSuchFileException e) {
             messages.fileNotFoundError();
         } catch (TaskException | IOException e) {
@@ -449,5 +454,17 @@ class UserInputDecisions {
         } catch (IOException e) {
             messages.fileNotFoundError();
         }
+    }
+
+    //inspired by https://stackoverflow.com/questions/8363493/hiding-system-out-print-calls-of-a-class
+    //EFFECTS: creates a dummy system.out stream to hide system.out
+    private void dummyStream() {
+        PrintStream dummyStream = new PrintStream(new OutputStream() {
+            public void write(int b) {
+                // NO-OP
+            }
+        });
+
+        System.setOut(dummyStream);
     }
 }
