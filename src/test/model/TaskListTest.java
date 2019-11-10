@@ -5,6 +5,7 @@ import exceptions.TaskException;
 import model.task.CompletedTask;
 import model.task.IncompleteTask;
 import model.task.Task;
+import model.task.Urgency;
 import model.tasklist.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ class TaskListTest {
 
     private String taskContent = "empty task";
     private LocalDate taskDueDate = LocalDate.now();
-    private String taskUrgency = "unassigned";
+    private Urgency taskUrgency = Urgency.UNASSIGNED;
     private Boolean starred = false;
 
     @BeforeEach
@@ -122,9 +123,9 @@ class TaskListTest {
             fail();
         }
 
-        task.setUrgency("high");
-        task1.setUrgency("high");
-        task2.setUrgency("mid");
+        task.setUrgency(Urgency.HIGH);
+        task1.setUrgency(Urgency.HIGH);
+        task2.setUrgency(Urgency.MID);
         taskList3 = new TaskList("");
 
 
@@ -140,13 +141,9 @@ class TaskListTest {
         runBeforeGetTaskByAndSortAndPrint();
         ArrayList<Task> list = new ArrayList<>();
 
-        try {
-            list.add(task);
-            list.add(task1);
-            assertEquals(taskList.getTaskByUrgency("high").getTaskList(), list);
-        } catch (TaskException e) {
-            fail();
-        }
+        list.add(task);
+        list.add(task1);
+        assertEquals(taskList.getTaskByUrgency("high"), list);
     }
 
     @Test
@@ -154,22 +151,14 @@ class TaskListTest {
         runBeforeGetTaskByAndSortAndPrint();
         ArrayList<Task> list = new ArrayList<>();
 
-        try {
-            list.add(task2);
-            assertEquals(taskList.getTaskByUrgency("mid").getTaskList(), list);
-        } catch (TaskException e) {
-            fail();
-        }
+        list.add(task2);
+        assertEquals(taskList.getTaskByUrgency("mid"), list);
     }
 
     @Test
     void getTaskByUrgencyTestLow() {
         runBeforeGetTaskByAndSortAndPrint();
-        try {
-            assertEquals(taskList.getTaskByUrgency("low").getTaskList(), taskList3.getTaskList());
-        } catch (TaskException e) {
-            fail();
-        }
+        assertEquals(taskList.getTaskByUrgency("low"), taskList3.getTaskList());
     }
 
     @Test
@@ -189,13 +178,13 @@ class TaskListTest {
                     taskList,
                     "empty task 6",
                     LocalDate.of(2019,3,4),
-                    "tbd",
+                    taskUrgency,
                     starred);
             task7 = new IncompleteTask(
                     taskList,
                     "empty task 7",
                     LocalDate.of(2019,3,5),
-                    "tbd",
+                    taskUrgency,
                     starred);
             task8 = new CompletedTask(taskList,"empty task 8", LocalDate.now(), "tbd");
             task9 = new CompletedTask(taskList,"empty task 9", LocalDate.now(), "tbd");
@@ -229,7 +218,7 @@ class TaskListTest {
             new IncompleteTask(taskList,
                     "empty task 10",
                     LocalDate.of(2019,3,4),
-                    "tbd",
+                    Urgency.UNASSIGNED,
                     starred);
         } catch (TaskException e) {
             fail();

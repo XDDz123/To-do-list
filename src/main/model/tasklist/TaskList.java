@@ -112,12 +112,12 @@ public class TaskList extends Observable {
 
     //EFFECTS: Prints the contents of the current task list
     public String printTaskList() {
-        return taskListToString.printTaskList(this);
+        return taskListToString.printTaskList(taskList);
     }
 
     //EFFECTS: Returns a new task list that contains all tasks in the current task list
     //         with the specified urgency level.
-    public TaskList getTaskByUrgency(String urgency) throws TaskException {
+    public ArrayList<Task> getTaskByUrgency(String urgency) {
         return taskListFilter.getTaskByUrgency(urgency, this);
     }
 

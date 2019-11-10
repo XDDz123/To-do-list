@@ -2,6 +2,7 @@ package model;
 
 import exceptions.TaskException;
 import model.task.IncompleteTask;
+import model.task.Urgency;
 import model.tasklist.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ class IncompleteTaskTest {
     void runBefore() {
         TaskList taskList = new TaskList("");
         try {
-            incompleteTask = new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned", false);
+            incompleteTask = new IncompleteTask(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false);
         } catch (TaskException e) {
             fail();
         }
@@ -37,13 +38,13 @@ class IncompleteTaskTest {
 
     @Test
     void setUrgencyTest() {
-        incompleteTask.setUrgency("high");
-        assertEquals(incompleteTask.getUrgency(), "high");
+        incompleteTask.setUrgency(Urgency.HIGH);
+        assertEquals(incompleteTask.getUrgency().getString(), "high");
     }
 
     @Test
     void getUrgencyTest() {
-        assertEquals(incompleteTask.getUrgency(), "unassigned");
+        assertEquals(incompleteTask.getUrgency(), Urgency.UNASSIGNED);
     }
 
     @Test

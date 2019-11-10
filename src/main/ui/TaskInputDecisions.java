@@ -1,5 +1,7 @@
 package ui;
 
+import model.task.Urgency;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
@@ -10,7 +12,7 @@ class TaskInputDecisions {
     private static final String high = "high";
     private static final String mid = "mid";
     private static final String low = "low";
-    private String taskUrgency = "unassigned";
+    private Urgency taskUrgency;
     private LocalDate taskDueDate;
     private final Messages messages = new Messages();
 
@@ -20,7 +22,7 @@ class TaskInputDecisions {
     //         (2) mid
     //         (3) low
     //         else displays error message and restarts the method.
-    String setUrgencyDecision(String taskUrgency) {
+    Urgency setUrgencyDecision(Urgency taskUrgency) {
         messages.setUrgencyMessage();
         Scanner keyboard = new Scanner(System.in);
 
@@ -28,11 +30,11 @@ class TaskInputDecisions {
             int input = keyboard.nextInt();
 
             if (input == 1) {
-                return this.taskUrgency = high;
+                return this.taskUrgency = Urgency.HIGH;
             } else if (input == 2) {
-                return this.taskUrgency = mid;
+                return this.taskUrgency = Urgency.MID;
             } else if (input == 3) {
-                return this.taskUrgency = low;
+                return this.taskUrgency = Urgency.LOW;
             } else {
                 return setUrgencyError(taskUrgency);
             }
@@ -42,7 +44,7 @@ class TaskInputDecisions {
     }
 
     //EFFECTS: Displays error message and starts the method that prompts the user to set urgency.
-    private String setUrgencyError(String taskUrgency) {
+    private Urgency setUrgencyError(Urgency taskUrgency) {
         messages.notAnOptionTryAgainError();
         setUrgencyDecision(taskUrgency);
         return this.taskUrgency;

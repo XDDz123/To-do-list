@@ -22,11 +22,11 @@ class TaskListFilter {
 
     //EFFECTS: Returns a new task list that contains all tasks in the current task list
     //         with the specified urgency level.
-    TaskList getTaskByUrgency(String urgency, TaskList taskList) throws TaskException {
-        TaskList tempList = new TaskList("");
+    ArrayList<Task> getTaskByUrgency(String urgency, TaskList taskList) {
+        ArrayList<Task> tempList = new ArrayList<>();
         for (Task task : filterOutCompleted(taskList)) {
-            if (((IncompleteTask) task).getUrgency().equalsIgnoreCase(urgency)) {
-                tempList.storeTask(task);
+            if (((IncompleteTask) task).getUrgency().getString().equalsIgnoreCase(urgency)) {
+                tempList.add(task);
             }
         }
         return tempList;

@@ -7,6 +7,7 @@ import model.*;
 import model.task.CompletedTask;
 import model.task.IncompleteTask;
 import model.task.Task;
+import model.task.Urgency;
 import model.tasklist.TaskList;
 
 import java.io.IOException;
@@ -19,7 +20,6 @@ import java.util.*;
 class UserInputDecisions {
 
     private final String saveFile = "save";
-    private final String keyList = "keyList";
     private final Messages messages = new Messages();
     private final TaskInputDecisions taskInputDecisions = new TaskInputDecisions();
 
@@ -218,8 +218,7 @@ class UserInputDecisions {
     private void selectEnterTask(TaskList taskList) throws TaskException {
         String taskContent = "empty task";
         LocalDate taskDueDate = LocalDate.now();
-        String taskUrgency = "unassigned";
-        IncompleteTask incompleteTask = new IncompleteTask(null, taskContent, taskDueDate, taskUrgency, false);
+        IncompleteTask incompleteTask = new IncompleteTask(null, taskContent, taskDueDate, Urgency.UNASSIGNED, false);
         setIncompleteTask(taskList, incompleteTask);
     }
 
@@ -275,11 +274,7 @@ class UserInputDecisions {
         messages.selectUrgencyMessage();
         String input = keyboard.nextLine();
         if (input.equalsIgnoreCase(high) || input.equalsIgnoreCase(mid) || input.equalsIgnoreCase(low)) {
-            try {
-                messages.printIncompleteTasksList(taskList.getTaskByUrgency(input));
-            } catch (TaskException e) {
-                messages.exceptionErrorMessage(e);
-            }
+            messages.printIncompleteTasksList(taskList.getTaskByUrgency(input));
         } else {
             throw new NotAnOptionException();
         }
@@ -319,20 +314,25 @@ class UserInputDecisions {
         }
     }
 
+    //parts involving PrintStream inspired by
+    //https://stackoverflow.com/questions/8363493/hiding-system-out-print-calls-of-a-class
     //MODIFIES: taskList
     //EFFECTS: Attempts to load task info from save
     private void tryLoad(TaskListHashMap taskListHashMap) {
         Load loadTasks = new Load();
+        PrintStream originalStream = System.out;
         try {
-            PrintStream originalStream = System.out;
             dummyStream();
             loadTasks.load(taskListHashMap, saveFile);
             System.setOut(originalStream);
-        } catch (NoSuchFileException e) {
+        } catch (IOException e) {
+            System.setOut(originalStream);
             messages.fileNotFoundError();
-        } catch (TaskException | IOException e) {
+        } catch (TaskException e) {
+            System.setOut(originalStream);
             messages.exceptionErrorMessage(e);
         } catch (Exception e) {
+            System.setOut(originalStream);
             messages.badFormattingError();
         } finally {
             messages.loadAttemptedMessage();

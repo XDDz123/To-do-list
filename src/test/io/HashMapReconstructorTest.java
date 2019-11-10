@@ -28,8 +28,8 @@ class HashMapReconstructorTest {
         partsOfLine.add("a");
         HashMapReconstructor hashMapReconstructor = new HashMapReconstructor();
         try {
-            taskList.add(new IncompleteTask(null,"", LocalDate.now(), "", false));
-            taskList.add(new IncompleteTask(null,"", LocalDate.now(), "", false));
+            taskList.add(new IncompleteTask(null,"", LocalDate.now(), null, false));
+            taskList.add(new IncompleteTask(null,"", LocalDate.now(), null, false));
             hashMapReconstructor.loadIntoHashMap(taskListHashMap, taskList, partsOfLine);
         } catch (TaskException e) {
             fail();

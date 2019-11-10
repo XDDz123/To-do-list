@@ -9,9 +9,9 @@ import java.net.URL;
 //quoting edx shamelessly quoting: http://zetcode.com/articles/javareadwebpage/
 //JSON parsing inspired by http://theoryapp.com/parse-json-in-java/
 //minor adjustments
-public class WelcomeScreen {
+public class JokeFetcher {
 
-    public String fetchWelcomeMessage()  {
+    public String fetchJoke()  {
 
         try {
             URL url = new URL("https://official-joke-api.appspot.com/jokes/programming/random");

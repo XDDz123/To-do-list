@@ -4,6 +4,7 @@ import exceptions.TaskException;
 import model.task.CompletedTask;
 import model.task.IncompleteTask;
 import model.task.Task;
+import model.task.Urgency;
 import model.tasklist.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ class TaskTest {
     @BeforeEach
     void runBefore() {
         try {
-            task = new IncompleteTask(null,"empty task", taskDueDate, "unassigned", false);
+            task = new IncompleteTask(null,"empty task", taskDueDate, Urgency.UNASSIGNED, false);
         } catch (TaskException e) {
             fail();
         }
@@ -98,7 +99,7 @@ class TaskTest {
     void setTaskListDuplicateTest() {
         TaskList taskList = new TaskList("list");
         try {
-            new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned", false);
+            new IncompleteTask(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false);
         } catch (TaskException e) {
             fail();
         }
@@ -134,7 +135,7 @@ class TaskTest {
     void equalsList() {
         TaskList taskList = new TaskList("");
         try {
-            Task task1 = new IncompleteTask(taskList,"empty task", taskDueDate, "unassigned", false);
+            Task task1 = new IncompleteTask(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false);
             Task task2 = new CompletedTask(null,"empty task", taskDueDate, "unassigned");
             assertNotEquals(task1, task2);
         } catch (TaskException e) {
@@ -173,7 +174,7 @@ class TaskTest {
 
         Task task1 = null;
         try {
-            task1 = new IncompleteTask(taskList,null, taskDueDate, "unassigned", false);
+            task1 = new IncompleteTask(taskList,null, taskDueDate, Urgency.UNASSIGNED, false);
         } catch (TaskException e) {
             fail();
         }
@@ -193,7 +194,7 @@ class TaskTest {
 
         Task task1 = null;
         try {
-            task1 = new IncompleteTask(taskList,"empty task", null, "unassigned", false);
+            task1 = new IncompleteTask(taskList,"empty task", null, Urgency.UNASSIGNED, false);
         } catch (TaskException e) {
             fail();
         }

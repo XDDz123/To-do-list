@@ -4,6 +4,7 @@ import exceptions.TaskException;
 import model.*;
 import model.task.CompletedTask;
 import model.task.IncompleteTask;
+import model.task.Urgency;
 import model.tasklist.TaskList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,18 +29,18 @@ class SaveTest {
 
         try {
             new IncompleteTask(taskList,"task I", (LocalDate.of(2020, 2, 3)),
-                    "high", true);
+                    Urgency.HIGH, true);
             new IncompleteTask(taskList,"task III", (LocalDate.of(2020, 4, 3)),
-                    "high", false);
+                    Urgency.HIGH, false);
 
             new CompletedTask(taskList,"task IV", (LocalDate.of(2019, 10, 4)), "past due");
             new CompletedTask(taskList1,"task VII", (LocalDate.of(2019, 4, 5)), "4/5");
 
             new IncompleteTask(taskList1,"task V", (LocalDate.of(2019, 5, 2)),
-                    "mid", true);
+                    Urgency.MID, true);
 
             new IncompleteTask(taskList1,"task VI", (LocalDate.of(2020, 10, 3)),
-                    "mid", false);
+                    Urgency.MID, false);
 
         } catch (TaskException e) {
             fail();
@@ -53,20 +54,20 @@ class SaveTest {
     @Test
     void saveTest() throws IOException {
 
-        save.save(taskListHashMap, "saveTest.txt");
+        save.save(taskListHashMap, "ioTest.txt");
         try {
-            (new Load()).load(taskListHashMap1, "saveTest.txt");
+            (new Load()).load(taskListHashMap1, "ioTest.txt");
         } catch (TaskException | ClassNotFoundException e) {
             fail();
         }
 
         assertEquals(taskListHashMap.getTaskList("a").getTask(1).getContent(),"task I");
-        assertEquals(((IncompleteTask)(taskListHashMap.getTaskList("a").getTask(1))).getUrgency(),"high");
+        assertEquals(((IncompleteTask)(taskListHashMap.getTaskList("a").getTask(1))).getUrgency().getString(),"high");
         assertEquals(taskListHashMap.getTaskList("a").getTask(1).getDueDateObj(), LocalDate.of(2020,2,3));
         assertEquals(((IncompleteTask) taskListHashMap.getTaskList("a").getTask(1)).getStarred(), true);
 
         assertEquals(taskListHashMap.getTaskList("a").getTask(2).getContent(),"task III");
-        assertEquals(((IncompleteTask)(taskListHashMap.getTaskList("a").getTask(2))).getUrgency(),"high");
+        assertEquals(((IncompleteTask)(taskListHashMap.getTaskList("a").getTask(2))).getUrgency().getString(),"high");
         assertEquals(taskListHashMap.getTaskList("a").getTask(2).getDueDateObj(), LocalDate.of(2020,4,3));
         assertEquals(((IncompleteTask) taskListHashMap.getTaskList("a").getTask(2)).getStarred(), false);
 
@@ -80,12 +81,12 @@ class SaveTest {
 
         assertEquals(taskListHashMap.getTaskList("b").getTask(2).getContent(), "task V");
         assertEquals(taskListHashMap.getTaskList("b").getTask(2).getDueDateObj(), LocalDate.of(2019,5,2));
-        assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(2)).getUrgency(), "mid");
+        assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(2)).getUrgency().getString(), "mid");
         assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(2)).getStarred(), true);
 
         assertEquals(taskListHashMap.getTaskList("b").getTask(3).getContent(), "task VI");
         assertEquals(taskListHashMap.getTaskList("b").getTask(3).getDueDateObj(), LocalDate.of(2020,10,3));
-        assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(3)).getUrgency(), "mid");
+        assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(3)).getUrgency().getString(), "mid");
         assertEquals(((IncompleteTask) taskListHashMap.getTaskList("b").getTask(3)).getStarred(), false);
     }
 }

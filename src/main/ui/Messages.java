@@ -3,7 +3,10 @@ package ui;
 import model.task.Task;
 import model.tasklist.TaskList;
 import model.TaskListHashMap;
-import network.WelcomeScreen;
+import model.tasklist.TaskListToString;
+import network.JokeFetcher;
+
+import java.util.ArrayList;
 
 public class Messages {
 
@@ -11,7 +14,7 @@ public class Messages {
     void welcomeMessage() {
         //System.out.println("Type in 'exit' to exit this program.");
         System.out.println("  ");
-        System.out.println((new WelcomeScreen()).fetchWelcomeMessage());
+        System.out.println((new JokeFetcher()).fetchJoke());
         System.out.println("  ");
         System.out.println("Your data will be automatically saved after this session.");
         System.out.println("  ");
@@ -148,9 +151,9 @@ public class Messages {
     }
 
     //EFFECTS: Prints the current task list in the following format.
-    void printIncompleteTasksList(TaskList taskList) {
+    void printIncompleteTasksList(ArrayList<Task> taskList) {
         System.out.println("-----------------------------------------------------------------------------------------");
-        System.out.println(taskList.printIncompleteTasks());
+        System.out.println((new TaskListToString()).printTaskList(taskList));
         System.out.println("-----------------------------------------------------------------------------------------");
     }
 
@@ -211,7 +214,7 @@ public class Messages {
 
     //EFFECTS: Prints the following.
     void fileNotFoundError() {
-        System.out.println("File not found!");
+        System.out.println("File not found or file empty!");
     }
 
     //EFFECTS: Prints the following.

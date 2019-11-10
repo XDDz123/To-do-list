@@ -11,12 +11,12 @@ import java.time.LocalDate;
 public class IncompleteTask extends Task implements Serializable {
 
     private transient TimeLeftObserver timeLeftObserver = new TimeLeftObserver();
-    private String taskUrgency;
+    private Urgency taskUrgency;
     private Boolean starred;
 
     //EFFECTS: Constructs a new incomplete task.
     //MODIFIES: this
-    public IncompleteTask(TaskList taskList, String taskContent, LocalDate taskDueDate, String taskUrgency,
+    public IncompleteTask(TaskList taskList, String taskContent, LocalDate taskDueDate, Urgency taskUrgency,
                           Boolean starred)
             throws TaskException {
         super(taskList, taskContent, taskDueDate);
@@ -38,12 +38,12 @@ public class IncompleteTask extends Task implements Serializable {
 
     //MODIFIES: this
     //EFFECTS: Sets this task's urgency to given urgency.
-    public void setUrgency(String taskUrgency) {
+    public void setUrgency(Urgency taskUrgency) {
         this.taskUrgency = taskUrgency;
     }
 
-    //EFFECTS: Returns the task urgency of this task.
-    public String getUrgency() {
+    //EFFECTS: Returns the task urgency of this task in the form of its string.
+    public Urgency getUrgency() {
         return taskUrgency;
     }
 
@@ -51,7 +51,7 @@ public class IncompleteTask extends Task implements Serializable {
     @Override
     public String printTask() {
         return super.printTaskContentAndDate()
-                + "Urgency: " + getUrgency() + "  "
+                + "Urgency: " + getUrgency().getString() + "  "
                 + "Time left: " + getTimeLeft() + "  "
                 + "Starred: " + starred;
     }
