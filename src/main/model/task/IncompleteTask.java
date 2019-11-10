@@ -72,6 +72,7 @@ public class IncompleteTask extends Task implements Serializable {
         return timeLeftObserver.getTimeLeft();
     }
 
+    //EFFECTS: Returns the taskDueDate of this task
     public LocalDate getTaskDueDate() {
         return taskDueDate;
     }

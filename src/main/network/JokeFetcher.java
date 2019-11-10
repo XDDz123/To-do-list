@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-//quoting edx shamelessly quoting: http://zetcode.com/articles/javareadwebpage/
-//JSON parsing inspired by http://theoryapp.com/parse-json-in-java/
-//minor adjustments
+
 public class JokeFetcher {
 
+    //quoting edx shamelessly quoting: http://zetcode.com/articles/javareadwebpage/
+    //JSON parsing inspired by http://theoryapp.com/parse-json-in-java/
+    //EFFECTS: Returns info fetched from an url in the form of a string
     public String fetchJoke()  {
 
         try {

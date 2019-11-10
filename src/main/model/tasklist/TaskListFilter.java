@@ -1,6 +1,5 @@
 package model.tasklist;
 
-import exceptions.TaskException;
 import model.task.CompletedTask;
 import model.task.IncompleteTask;
 import model.task.Task;

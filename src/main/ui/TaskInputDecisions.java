@@ -9,9 +9,6 @@ import java.util.Scanner;
 
 class TaskInputDecisions {
 
-    private static final String high = "high";
-    private static final String mid = "mid";
-    private static final String low = "low";
     private Urgency taskUrgency;
     private LocalDate taskDueDate;
     private final Messages messages = new Messages();

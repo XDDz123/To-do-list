@@ -27,12 +27,13 @@ public class TaskList extends Observable {
         this.name = name;
     }
 
-    //MODIFIES: this, task
+    //MODIFIES: this, task, listSizeObserver
     //EFFECTS: Inserts a task to the current task list
     //         If an identical task already exists in this list, throw DuplicateTaskException
     //         If the size of this list is greater than maxSize and the given task is an incomplete task,
     //         then throwTooManyIncompleteTasksException
     //         else insert the task into this list and modify TaskList of the given task to this list
+    //         When an incomplete task is added, notify ListSizeObserver to add one to its size
     public void storeTask(Task task) throws TaskException {
         if (!taskList.contains(task)) {
             if (listSizeObserver.getSize() > maxSize && !(task instanceof CompletedTask)) {
@@ -46,9 +47,10 @@ public class TaskList extends Observable {
     }
 
     //REQUIRES: index must refer to an existing index in the list of tasks
-    //MODIFIES: this, task
+    //MODIFIES: this, task, listSizeObserver
     //EFFECTS: Removes a task in the current task list based on an index that starts at 1.
     //         Sets this task's TaskList to null
+    //         Notify ListSizeObserver to remove one from its size
     public void deleteTask(int index) throws TaskDoesNotExistException, TaskException {
         Task task;
         try {
@@ -61,26 +63,22 @@ public class TaskList extends Observable {
         task.setTaskList(null);
     }
 
-    //EFFECTS: notifies the timeLeftObserver of the changes to the size of the list
+    //MODIFIES: listSizeObserver
+    //EFFECTS: Notifies the timeLeftObserver of the changes to its size if the given task is an incomplete task
     private void notify(Task task, int i) {
         if (task instanceof IncompleteTask) {
-            notify(i);
+            notifyObserver(new ObserverState<>(i, name), listSizeObserver);
         }
     }
 
-    //EFFECTS: notifies the timeLeftObserver of the changes to the size of the list
-    private void notify(int i) {
-        notifyObserver(new ObserverState<>(i, name), listSizeObserver);
-    }
-
-    //MODIFIES: this
+    //MODIFIES: this, listSizeObserver
     //EFFECTS: Removes all tasks in the current task list
     public void clearTaskList() {
-        notify(-taskList.size());
+        listSizeObserver.clearSize();
         taskList.clear();
     }
 
-    //EFFECTS: returns the name of this list
+    //EFFECTS: Returns the name of this list
     public String getName() {
         return name;
     }
@@ -129,7 +127,7 @@ public class TaskList extends Observable {
         taskListSorter.sortByDueDate(this);
     }
 
-    //EFFECTS: takes in an list of tasks, returns a new list with only incomplete tasks.
+    //EFFECTS: Takes in an list of tasks, returns a new list with only incomplete tasks.
     ArrayList<Task> filterOutCompleted() {
         return taskListFilter.filterOutCompleted(this);
     }
