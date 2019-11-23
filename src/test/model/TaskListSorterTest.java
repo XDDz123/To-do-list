@@ -51,9 +51,8 @@ class TaskListSorterTest extends TaskListTestSetup{
     @Test
     void testSortByDueDateAlt() {
         try {
-            new Task(taskList, "l", LocalDate.of(2019,3,4), Urgency.UNASSIGNED, false, false);
             new Task(taskList, "k", LocalDate.now(), Urgency.UNASSIGNED, false, true);
-            new Task(taskList, "m", LocalDate.now(), Urgency.UNASSIGNED, false, true);
+            new Task(taskList, "l", LocalDate.of(2019,3,4), Urgency.UNASSIGNED, false, false);
         } catch (TaskException e) {
             fail();
         }
