@@ -38,7 +38,7 @@ public class TaskList extends Observable {
     //         When an incomplete task is added, notify ListSizeObserver to add one to its size
     public void storeTask(Task task) throws TaskException {
         if (!taskList.contains(task)) {
-            if (listSizeObserver.getSize() > maxSize && !task.isCompleted()) {
+            if (!task.isCompleted() && listSizeObserver.getSize() > maxSize) {
                 throw new TooManyIncompleteTasksException();
             } else {
                 taskList.add(task);

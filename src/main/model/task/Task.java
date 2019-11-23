@@ -1,8 +1,6 @@
 package model.task;
 
 import exceptions.TaskException;
-//import model.observer.Observable;
-//import model.observer.ObserverState;
 import model.observer.TimeLeftObserver;
 import model.tasklist.TaskList;
 
@@ -32,16 +30,15 @@ public class Task extends Observable implements Serializable {
         this.taskList = taskList;
         this.taskContent = taskContent;
         this.taskDueDate = taskDueDate;
+        this.taskUrgency = taskUrgency;
+        this.starred = starred;
+        this.completed = completed;
 
         if (taskList != null) {
             taskList.storeTask(this);
             key = taskList.getName();
         }
 
-        this.taskUrgency = taskUrgency;
-        this.starred = starred;
-        this.completed = completed;
-        //notifyObserver(new ObserverState<>(taskDueDate), timeLeftObserver);
         addObserver(timeLeftObserver);
         setChanged();
         notifyObservers(this);
@@ -151,14 +148,10 @@ public class Task extends Observable implements Serializable {
     //         Creates a new timeLeftUpdater if the current timeLeftUpdater is null
     //         new timeLeftUpdater should be called after deserialization
     public void setTimeLeft() {
-/*        if (timeLeftObserver == null) {
-            timeLeftObserver = new TimeLeftObserver();
-        }*/
         if (!completed) {
             setChanged();
             notifyObservers(this);
         }
-        //notifyObserver(new ObserverState<>(taskDueDate), timeLeftObserver);
     }
 
     //EFFECTS: Returns how much time is left until the task is due

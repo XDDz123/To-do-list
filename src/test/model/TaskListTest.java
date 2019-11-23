@@ -113,12 +113,13 @@ class TaskListTest {
             assertEquals(e.getMessage(), "Too many incomplete tasks!");
         }
 
-/*        try {
-            CompletedTask completedTask = new CompletedTask(taskList, taskContent, taskDueDate, "tbd");
+        try {
+            Task completedTask = new Task(taskList, "completed", taskDueDate, taskUrgency, starred, true);
             assertEquals(taskList.getTask(taskList.getTaskListSize()), completedTask);
         } catch (TaskException e) {
+            System.out.println(e.getMessage());
             fail();
-        }*/
+        }
     }
 }
 
