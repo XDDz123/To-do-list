@@ -17,12 +17,12 @@ public class ObserverState<T1,T2> {
     }
 
     //EFFECTS: Return state one of type one
-    T1 getState() {
+    T1 getStateOne() {
         return stateOne;
     }
 
     //EFFECTS: Return state two of type two
-    T2 getStateOne() {
+    T2 getStateTwo() {
         return stateTwo;
     }
 }

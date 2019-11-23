@@ -2,8 +2,8 @@ package io;
 
 import exceptions.TaskException;
 import model.*;
-import model.task.CompletedTask;
-import model.task.IncompleteTask;
+//import model.task.CompletedTask;
+//import model.task.IncompleteTask;
 import model.task.Task;
 
 import java.io.*;
@@ -77,18 +77,18 @@ public class Load {
             throws IOException, ClassNotFoundException, TaskException {
         Task task = (Task) objectInputStream.readObject();
 
-        if (task instanceof IncompleteTask) {
-            ((IncompleteTask) task).setTimeLeft();
+        if (task.isCompleted()) {
+            task.setTimeLeft();
         }
 
         listOfKeys.add(task.getKey());
         //check if task is past due
-        task = checkTaskPastDue(task);
+        //task = checkTaskPastDue(task);
         //adds task to list
         taskList.add(task);
     }
 
-    //MODIFIES: task
+/*    //MODIFIES: task
     //EFFECTS: checks whether the given task's due date has already passed, if past due, then return a completed tasks
     //         created from the given task's information, ow return the original task.
     private Task checkTaskPastDue(Task task) throws TaskException {
@@ -96,5 +96,5 @@ public class Load {
             task = new CompletedTask(null, task.getContent(), task.getDueDateObj(), CompletedTask.pastDue);
         }
         return task;
-    }
+    }*/
 }

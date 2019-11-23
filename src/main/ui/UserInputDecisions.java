@@ -4,16 +4,15 @@ import exceptions.*;
 import io.Load;
 import io.Save;
 import model.*;
-import model.task.CompletedTask;
-import model.task.IncompleteTask;
+//import model.task.CompletedTask;
+//import model.task.IncompleteTask;
+//import model.task.Task;
 import model.task.Task;
 import model.task.Urgency;
 import model.tasklist.TaskList;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.nio.file.NoSuchFileException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -131,14 +130,14 @@ class UserInputDecisions {
     //         (4) change the content of this task, return true
     //         (0) returns to menu to prompt the user to reselect which task to modify, return true
     //         else returns false
-    private Boolean modifyTask(String input, int index, IncompleteTask task, TaskList taskList) {
+    private Boolean modifyTask(String input, int index, Task task, TaskList taskList) {
         if ((input.equals("1"))) {
             //set complete
             setTaskComplete(taskList, index);
         } else if ((input.equals("2"))) {
             //change due date
             task.setDueDate(taskInputDecisions.setMonthAndDay(task.getDueDateObj()));
-            task.setTimeLeft();
+            //task.setTimeLeft();
         } else if ((input.equals("3"))) {
             //change urgency
             task.setUrgency(taskInputDecisions.setUrgencyDecision(task.getUrgency()));
@@ -147,7 +146,7 @@ class UserInputDecisions {
             task.setContent(taskInputDecisions.setTaskContentDecisions());
         } else if ((input.equals("5"))) {
             //sets starred to un-starred if starred, sets un-starred to stared
-            task.setStarred(taskInputDecisions.setStarredDecisions(task.getStarred()));
+            task.setStarred(taskInputDecisions.setStarredDecisions(task.isStarred()));
             messages.printTask(task);
         } else if ((input.equals("0"))) {
             //return to prev
@@ -169,9 +168,9 @@ class UserInputDecisions {
         Scanner keyboard = new Scanner(System.in);
         String input = keyboard.nextLine();
 
-        IncompleteTask incompleteTask = (IncompleteTask)(taskList.getTask(index));
+        Task task = taskList.getTask(index);
 
-        if (!modifyTask(input, index, incompleteTask, taskList)) {
+        if (!modifyTask(input, index, task, taskList)) {
             throw new NotAnOptionException();
         }
     }
@@ -181,11 +180,12 @@ class UserInputDecisions {
     //         Prompts the user to modify incomplete task if taskList.get(index) is a IncompleteTask.
     //         Else return cannot modify completed task error message.
     private void attemptModifyTask(TaskList taskList, int index) throws UIException {
-        if (taskList.getTask(index) instanceof IncompleteTask) {
+/*        if (taskList.getTask(index).isCompleted()) {
             modifyIncompleteTask(taskList, index);
         } else {
             throw new ModifyCompletedTaskException();
-        }
+        }*/
+        modifyIncompleteTask(taskList, index);
     }
 
     //MODIFIES: taskList.get(index)
@@ -193,8 +193,9 @@ class UserInputDecisions {
     //         Creates a new completed task with the content, due date of the give task and the current time
     //         Stores this completed task in the list of all tasks.
     private void setTaskComplete(TaskList taskList, int index) {
-        Task task = taskList.getTask(index);
-        try {
+        //Task task = taskList.getTask(index);
+        taskList.getTask(index).setCompleted(true);
+/*        try {
             new CompletedTask(
                     taskList,
                     task.getContent(),
@@ -202,7 +203,7 @@ class UserInputDecisions {
                     task.getDate(LocalDate.now()));
         } catch (TaskException e) {
             messages.exceptionErrorMessage(e);
-        }
+        }*/
         try {
             taskList.deleteTask(index);
         } catch (TaskDoesNotExistException | TaskException e) {
@@ -218,30 +219,30 @@ class UserInputDecisions {
     private void selectEnterTask(TaskList taskList) throws TaskException {
         String taskContent = "empty task";
         LocalDate taskDueDate = LocalDate.now();
-        IncompleteTask incompleteTask = new IncompleteTask(null, taskContent, taskDueDate, Urgency.UNASSIGNED, false);
-        setIncompleteTask(taskList, incompleteTask);
+        Task task = new Task(null, taskContent, taskDueDate, Urgency.UNASSIGNED, false);
+        setIncompleteTask(taskList, task);
     }
 
-    //MODIFIES: taskList, incompleteTask
+    //MODIFIES: taskList, task
     //EFFECTS: Prompts the user to set all fields in a incomplete task.
     //         Sets all fields present in incomplete tasks if given a important task.
-    private void setIncompleteTask(TaskList taskList, IncompleteTask incompleteTask) {
+    private void setIncompleteTask(TaskList taskList, Task task) {
         Scanner keyboard = new Scanner(System.in);
 
-        incompleteTask.setContent(taskInputDecisions.setTaskContentDecisions());
-        incompleteTask.setUrgency(taskInputDecisions.setUrgencyDecision(incompleteTask.getUrgency()));
+        task.setContent(taskInputDecisions.setTaskContentDecisions());
+        task.setUrgency(taskInputDecisions.setUrgencyDecision(task.getUrgency()));
         messages.useDefaultDateMessage();
         if ((keyboard.nextLine()).equalsIgnoreCase("y")) {
-            incompleteTask.setDueDate(taskInputDecisions.setMonthAndDay(incompleteTask.getDueDateObj()));
+            task.setDueDate(taskInputDecisions.setMonthAndDay(task.getDueDateObj()));
         }
 
         try {
-            taskList.storeTask(incompleteTask);
+            taskList.storeTask(task);
         } catch (TaskException e) {
             messages.exceptionErrorMessage(e);
         }
 
-        incompleteTask.setTimeLeft();
+        //task.setTimeLeft();
     }
 
     //EFFECTS: Prompts the user to select between:
@@ -464,7 +465,6 @@ class UserInputDecisions {
                 // NO-OP
             }
         });
-
         System.setOut(dummyStream);
     }
 }

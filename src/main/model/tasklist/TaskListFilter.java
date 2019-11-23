@@ -1,7 +1,7 @@
 package model.tasklist;
 
-import model.task.CompletedTask;
-import model.task.IncompleteTask;
+//import model.task.CompletedTask;
+//import model.task.IncompleteTask;
 import model.task.Task;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ class TaskListFilter {
     ArrayList<Task> filterOutCompleted(TaskList taskList) {
         ArrayList<Task> filteredList = new ArrayList<>();
         for (Task task : taskList.getTaskList()) {
-            if (!(task instanceof CompletedTask)) {
+            if (!task.isCompleted()) {
                 filteredList.add(task);
             }
         }
@@ -24,7 +24,7 @@ class TaskListFilter {
     ArrayList<Task> getTaskByUrgency(String urgency, TaskList taskList) {
         ArrayList<Task> tempList = new ArrayList<>();
         for (Task task : filterOutCompleted(taskList)) {
-            if (((IncompleteTask) task).getUrgency().getString().equalsIgnoreCase(urgency)) {
+            if (task.getUrgency().getString().equalsIgnoreCase(urgency)) {
                 tempList.add(task);
             }
         }

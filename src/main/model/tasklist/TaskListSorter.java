@@ -1,6 +1,6 @@
 package model.tasklist;
 
-import model.task.CompletedTask;
+//import model.task.CompletedTask;
 
 class TaskListSorter {
 
@@ -10,11 +10,11 @@ class TaskListSorter {
     //EFFECTS: Sorts the current task list chronologically based on due dates. Starts from most recently due.
     void sortByDueDate(TaskList taskList) {
         taskList.getTaskList().sort((a, b) -> {
-            if (a instanceof CompletedTask && b instanceof CompletedTask) {
+            if (a.isCompleted() && b.isCompleted()) {
                 return 0;
-            } else if (a instanceof CompletedTask) {
+            } else if (a.isCompleted()) {
                 return 1;
-            } else if (b instanceof CompletedTask) {
+            } else if (b.isCompleted()) {
                 return -1;
             } else {
                 if (a.getDueDateObj().isBefore(b.getDueDateObj())) {

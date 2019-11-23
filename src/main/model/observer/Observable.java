@@ -1,3 +1,4 @@
+/*
 package model.observer;
 
 public abstract class Observable {
@@ -7,3 +8,4 @@ public abstract class Observable {
         observer.update(observerState);
     }
 }
+*/

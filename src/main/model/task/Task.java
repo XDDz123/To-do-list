@@ -1,24 +1,33 @@
 package model.task;
 
 import exceptions.TaskException;
-import model.observer.Observable;
+//import model.observer.Observable;
+//import model.observer.ObserverState;
+import model.observer.TimeLeftObserver;
 import model.tasklist.TaskList;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Observable;
 
-public abstract class Task extends Observable implements Serializable {
+public class Task extends Observable implements Serializable {
 
-    private String key;
+
     protected transient TaskList taskList;
+    private TimeLeftObserver timeLeftObserver = new TimeLeftObserver();
+    private String key;
     private String taskContent;
-    LocalDate taskDueDate;
+    private LocalDate taskDueDate;
+    private boolean completed;
+    private Urgency taskUrgency;
+    private Boolean starred;
 
     //MODIFIES: this, taskList
     //EFFECTS: Constructs a new task.
     //         This task is stored in the given taskList if the given taskList exists (not null).
-    Task(TaskList taskList, String taskContent, LocalDate taskDueDate) throws TaskException {
+    public Task(TaskList taskList, String taskContent, LocalDate taskDueDate, Urgency taskUrgency, Boolean starred)
+            throws TaskException {
         this.taskList = taskList;
         this.taskContent = taskContent;
         this.taskDueDate = taskDueDate;
@@ -27,6 +36,43 @@ public abstract class Task extends Observable implements Serializable {
             taskList.storeTask(this);
             key = taskList.getName();
         }
+
+        this.taskUrgency = taskUrgency;
+        this.starred = starred;
+        //notifyObserver(new ObserverState<>(taskDueDate), timeLeftObserver);
+        addObserver(timeLeftObserver);
+        setChanged();
+        notifyObservers(taskDueDate);
+    }
+
+    //EFFECTS: Returns whether this task is starred.
+    public Boolean isStarred() {
+        return starred;
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Sets stars this task if given starred is true, ow sets starred to false.
+    public void setStarred(Boolean starred) {
+        this.starred = starred;
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Sets this task's urgency to given urgency.
+    public void setUrgency(Urgency taskUrgency) {
+        this.taskUrgency = taskUrgency;
+    }
+
+    //EFFECTS: Returns the task urgency of this task in the form of its string.
+    public Urgency getUrgency() {
+        return taskUrgency;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     //EFFECTS: Returns the key for this task
@@ -72,6 +118,7 @@ public abstract class Task extends Observable implements Serializable {
     //EFFECTS: Sets the due date of this task in the form of month and day.
     public void setDueDate(LocalDate taskDueDate) {
         this.taskDueDate = taskDueDate;
+        setTimeLeft();
     }
 
     //EFFECTS: Returns the due date of this task in the form of month/day. ie. 1/1
@@ -89,8 +136,36 @@ public abstract class Task extends Observable implements Serializable {
         return taskDueDate;
     }
 
-    //EFFECTS: abstract method for printing information store in the task
-    public abstract String printTask();
+    //EFFECTS: Prints the properties of this task in the following format.
+    public String printTask() {
+        return printTaskContentAndDate()
+                + "Urgency: " + getUrgency().getString() + "  "
+                + "Time left: " + getTimeLeft() + "  "
+                + "Starred: " + starred;
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Updates time left until due to the most recent time left until due
+    //         Creates a new timeLeftUpdater if the current timeLeftUpdater is null
+    //         new timeLeftUpdater should be called after deserialization
+    public void setTimeLeft() {
+/*        if (timeLeftObserver == null) {
+            timeLeftObserver = new TimeLeftObserver();
+        }*/
+        setChanged();
+        notifyObservers(taskDueDate);
+        //notifyObserver(new ObserverState<>(taskDueDate), timeLeftObserver);
+    }
+
+    //EFFECTS: Returns how much time is left until the task is due
+    public String getTimeLeft() {
+        return timeLeftObserver.getTimeLeft();
+    }
+
+    //EFFECTS: Returns the taskDueDate of this task
+    public LocalDate getTaskDueDate() {
+        return taskDueDate;
+    }
 
     //EFFECTS: Prints the task content and due date in the following format
     public String printTaskContentAndDate() {

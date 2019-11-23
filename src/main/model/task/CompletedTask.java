@@ -1,3 +1,4 @@
+/*
 package model.task;
 
 import exceptions.TaskException;
@@ -29,4 +30,4 @@ public class CompletedTask extends Task implements Serializable {
     public String printTask() {
         return super.printTaskContentAndDate() + "Completed on: " + getCompletionStatus();
     }
-}
+}*/

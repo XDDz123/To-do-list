@@ -1,3 +1,4 @@
+/*
 package model.task;
 
 import exceptions.TaskException;
@@ -77,3 +78,4 @@ public class IncompleteTask extends Task implements Serializable {
         return taskDueDate;
     }
 }
+*/

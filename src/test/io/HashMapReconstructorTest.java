@@ -2,7 +2,7 @@ package io;
 
 import exceptions.TaskException;
 import model.*;
-import model.task.IncompleteTask;
+//import model.task.IncompleteTask;
 import model.task.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,8 +28,8 @@ class HashMapReconstructorTest {
         partsOfLine.add("a");
         HashMapReconstructor hashMapReconstructor = new HashMapReconstructor();
         try {
-            taskList.add(new IncompleteTask(null,"", LocalDate.now(), null, false));
-            taskList.add(new IncompleteTask(null,"", LocalDate.now(), null, false));
+            taskList.add(new Task(null,"", LocalDate.now(), null, false));
+            taskList.add(new Task(null,"", LocalDate.now(), null, false));
             hashMapReconstructor.loadIntoHashMap(taskListHashMap, taskList, partsOfLine);
         } catch (TaskException e) {
             fail();

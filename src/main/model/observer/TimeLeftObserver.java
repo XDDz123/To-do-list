@@ -1,18 +1,21 @@
 package model.observer;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Observable;
+import java.util.Observer;
 
-public class TimeLeftObserver implements Observer {
+public class TimeLeftObserver implements Observer, Serializable {
 
     private String timeLeft;
 
     //MODIFIES: this
     //EFFECTS: Updates time left until due to the most recent time left until due
     @Override
-    public void update(ObserverState observerState) {
-        if (observerState.getState() != null) {
-            timeLeft = computeTimeLeft((LocalDate) observerState.getState());
+    public void update(Observable observable, Object o) {
+        if (o != null) {
+            timeLeft = computeTimeLeft((LocalDate) o);
         }
     }
 

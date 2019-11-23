@@ -1,13 +1,14 @@
 package model.tasklist;
 
 import exceptions.*;
-import model.observer.ListSizeObserver;
+/*import model.observer.ListSizeObserver;
 import model.observer.Observable;
+import model.observer.ObserverState;*/
+//import model.task.CompletedTask;
+//import model.task.IncompleteTask;
+import model.observer.ListSizeObserver;
 import model.observer.ObserverState;
-import model.task.CompletedTask;
-import model.task.IncompleteTask;
 import model.task.Task;
-
 import java.util.*;
 
 public class TaskList extends Observable {
@@ -25,6 +26,7 @@ public class TaskList extends Observable {
     public TaskList(String name) {
         taskList = new ArrayList<>();
         this.name = name;
+        addObserver(listSizeObserver);
     }
 
     //MODIFIES: this, task, listSizeObserver
@@ -36,7 +38,7 @@ public class TaskList extends Observable {
     //         When an incomplete task is added, notify ListSizeObserver to add one to its size
     public void storeTask(Task task) throws TaskException {
         if (!taskList.contains(task)) {
-            if (listSizeObserver.getSize() > maxSize && !(task instanceof CompletedTask)) {
+            if (listSizeObserver.getSize() > maxSize && !task.isCompleted()) {
                 throw new TooManyIncompleteTasksException();
             } else {
                 taskList.add(task);
@@ -66,8 +68,9 @@ public class TaskList extends Observable {
     //MODIFIES: listSizeObserver
     //EFFECTS: Notifies the timeLeftObserver of the changes to its size if the given task is an incomplete task
     private void notify(Task task, int i) {
-        if (task instanceof IncompleteTask) {
-            notifyObserver(new ObserverState<>(i, name), listSizeObserver);
+        if (!task.isCompleted()) {
+            setChanged();
+            notifyObservers(new ObserverState<>(i, name));
         }
     }
 
