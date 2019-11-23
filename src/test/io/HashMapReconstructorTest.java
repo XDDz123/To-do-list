@@ -23,14 +23,14 @@ class HashMapReconstructorTest {
     @Test
     void testLoadInToHashMap() {
         TaskListHashMap taskListHashMap = new TaskListHashMap();
-        ArrayList<String> partsOfLine = new ArrayList<>();
-        partsOfLine.add("a");
-        partsOfLine.add("a");
+        ArrayList<Name> listOfKeys = new ArrayList<>();
+        listOfKeys.add(new Name("a"));
+        listOfKeys.add(new Name("a"));
         HashMapReconstructor hashMapReconstructor = new HashMapReconstructor();
         try {
             taskList.add(new Task(null,"", LocalDate.now(), null, false, false));
             taskList.add(new Task(null,"", LocalDate.now(), null, false, false));
-            hashMapReconstructor.loadIntoHashMap(taskListHashMap, taskList, partsOfLine);
+            hashMapReconstructor.loadIntoHashMap(taskListHashMap, taskList, listOfKeys);
         } catch (TaskException e) {
             fail();
         }

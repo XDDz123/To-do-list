@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class TaskListHashMap {
 
-    private LinkedHashMap<String, TaskList> taskListHashMap;
+    private LinkedHashMap<Name, TaskList> taskListHashMap;
 
     //MODIFIES: this
     //EFFECTS: creates a new HashMap
@@ -17,7 +17,7 @@ public class TaskListHashMap {
     }
 
     //EFFECTS: returns taskList in this HashMap associated with a given key
-    public TaskList getTaskList(String key) {
+    public TaskList getTaskList(Name key) {
         return taskListHashMap.get(key);
     }
 
@@ -34,12 +34,12 @@ public class TaskListHashMap {
 
     //MODIFIES: this
     //EFFECTS: removes the taskList associated with the given key and the given key from this HashMap
-    public void removeTaskList(String key) {
+    public void removeTaskList(Name key) {
         taskListHashMap.remove(key, taskListHashMap.get(key));
     }
 
     //EFFECTS: returns this HashMap
-    LinkedHashMap<String, TaskList> getTaskListMap() {
+    LinkedHashMap<Name, TaskList> getTaskListMap() {
         return taskListHashMap;
     }
 }

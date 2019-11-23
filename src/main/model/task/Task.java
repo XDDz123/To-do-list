@@ -1,6 +1,7 @@
 package model.task;
 
 import exceptions.TaskException;
+import model.Name;
 import model.observer.TimeLeftObserver;
 import model.tasklist.TaskList;
 
@@ -11,10 +12,9 @@ import java.util.Observable;
 
 public class Task extends Observable implements Serializable {
 
-
     protected transient TaskList taskList;
     private TimeLeftObserver timeLeftObserver = new TimeLeftObserver();
-    private String key;
+    private Name key;
     private String taskContent;
     private LocalDate taskDueDate;
     private boolean completed;
@@ -75,7 +75,7 @@ public class Task extends Observable implements Serializable {
     }
 
     //EFFECTS: Returns the key for this task
-    public String getKey() {
+    public Name getKey() {
         return key;
     }
 

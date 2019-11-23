@@ -2,12 +2,9 @@ package io;
 
 import exceptions.TaskException;
 import model.*;
-//import model.task.CompletedTask;
-//import model.task.IncompleteTask;
 import model.task.Task;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Load {
@@ -27,7 +24,7 @@ public class Load {
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
         ArrayList<Task> taskList = new ArrayList<>();
-        ArrayList<String> listOfKeys = new ArrayList<>();
+        ArrayList<Name> listOfKeys = new ArrayList<>();
         populateTaskList(taskList, objectInputStream, listOfKeys);
 
         objectInputStream.close();
@@ -39,7 +36,7 @@ public class Load {
     //MODIFIES: taskList
     //EFFECTS: Loops until save file is out of tasks to de-serialize or errors are encountered during de-serialization
     private void populateTaskList(ArrayList<Task> taskList, ObjectInputStream objectInputStream,
-                                  ArrayList<String> listOfKeys)
+                                  ArrayList<Name> listOfKeys)
             throws TaskException, ClassNotFoundException {
         boolean run = true;
         while (run) {
@@ -56,8 +53,8 @@ public class Load {
     //inspired by https://www.mkyong.com/java/how-to-read-and-write-java-object-to-a-file/
     //inspired by https://www.geeksforgeeks.org/customized-serialization-and-deserialization-in-java/
     private boolean createTask(ArrayList<Task> taskList, ObjectInputStream objectInputStream,
-                               ArrayList<String> listOfKeys)
-            throws TaskException, ClassNotFoundException {
+                               ArrayList<Name> listOfKeys)
+            throws ClassNotFoundException {
         try {
             readTaskObject(taskList, objectInputStream, listOfKeys);
         } catch (NullPointerException | IOException e) {
@@ -73,26 +70,14 @@ public class Load {
     //         completed task to taskList. If this task is an incomplete task, set/update time left
     //         for this task.
     private void readTaskObject(ArrayList<Task> taskList, ObjectInputStream objectInputStream,
-                                ArrayList<String> listOfKeys)
-            throws IOException, ClassNotFoundException, TaskException {
+                                ArrayList<Name> listOfKeys)
+            throws IOException, ClassNotFoundException {
         Task task = (Task) objectInputStream.readObject();
 
         task.setTimeLeft();
 
         listOfKeys.add(task.getKey());
-        //check if task is past due
-        //task = checkTaskPastDue(task);
-        //adds task to list
+
         taskList.add(task);
     }
-
-/*    //MODIFIES: task
-    //EFFECTS: checks whether the given task's due date has already passed, if past due, then return a completed tasks
-    //         created from the given task's information, ow return the original task.
-    private Task checkTaskPastDue(Task task) throws TaskException {
-        if (task.getDueDateObj().isBefore(LocalDate.now()) && task instanceof IncompleteTask) {
-            task = new CompletedTask(null, task.getContent(), task.getDueDateObj(), CompletedTask.pastDue);
-        }
-        return task;
-    }*/
 }

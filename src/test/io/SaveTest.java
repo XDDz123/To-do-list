@@ -20,8 +20,8 @@ class SaveTest {
 
     @BeforeEach
     void runBefore() {
-        TaskList taskList = new TaskList("a");
-        TaskList taskList1 = new TaskList("b");
+        TaskList taskList = new TaskList(new Name("a"));
+        TaskList taskList1 = new TaskList(new Name("b"));
         taskListHashMap = new TaskListHashMap();
         TaskListHashMap taskListHashMap1 = new TaskListHashMap();
 
@@ -58,49 +58,55 @@ class SaveTest {
 
     @Test
     void testSaveTaskOne() {
-        assertEquals(taskListHashMap.getTaskList("a").getTask(1).getContent(),"task I");
-        assertEquals(taskListHashMap.getTaskList("a").getTask(1).getUrgency().getString(),"high");
-        assertEquals(taskListHashMap.getTaskList("a").getTask(1).getDueDateObj(), LocalDate.of(2020,2,3));
-        assertEquals(taskListHashMap.getTaskList("a").getTask(1).isStarred(), true);
+        Name name = new Name("a");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(1).getContent(),"task I");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(1).getUrgency().getString(),"high");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(1).getDueDateObj(), LocalDate.of(2020,2,3));
+        assertEquals(taskListHashMap.getTaskList(name).getTask(1).isStarred(), true);
     }
 
     @Test
     void testSaveTaskTwo() {
-        assertEquals(taskListHashMap.getTaskList("a").getTask(2).getContent(),"task III");
-        assertEquals(taskListHashMap.getTaskList("a").getTask(2).getUrgency().getString(),"low");
-        assertEquals(taskListHashMap.getTaskList("a").getTask(2).getDueDateObj(), LocalDate.of(2020,4,3));
-        assertEquals(taskListHashMap.getTaskList("a").getTask(2).isStarred(), false);
+        Name name = new Name("a");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(2).getContent(),"task III");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(2).getUrgency().getString(),"low");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(2).getDueDateObj(), LocalDate.of(2020,4,3));
+        assertEquals(taskListHashMap.getTaskList(name).getTask(2).isStarred(), false);
     }
 
     @Test
     void testSaveTaskThree() {
-        assertEquals(taskListHashMap.getTaskList("a").getTask(3).getContent(), "task IV");
-        assertEquals(taskListHashMap.getTaskList("a").getTask(3).getDueDateObj(), LocalDate.of(2019,10,4));
-        assertTrue(taskListHashMap.getTaskList("a").getTask(3).isCompleted());
-        assertEquals(taskListHashMap.getTaskList("a").getTask(3).getTimeLeft(), "Completed");
+        Name name = new Name("a");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(3).getContent(), "task IV");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(3).getDueDateObj(), LocalDate.of(2019,10,4));
+        assertTrue(taskListHashMap.getTaskList(name).getTask(3).isCompleted());
+        assertEquals(taskListHashMap.getTaskList(name).getTask(3).getTimeLeft(), "Completed");
     }
 
     @Test
     void testSaveTaskFour() {
-        assertEquals(taskListHashMap.getTaskList("b").getTask(1).getContent(), "task VII");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(1).getDueDateObj(), LocalDate.of(2019,4,5));
-        assertTrue(taskListHashMap.getTaskList("b").getTask(1).isCompleted());
-        assertEquals(taskListHashMap.getTaskList("b").getTask(1).getTimeLeft(), "Completed");
+        Name name = new Name("b");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(1).getContent(), "task VII");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(1).getDueDateObj(), LocalDate.of(2019,4,5));
+        assertTrue(taskListHashMap.getTaskList(name).getTask(1).isCompleted());
+        assertEquals(taskListHashMap.getTaskList(name).getTask(1).getTimeLeft(), "Completed");
     }
 
     @Test
     void testSaveTaskFive() {
-        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getContent(), "task V");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getDueDateObj(), LocalDate.of(2019,5,2));
-        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getUrgency().getString(), "mid");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(2).isStarred(), true);
+        Name name = new Name("b");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(2).getContent(), "task V");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(2).getDueDateObj(), LocalDate.of(2019,5,2));
+        assertEquals(taskListHashMap.getTaskList(name).getTask(2).getUrgency().getString(), "mid");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(2).isStarred(), true);
     }
 
     @Test
     void testSaveTaskSix() {
-        assertEquals(taskListHashMap.getTaskList("b").getTask(3).getContent(), "task VI");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(3).getDueDateObj(), LocalDate.of(2020,10,3));
-        assertEquals(taskListHashMap.getTaskList("b").getTask(3).getUrgency().getString(), "mid");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(3).isStarred(), false);
+        Name name = new Name("b");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(3).getContent(), "task VI");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(3).getDueDateObj(), LocalDate.of(2020,10,3));
+        assertEquals(taskListHashMap.getTaskList(name).getTask(3).getUrgency().getString(), "mid");
+        assertEquals(taskListHashMap.getTaskList(name).getTask(3).isStarred(), false);
     }
 }

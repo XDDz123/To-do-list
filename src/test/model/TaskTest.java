@@ -74,7 +74,7 @@ class TaskTest {
 
     @Test
     void testSetTaskList() {
-        TaskList taskList = new TaskList("list");
+        TaskList taskList = new TaskList(new Name("list"));
         try {
             task.setTaskList(taskList);
         } catch (TaskException e) {
@@ -83,7 +83,7 @@ class TaskTest {
         assertEquals(task.getTaskList(), taskList);
         assertEquals(taskList.getTask(1), task);
 
-        TaskList taskList1 = new TaskList("list1");
+        TaskList taskList1 = new TaskList(new Name("list1"));
         try {
             task.setTaskList(taskList1);
         } catch (TaskException e) {
@@ -96,7 +96,7 @@ class TaskTest {
 
     @Test
     void testSetTaskListDuplicate() {
-        TaskList taskList = new TaskList("list");
+        TaskList taskList = new TaskList(new Name("list"));
         try {
             new Task(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false, false);
         } catch (TaskException e) {
@@ -116,17 +116,17 @@ class TaskTest {
         Task task3 = null;
         TaskList taskList = null;
 
-        list = new TaskList("list");
+        list = new TaskList(new Name("list"));
         assertNotEquals(task, list);
         assertNotEquals(task, taskList);
     }
 
    @Test
     void testEqualsList() {
-        TaskList taskList = new TaskList("");
+        TaskList taskList = new TaskList(new Name(""));
         try {
             Task task1 = new Task(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false, false);
-            TaskList task2 = new TaskList("list");
+            TaskList task2 = new TaskList(new Name("list"));
             assertNotEquals(task1, task2);
         } catch (TaskException e) {
             fail();
@@ -160,7 +160,7 @@ class TaskTest {
 
     @Test
     void testHashCodeNullContent() {
-        TaskList taskList = new TaskList("");
+        TaskList taskList = new TaskList(new Name(""));
         String taskContent = null;
 
         Task task1 = null;
@@ -179,7 +179,7 @@ class TaskTest {
 
     @Test
     void testHashCodeNullDueDate() {
-        TaskList taskList = new TaskList("");
+        TaskList taskList = new TaskList(new Name(""));
         String taskContent = "empty task";
         taskDueDate = null;
 

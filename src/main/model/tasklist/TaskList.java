@@ -1,11 +1,7 @@
 package model.tasklist;
 
 import exceptions.*;
-/*import model.observer.ListSizeObserver;
-import model.observer.Observable;
-import model.observer.ObserverState;*/
-//import model.task.CompletedTask;
-//import model.task.IncompleteTask;
+import model.Name;
 import model.observer.ListSizeObserver;
 import model.observer.ObserverState;
 import model.task.Task;
@@ -18,12 +14,12 @@ public class TaskList extends Observable {
     private final TaskListToString taskListToString = new TaskListToString();
     private final ListSizeObserver listSizeObserver = new ListSizeObserver();
     private ArrayList<Task> taskList;
-    private String name;
+    private Name name;
     public static final int maxSize = 15;
 
     //MODIFIES: this
     //EFFECTS: Constructs a new taskList as an ArrayList.
-    public TaskList(String name) {
+    public TaskList(Name name) {
         taskList = new ArrayList<>();
         this.name = name;
         addObserver(listSizeObserver);
@@ -82,7 +78,7 @@ public class TaskList extends Observable {
     }
 
     //EFFECTS: Returns the name of this list
-    public String getName() {
+    public Name getName() {
         return name;
     }
 

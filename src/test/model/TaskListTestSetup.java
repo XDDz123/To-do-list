@@ -20,7 +20,7 @@ class TaskListTestSetup {
     Task task4;
 
     void setUp() {
-        taskList = new TaskList("");
+        taskList = new TaskList(new Name(""));
 
         try {
             task = new Task(taskList, "a", LocalDate.of(2019,1,2), Urgency.UNASSIGNED, false, false);

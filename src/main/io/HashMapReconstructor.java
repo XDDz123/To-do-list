@@ -1,6 +1,7 @@
 package io;
 
 import exceptions.TaskException;
+import model.Name;
 import model.task.Task;
 import model.tasklist.TaskList;
 import model.TaskListHashMap;
@@ -15,7 +16,7 @@ class HashMapReconstructor {
     //         Stores the given list of tasks using the given list of keys in their
     //         respective TaskList (with the same name) in the given HashMap.
     //         Tasks and keys are mapped linearly, with index to index, i.e. task 0 --> key 0.
-    void loadIntoHashMap(TaskListHashMap taskListHashMap, ArrayList<Task> taskList, ArrayList<String> listOfKeys)
+    void loadIntoHashMap(TaskListHashMap taskListHashMap, ArrayList<Task> taskList, ArrayList<Name> listOfKeys)
             throws TaskException {
         createTaskLists(taskListHashMap, listOfKeys);
         storeTasks(taskListHashMap, taskList, listOfKeys);
@@ -23,7 +24,7 @@ class HashMapReconstructor {
 
     //MODIFIES: taskListHashMap
     //EFFECTS: loads tasks in the given list of tasks into their respective lists in the give HashMap
-    private void storeTasks(TaskListHashMap taskListHashMap, ArrayList<Task> taskList, ArrayList<String> listOfKeys)
+    private void storeTasks(TaskListHashMap taskListHashMap, ArrayList<Task> taskList, ArrayList<Name> listOfKeys)
             throws TaskException {
         for (int i = 0; i < listOfKeys.size(); i++) {
             taskListHashMap.getTaskList(listOfKeys.get(i)).storeTask(taskList.get(i));
@@ -32,8 +33,8 @@ class HashMapReconstructor {
 
     //MODIFIES: taskListHashMap
     //EFFECTS: creates TaskLists with the name of each unique key and maps them to the given HashMap
-    private void createTaskLists(TaskListHashMap taskListHashMap, ArrayList<String> listOfKeys) {
-        for (String key : eliminateDuplicates(listOfKeys)) {
+    private void createTaskLists(TaskListHashMap taskListHashMap, ArrayList<Name> listOfKeys) {
+        for (Name key : eliminateDuplicates(listOfKeys)) {
             TaskList taskListTemp = new TaskList(key);
             taskListHashMap.storeTaskList(taskListTemp);
         }
@@ -41,7 +42,7 @@ class HashMapReconstructor {
 
     //EFFECTS: Returns a new list of strings by eliminating any duplicate strings in the given list of strings.
     //inspired by https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/
-    private List<String> eliminateDuplicates(ArrayList<String> list) {
+    private List<Name> eliminateDuplicates(ArrayList<Name> list) {
         return list.stream()
                 .distinct()
                 .collect(Collectors.toList());

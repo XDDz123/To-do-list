@@ -22,7 +22,7 @@ class TaskListTest {
 
     @BeforeEach
     void runBefore() {
-        taskList = new TaskList("");
+        taskList = new TaskList(new Name(""));
         try {
             task = new Task(taskList, taskContent, taskDueDate, taskUrgency, starred, false);
         } catch (TaskException e) {

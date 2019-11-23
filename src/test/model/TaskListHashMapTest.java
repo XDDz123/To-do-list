@@ -15,14 +15,14 @@ class TaskListHashMapTest {
 
     @Test
     void testRemoveTaskList() {
-        taskListHashMap.storeTaskList(new TaskList("key"));
-        taskListHashMap.removeTaskList("key");
+        taskListHashMap.storeTaskList(new TaskList(new Name("key")));
+        taskListHashMap.removeTaskList(new Name("key"));
         assertTrue(taskListHashMap.getTaskListMap().isEmpty());
     }
 
     @Test
     void testGetTaskListMap() {
-        taskListHashMap.storeTaskList(new TaskList("key"));
-        assertTrue(taskListHashMap.getTaskList("key").isTaskListEmpty());
+        taskListHashMap.storeTaskList(new TaskList(new Name("key")));
+        assertTrue(taskListHashMap.getTaskList(new Name("key")).isTaskListEmpty());
     }
 }

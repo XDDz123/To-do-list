@@ -44,7 +44,7 @@ public class ListSizeObserver implements Observer {
     @Override
     public void update(Observable observable, Object o) {
         size = size + (int) ((ObserverState) o).getStateOne();
-        messages.listSizeObserverMessage(size, (String) ((ObserverState) o).getStateTwo());
+        messages.listSizeObserverMessage(size, ((ObserverState) o).getStateTwo().toString());
     }
 
     //EFFECTS: Returns size

@@ -18,7 +18,7 @@ class IncompleteTaskTest {
 
     @BeforeEach
     void runBefore() {
-        TaskList taskList = new TaskList("");
+        TaskList taskList = new TaskList(new Name(""));
         try {
             task = new Task(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false, false);
         } catch (TaskException e) {

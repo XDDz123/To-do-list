@@ -374,7 +374,7 @@ class UserInputDecisions {
         String key = keyboard.nextLine();
 
         if (taskListHashMap.getKeys().contains(key)) {
-            taskListHashMap.removeTaskList(key);
+            taskListHashMap.removeTaskList(new Name(key));
         }
     }
 
@@ -387,8 +387,8 @@ class UserInputDecisions {
         if (!taskListHashMap.getKeys().isEmpty()) {
             messages.selectListMessage(taskListHashMap);
             String input = keyboard.nextLine();
-            if (taskListHashMap.getTaskList(input) != null) {
-                runUserSelection(taskListHashMap.getTaskList(input));
+            if (taskListHashMap.getTaskList(new Name(input)) != null) {
+                runUserSelection(taskListHashMap.getTaskList(new Name(input)));
             } else {
                 throw new NotAnOptionException();
             }
@@ -406,9 +406,9 @@ class UserInputDecisions {
         String input = keyboard.nextLine();
 
         if (!taskListHashMap.getKeys().contains(input)) {
-            TaskList taskList = new TaskList(input);
+            TaskList taskList = new TaskList(new Name(input));
             taskListHashMap.storeTaskList(taskList);
-            runUserSelection(taskListHashMap.getTaskList(input));
+            runUserSelection(taskListHashMap.getTaskList(new Name(input)));
         } else {
             messages.nameAlreadyExistsError();
         }

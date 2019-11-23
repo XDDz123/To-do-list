@@ -1,5 +1,6 @@
 package io;
 
+import model.Name;
 import model.task.Task;
 import model.tasklist.TaskList;
 import model.TaskListHashMap;
@@ -27,7 +28,7 @@ public class Save {
     private void saveHashMap(TaskListHashMap taskListHashMap, ObjectOutputStream objectOutputStream)
             throws IOException {
         for (Object key : taskListHashMap.getKeys()) {
-            TaskList taskList = taskListHashMap.getTaskList((String) key);
+            TaskList taskList = taskListHashMap.getTaskList((Name) key);
             saveTaskList(taskList, objectOutputStream);
         }
     }
