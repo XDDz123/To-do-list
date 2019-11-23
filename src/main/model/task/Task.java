@@ -26,7 +26,8 @@ public class Task extends Observable implements Serializable {
     //MODIFIES: this, taskList
     //EFFECTS: Constructs a new task.
     //         This task is stored in the given taskList if the given taskList exists (not null).
-    public Task(TaskList taskList, String taskContent, LocalDate taskDueDate, Urgency taskUrgency, Boolean starred)
+    public Task(TaskList taskList, String taskContent, LocalDate taskDueDate,
+                Urgency taskUrgency, Boolean starred, Boolean completed)
             throws TaskException {
         this.taskList = taskList;
         this.taskContent = taskContent;
@@ -39,10 +40,11 @@ public class Task extends Observable implements Serializable {
 
         this.taskUrgency = taskUrgency;
         this.starred = starred;
+        this.completed = completed;
         //notifyObserver(new ObserverState<>(taskDueDate), timeLeftObserver);
         addObserver(timeLeftObserver);
         setChanged();
-        notifyObservers(taskDueDate);
+        notifyObservers(this);
     }
 
     //EFFECTS: Returns whether this task is starred.
@@ -152,8 +154,10 @@ public class Task extends Observable implements Serializable {
 /*        if (timeLeftObserver == null) {
             timeLeftObserver = new TimeLeftObserver();
         }*/
-        setChanged();
-        notifyObservers(taskDueDate);
+        if (!completed) {
+            setChanged();
+            notifyObservers(this);
+        }
         //notifyObserver(new ObserverState<>(taskDueDate), timeLeftObserver);
     }
 

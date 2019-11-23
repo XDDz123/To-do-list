@@ -19,7 +19,7 @@ class TaskTest {
     @BeforeEach
     void runBefore() {
         try {
-            task = new Task(null,"empty task", taskDueDate, Urgency.UNASSIGNED, false);
+            task = new Task(null,"empty task", taskDueDate, Urgency.UNASSIGNED, false, false);
         } catch (TaskException e) {
             fail();
         }
@@ -98,7 +98,7 @@ class TaskTest {
     void testSetTaskListDuplicate() {
         TaskList taskList = new TaskList("list");
         try {
-            new Task(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false);
+            new Task(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false, false);
         } catch (TaskException e) {
             fail();
         }
@@ -171,7 +171,7 @@ class TaskTest {
 
         Task task1 = null;
         try {
-            task1 = new Task(taskList,null, taskDueDate, Urgency.UNASSIGNED, false);
+            task1 = new Task(taskList,null, taskDueDate, Urgency.UNASSIGNED, false, false);
         } catch (TaskException e) {
             fail();
         }
@@ -191,7 +191,7 @@ class TaskTest {
 
         Task task1 = null;
         try {
-            task1 = new Task(taskList,"empty task", null, Urgency.UNASSIGNED, false);
+            task1 = new Task(taskList,"empty task", null, Urgency.UNASSIGNED, false, false);
         } catch (TaskException e) {
             fail();
         }

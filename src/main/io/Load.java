@@ -77,9 +77,7 @@ public class Load {
             throws IOException, ClassNotFoundException, TaskException {
         Task task = (Task) objectInputStream.readObject();
 
-        if (task.isCompleted()) {
-            task.setTimeLeft();
-        }
+        task.setTimeLeft();
 
         listOfKeys.add(task.getKey());
         //check if task is past due

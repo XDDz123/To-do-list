@@ -23,11 +23,11 @@ class TaskListTestSetup {
         taskList = new TaskList("");
 
         try {
-            task = new Task(taskList, "a", LocalDate.of(2019,1,2), Urgency.UNASSIGNED, false);
-            task1 = new Task(taskList, "b", LocalDate.of(2019,3,4), Urgency.HIGH, false);
-            task2 = new Task(taskList, "c", LocalDate.of(2019,2,3), Urgency.MID, false);
-            task3 = new Task(taskList, "d", LocalDate.of(2019,6,7), Urgency.HIGH, false);
-            task4 = new Task(taskList, "e", LocalDate.of(2019,5,6), Urgency.LOW, false);
+            task = new Task(taskList, "a", LocalDate.of(2019,1,2), Urgency.UNASSIGNED, false, false);
+            task1 = new Task(taskList, "b", LocalDate.of(2019,3,4), Urgency.HIGH, false, false);
+            task2 = new Task(taskList, "c", LocalDate.of(2019,2,3), Urgency.MID, false, false);
+            task3 = new Task(taskList, "d", LocalDate.of(2019,6,7), Urgency.HIGH, false, false);
+            task4 = new Task(taskList, "e", LocalDate.of(2019,5,6), Urgency.LOW, false, false);
         } catch (TaskException e) {
             fail();
         }

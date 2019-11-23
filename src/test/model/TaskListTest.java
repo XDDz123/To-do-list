@@ -24,7 +24,7 @@ class TaskListTest {
     void runBefore() {
         taskList = new TaskList("");
         try {
-            task = new Task(taskList, taskContent, taskDueDate, taskUrgency, starred);
+            task = new Task(taskList, taskContent, taskDueDate, taskUrgency, starred, false);
         } catch (TaskException e) {
             fail();
         }
@@ -41,9 +41,9 @@ class TaskListTest {
         assertEquals(taskList.getTaskListSize(), 1);
 
         try {
-            new Task(taskList, "a", taskDueDate, taskUrgency, starred);
+            new Task(taskList, "a", taskDueDate, taskUrgency, starred, false);
             assertEquals(taskList.getTaskListSize(), 2);
-            new Task(taskList, "b", taskDueDate, taskUrgency, starred);
+            new Task(taskList, "b", taskDueDate, taskUrgency, starred, false);
         } catch (TaskException e) {
             fail();
         }
@@ -53,7 +53,7 @@ class TaskListTest {
     @Test
     void testDuplicateTask() {
         try {
-            new Task(taskList, taskContent, taskDueDate, taskUrgency, starred);
+            new Task(taskList, taskContent, taskDueDate, taskUrgency, starred, false);
         } catch (TaskException e) {
             fail();
         }
@@ -107,7 +107,7 @@ class TaskListTest {
     void testTooManyTasks() {
         try {
             for (int i = 0; i <=  TaskList.maxSize; i++) {
-                task = new Task(taskList, Integer.toString(i), taskDueDate, taskUrgency, starred);
+                task = new Task(taskList, Integer.toString(i), taskDueDate, taskUrgency, starred, false);
             }
         } catch (TaskException e) {
             assertEquals(e.getMessage(), "Too many incomplete tasks!");

@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SaveTest {
 
@@ -28,17 +27,20 @@ class SaveTest {
 
         try {
             new Task(taskList,"task I", (LocalDate.of(2020, 2, 3)),
-                    Urgency.HIGH, true);
+                    Urgency.HIGH, true, false);
             new Task(taskList,"task III", (LocalDate.of(2020, 4, 3)),
-                    Urgency.LOW, false);
+                    Urgency.LOW, false, false);
 
 /*            new CompletedTask(taskList,"task IV", (LocalDate.of(2019, 10, 4)), "past due");
             new CompletedTask(taskList1,"task VII", (LocalDate.of(2019, 4, 5)), "4/5");*/
 
+            new Task(taskList, "task IV", (LocalDate.of(2019, 10, 4)), Urgency.LOW,false, true);
+            new Task(taskList1, "task VII", (LocalDate.of(2019, 4, 5)), Urgency.LOW,false, true);
+
             new Task(taskList1,"task V", (LocalDate.of(2019, 5, 2)),
-                    Urgency.MID, true);
+                    Urgency.MID, true, false);
             new Task(taskList1,"task VI", (LocalDate.of(2020, 10, 3)),
-                    Urgency.MID, false);
+                    Urgency.MID, false, false);
         } catch (TaskException e) {
             fail();
         }
@@ -70,33 +72,35 @@ class SaveTest {
         assertEquals(taskListHashMap.getTaskList("a").getTask(2).isStarred(), false);
     }
 
-/*    @Test
+    @Test
     void testSaveTaskThree() {
         assertEquals(taskListHashMap.getTaskList("a").getTask(3).getContent(), "task IV");
         assertEquals(taskListHashMap.getTaskList("a").getTask(3).getDueDateObj(), LocalDate.of(2019,10,4));
-        assertEquals(((CompletedTask) taskListHashMap.getTaskList("a").getTask(3)).getCompletionStatus(), "past due");
+        assertTrue(taskListHashMap.getTaskList("a").getTask(3).isCompleted());
+        assertEquals(taskListHashMap.getTaskList("a").getTask(3).getTimeLeft(), "Completed");
     }
 
     @Test
     void testSaveTaskFour() {
         assertEquals(taskListHashMap.getTaskList("b").getTask(1).getContent(), "task VII");
         assertEquals(taskListHashMap.getTaskList("b").getTask(1).getDueDateObj(), LocalDate.of(2019,4,5));
-        assertEquals(((CompletedTask) taskListHashMap.getTaskList("b").getTask(1)).getCompletionStatus(), "4/5");
-    }*/
+        assertTrue(taskListHashMap.getTaskList("b").getTask(1).isCompleted());
+        assertEquals(taskListHashMap.getTaskList("b").getTask(1).getTimeLeft(), "Completed");
+    }
 
     @Test
     void testSaveTaskFive() {
-        assertEquals(taskListHashMap.getTaskList("b").getTask(1).getContent(), "task V");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(1).getDueDateObj(), LocalDate.of(2019,5,2));
-        assertEquals(taskListHashMap.getTaskList("b").getTask(1).getUrgency().getString(), "mid");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(1).isStarred(), true);
+        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getContent(), "task V");
+        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getDueDateObj(), LocalDate.of(2019,5,2));
+        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getUrgency().getString(), "mid");
+        assertEquals(taskListHashMap.getTaskList("b").getTask(2).isStarred(), true);
     }
 
     @Test
     void testSaveTaskSix() {
-        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getContent(), "task VI");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getDueDateObj(), LocalDate.of(2020,10,3));
-        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getUrgency().getString(), "mid");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(2).isStarred(), false);
+        assertEquals(taskListHashMap.getTaskList("b").getTask(3).getContent(), "task VI");
+        assertEquals(taskListHashMap.getTaskList("b").getTask(3).getDueDateObj(), LocalDate.of(2020,10,3));
+        assertEquals(taskListHashMap.getTaskList("b").getTask(3).getUrgency().getString(), "mid");
+        assertEquals(taskListHashMap.getTaskList("b").getTask(3).isStarred(), false);
     }
 }

@@ -8,8 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.time.LocalDate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class LoadTest {
@@ -44,34 +45,53 @@ class LoadTest {
         assertEquals(taskListHashMap.getTaskList("a").getTask(2).isStarred(), false);
     }
 
-/*
-    @Test
+
+/*    @Test
     void testLoadTaskThree() {
         assertEquals(taskListHashMap.getTaskList("a").getTask(3).getContent(), "task IV");
         assertEquals(taskListHashMap.getTaskList("a").getTask(3).getDueDateObj(), LocalDate.of(2019,10,4));
-        assertEquals(((CompletedTask) taskListHashMap.getTaskList("a").getTask(3)).getCompletionStatus(), "past due");
     }
 
     @Test
     void testLoadTaskFour() {
         assertEquals(taskListHashMap.getTaskList("b").getTask(1).getContent(), "task VII");
         assertEquals(taskListHashMap.getTaskList("b").getTask(1).getDueDateObj(), LocalDate.of(2019,4,5));
-        assertEquals(((CompletedTask) taskListHashMap.getTaskList("b").getTask(1)).getCompletionStatus(), "4/5");
     }
 
     @Test
     void testLoadTaskFive() {
         assertEquals(taskListHashMap.getTaskList("b").getTask(2).getContent(), "task V");
         assertEquals(taskListHashMap.getTaskList("b").getTask(2).getDueDateObj(), LocalDate.of(2019,5,2));
-        assertEquals(((CompletedTask) taskListHashMap.getTaskList("b").getTask(2)).getCompletionStatus(), "past due");
+    }*/
+
+    @Test
+    void testSaveTaskThree() {
+        assertEquals(taskListHashMap.getTaskList("a").getTask(3).getContent(), "task IV");
+        assertEquals(taskListHashMap.getTaskList("a").getTask(3).getDueDateObj(), LocalDate.of(2019,10,4));
+        assertTrue(taskListHashMap.getTaskList("a").getTask(3).isCompleted());
+        assertEquals(taskListHashMap.getTaskList("a").getTask(3).getTimeLeft(), "Completed");
     }
-*/
+
+    @Test
+    void testSaveTaskFour() {
+        assertEquals(taskListHashMap.getTaskList("b").getTask(1).getContent(), "task VII");
+        assertEquals(taskListHashMap.getTaskList("b").getTask(1).getDueDateObj(), LocalDate.of(2019, 4, 5));
+        assertTrue(taskListHashMap.getTaskList("b").getTask(1).isCompleted());
+        assertEquals(taskListHashMap.getTaskList("b").getTask(1).getTimeLeft(), "Completed");
+    }
+
+    @Test
+    void testLoadTaskFive() {
+        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getContent(), "task V");
+        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getDueDateObj(), LocalDate.of(2019,5,2));
+        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getTimeLeft(), "past due");
+    }
 
     @Test
     void testLoadTaskSix() {
-        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getContent(), "task VI");
-        assertEquals(taskListHashMap.getTaskList("b").getTask(2).getDueDateObj(), LocalDate.of(2020,10,3));
-        assertEquals((taskListHashMap.getTaskList("b").getTask(2)).getUrgency().getString(), "mid");
-        assertEquals((taskListHashMap.getTaskList("b").getTask(2)).isStarred(), false);
+        assertEquals(taskListHashMap.getTaskList("b").getTask(3).getContent(), "task VI");
+        assertEquals(taskListHashMap.getTaskList("b").getTask(3).getDueDateObj(), LocalDate.of(2020,10,3));
+        assertEquals((taskListHashMap.getTaskList("b").getTask(3)).getUrgency().getString(), "mid");
+        assertEquals((taskListHashMap.getTaskList("b").getTask(3)).isStarred(), false);
     }
 }

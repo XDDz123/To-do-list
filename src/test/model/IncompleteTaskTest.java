@@ -20,7 +20,7 @@ class IncompleteTaskTest {
     void runBefore() {
         TaskList taskList = new TaskList("");
         try {
-            task = new Task(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false);
+            task = new Task(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false, false);
         } catch (TaskException e) {
             fail();
         }
@@ -76,21 +76,21 @@ class IncompleteTaskTest {
 
     @Test
     void testComputeTimeLeftInDays() {
-        task.setDueDate(LocalDate.of(2019, LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth() + 1));
+        task.setDueDate(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth() + 1));
         //task.setTimeLeft();
         assertEquals(task.getTimeLeft(),1 + " days");
     }
 
     @Test
     void testComputeTimeLeftInMonths() {
-        task.setDueDate(LocalDate.of(2019,LocalDate.now().getMonthValue() + 1, LocalDate.now().getDayOfMonth()));
+        task.setDueDate(LocalDate.of(LocalDate.now().getYear(),LocalDate.now().getMonthValue() + 1, LocalDate.now().getDayOfMonth()));
         //task.setTimeLeft();
         assertEquals(task.getTimeLeft(),1 + " months " + 0 + " days");
     }
 
     @Test
     void testComputeTimeLeftInDaysAndMonths() {
-        task.setDueDate(LocalDate.of(2019,LocalDate.now().getMonthValue() + 1,
+        task.setDueDate(LocalDate.of(LocalDate.now().getYear(),LocalDate.now().getMonthValue() + 1,
                 LocalDate.now().getDayOfMonth() + 1));
         //task.setTimeLeft();
         assertEquals(task.getTimeLeft(),1 + " months " + 1 + " days");

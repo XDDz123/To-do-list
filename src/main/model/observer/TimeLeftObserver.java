@@ -1,5 +1,7 @@
 package model.observer;
 
+import model.task.Task;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
@@ -14,8 +16,12 @@ public class TimeLeftObserver implements Observer, Serializable {
     //EFFECTS: Updates time left until due to the most recent time left until due
     @Override
     public void update(Observable observable, Object o) {
-        if (o != null) {
-            timeLeft = computeTimeLeft((LocalDate) o);
+        if (((Task) o).getDueDateObj() != null) {
+            if (((Task) o).isCompleted()) {
+                timeLeft = "Completed";
+            } else {
+                timeLeft = computeTimeLeft(((Task) o).getDueDateObj());
+            }
         }
     }
 
@@ -29,16 +35,20 @@ public class TimeLeftObserver implements Observer, Serializable {
     //         Returns the number of days left until due if due date is within a month from current date
     //         Returns the number of months and days otherwise.
     private String computeTimeLeft(LocalDate dueDate) {
+        System.out.println(dueDate.toString());
+
         Period difference = Period.between(dueDate, LocalDate.now());
 
         if (dueDate.equals(LocalDate.now())) {
             return "due today";
-        } else {
+        } else if (dueDate.isAfter(LocalDate.now())) {
             if (difference.getMonths() == 0) {
                 return Math.abs(difference.getDays()) + " days";
             } else {
                 return Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days";
             }
+        } else {
+            return "past due";
         }
     }
 }

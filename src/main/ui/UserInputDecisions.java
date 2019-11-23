@@ -219,7 +219,7 @@ class UserInputDecisions {
     private void selectEnterTask(TaskList taskList) throws TaskException {
         String taskContent = "empty task";
         LocalDate taskDueDate = LocalDate.now();
-        Task task = new Task(null, taskContent, taskDueDate, Urgency.UNASSIGNED, false);
+        Task task = new Task(null, taskContent, taskDueDate, Urgency.UNASSIGNED, false, false);
         setIncompleteTask(taskList, task);
     }
 
