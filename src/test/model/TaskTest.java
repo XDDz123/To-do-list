@@ -110,34 +110,28 @@ class TaskTest {
         }
     }
 
-/*    @Test
+    @Test
     void testEqualsNull() {
-        CompletedTask task2;
+        TaskList list;
         Task task3 = null;
-        CompletedTask task4 = null;
         TaskList taskList = null;
-        try {
-            task2 = new CompletedTask(null,"empty task", taskDueDate, "unassigned");
-            assertNotEquals(task, task2);
-        } catch (TaskException e) {
-            fail();
-        }
 
-        assertNotEquals(task, task3);
-        assertNotEquals(task, task4);
+        list = new TaskList("list");
+        assertNotEquals(task, list);
         assertNotEquals(task, taskList);
-    }*/
-/*    @Test
+    }
+
+   @Test
     void testEqualsList() {
         TaskList taskList = new TaskList("");
         try {
-            Task task1 = new IncompleteTask(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false);
-            Task task2 = new CompletedTask(null,"empty task", taskDueDate, "unassigned");
+            Task task1 = new Task(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false, false);
+            TaskList task2 = new TaskList("list");
             assertNotEquals(task1, task2);
         } catch (TaskException e) {
             fail();
         }
-    }*/
+    }
 
 
     @Test

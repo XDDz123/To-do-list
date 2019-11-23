@@ -106,7 +106,7 @@ class TaskListTest {
     @Test
     void testTooManyTasks() {
         try {
-            for (int i = 0; i <=  TaskList.maxSize; i++) {
+            for (int i = 0; i <=  TaskList.maxSize + 1; i++) {
                 task = new Task(taskList, Integer.toString(i), taskDueDate, taskUrgency, starred, false);
             }
         } catch (TaskException e) {
