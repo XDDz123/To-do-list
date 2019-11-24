@@ -139,9 +139,8 @@ public class Task extends Observable implements Serializable {
     @Override
     public String toString() {
         return printTaskContentAndDate()
-                + "Urgency: " + getUrgency().getString() + "  "
-                + "Time left: " + getTimeLeft() + "  "
-                + "Starred: " + starred;
+                + " Urgency: " + getUrgency().getString() + "  "
+                + " Time left: " + getTimeLeft();
     }
 
     //MODIFIES: this

@@ -61,10 +61,10 @@ public class MainSceneController {
 
     @FXML
     void settingsAction() throws IOException {
-/*        Stage window = new Stage();
+        Stage window = new Stage();
 
         //https://stackoverflow.com/questions/14370183/passing-parameters-to-a-controller-when-loading-an-fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("settingsMenu.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/SettingsMenu.fxml"));
         Parent root = loader.load();
 
         SettingsMenu settingsMenu = loader.getController();
@@ -75,7 +75,7 @@ public class MainSceneController {
         window.initModality(Modality.APPLICATION_MODAL);
         window.resizableProperty().setValue(false);
 
-        window.showAndWait();*/
+        window.showAndWait();
     }
 
     @FXML
@@ -98,10 +98,10 @@ public class MainSceneController {
     }
 
     private void displayTaskEditor(ArrayList<Task> tempList) throws IOException {
-/*        Stage window = new Stage();
+        Stage window = new Stage();
 
         //https://stackoverflow.com/questions/14370183/passing-parameters-to-a-controller-when-loading-an-fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("taskeditor.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/TaskEditor.fxml"));
         Parent root = loader.load();
         TaskEditor taskEditor = loader.getController();
         taskEditor.taskSetter(tempList.get(0), window);
@@ -110,10 +110,11 @@ public class MainSceneController {
         window.setScene(new Scene(root, 400, 300));
         window.initModality(Modality.APPLICATION_MODAL);
         window.resizableProperty().setValue(false);
+
         //window.getScene().getStylesheets().add("DarkTheme.css");
 
 
-        window.showAndWait();*/
+        window.showAndWait();
     }
 
     @FXML
@@ -150,7 +151,7 @@ public class MainSceneController {
                             taskContentField.getText(),
                             LocalDate.of(Integer.parseInt(datePicker.getEditor().getText().split("/")[2]),
                                     Integer.parseInt(datePicker.getEditor().getText().split("/")[0]),
-                                    Integer.parseInt(datePicker.getEditor().getText().split("/")[1])), getUrgency(), false, false));
+                                    Integer.parseInt(datePicker.getEditor().getText().split("/")[1])), getUrgency(urgencySelection.getValue()), false, false));
                 } catch (TaskException e) {
                     e.printStackTrace();
                 }
@@ -164,8 +165,8 @@ public class MainSceneController {
         datePicker.getEditor().clear();
     }
 
-    public Urgency getUrgency() {
-        switch (urgencySelection.getValue()) {
+    public static Urgency getUrgency(String urgencySelection) {
+        switch (urgencySelection) {
             case "High Urgency":
                 return Urgency.HIGH;
             case "Mid Urgency":
