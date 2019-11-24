@@ -74,19 +74,24 @@ https://stackoverflow.com/questions/23412068/removing-javafx-listview-borders
 }
 
 .list-view .list-cell:empty {
-    -fx-background-color: rgba(18, 18, 18, 0.8);
+    -fx-background-color: rgba(20, 20, 20, 0.05);
     -fx-padding: 2px;
     -fx-text-fill: white;
 }
 
 .list-view .list-cell:filled:selected {
+/*
     -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+*/
+    -fx-background-color: linear-gradient(#2e344c 0%, #2c3457 50%, #2e344c 100%);
     -fx-text-fill: white;
 }
 
 
 .list-view .list-cell:filled:selected:hover {
-    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+/*    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+    -fx-background-color: #272933;*/
+    -fx-background-color: linear-gradient(#2e344c 0%, #2c3457 50%, #2e344c 100%);
     -fx-text-fill: white;
 }
 
