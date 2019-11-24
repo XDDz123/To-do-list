@@ -17,7 +17,7 @@ public class TaskList extends Observable {
     private final ObservableListObserver observableListObserver = new ObservableListObserver();
     private ArrayList<Task> taskList;
     private Name name;
-    public static final int maxSize = 15;
+    public static final int maxSize = 1000;
 
     //MODIFIES: this
     //EFFECTS: Constructs a new taskList as an ArrayList.
@@ -73,16 +73,7 @@ public class TaskList extends Observable {
         task.setTaskList(null);
     }
 
-/*    //MODIFIES: listSizeObserver
-    //EFFECTS: Notifies the timeLeftObserver of the changes to its size if the given task is an incomplete task
-    private void notify(Task task, int i) {
-        if (!task.isCompleted()) {
-            setChanged();
-            notifyObservers(new ObserverState<>(i, name));
-        }
-    }*/
-
-    private void notifyObserver() {
+    public void notifyObserver() {
         setChanged();
         notifyObservers(taskList);
     }

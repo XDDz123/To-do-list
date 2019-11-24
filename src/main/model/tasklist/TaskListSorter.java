@@ -12,9 +12,9 @@ class TaskListSorter {
         taskList.getTaskList().sort((a, b) -> {
             if (a.isCompleted() && b.isCompleted()) {
                 return 0;
-            } else if (a.isCompleted()) {
+            } else if (a.isCompleted() || a.getTimeLeft().equals("past due")) {
                 return 1;
-            } else if (b.isCompleted()) {
+            } else if (b.isCompleted() || b.getTimeLeft().equals("past due")) {
                 return -1;
             } else {
                 if (a.getDueDateObj().isBefore(b.getDueDateObj())) {
@@ -26,5 +26,6 @@ class TaskListSorter {
                 }
             }
         });
+        taskList.notifyObserver();
     }
 }

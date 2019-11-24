@@ -38,9 +38,15 @@ public class MainSceneController {
     @FXML private MenuItem starTask;
     @FXML private Button settingsButton;
     @FXML private Button newListButton;
+    @FXML private Button sortList;
 
     private TaskListHashMap taskListHashMap;
     private TaskList currentList;
+
+    @FXML
+    void sortListAction() {
+        currentList.sortByDueDate();
+    }
 
     @FXML
     void deleteListAction() {
@@ -256,7 +262,7 @@ public class MainSceneController {
         newListButtonAction();
         ((Button) listBox.getChildren().get(0)).fire();
 
-        for (int i = 1; i <= 2; i++) {
+        for (int i = 1; i <= 50; i++) {
             try {
                 currentList.storeTask(new Task(currentList, "task " + i, LocalDate.now(), Urgency.MID, false, false));
             } catch (TaskException e) {

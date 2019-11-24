@@ -16,7 +16,7 @@ public class CellController extends ListCell<Task> {
     @FXML private HBox cell;
     @FXML private CheckBox checkBox;
     @FXML private Label textInfo;
-    @FXML private ToggleButton starToggle;
+    @FXML private CheckBox star;
     @FXML private Tooltip taskContent;
 
     private ArrayList<Task> taskArrayList;
@@ -66,6 +66,14 @@ public class CellController extends ListCell<Task> {
                         "./styling/StrikethroughFalse.css").toExternalForm());
                 checkBox.setSelected(false);
             }
+
+            if (task.isStarred()) {
+                star.setSelected(true);
+            } else {
+                star.setSelected(false);
+            }
+
+            star.setOnAction(event -> task.setStarred(!task.isStarred()));
 
             setGraphic(cell);
         }

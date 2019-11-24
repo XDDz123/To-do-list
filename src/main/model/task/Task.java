@@ -53,12 +53,14 @@ public class Task extends Observable implements Serializable {
     //EFFECTS: Sets stars this task if given starred is true, ow sets starred to false.
     public void setStarred(Boolean starred) {
         this.starred = starred;
+        taskList.notifyObserver();
     }
 
     //MODIFIES: this
     //EFFECTS: Sets this task's urgency to given urgency.
     public void setUrgency(Urgency taskUrgency) {
         this.taskUrgency = taskUrgency;
+        taskList.notifyObserver();
     }
 
     //EFFECTS: Returns the task urgency of this task in the form of its string.
@@ -72,6 +74,8 @@ public class Task extends Observable implements Serializable {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+        setTimeLeft();
+        taskList.notifyObserver();
     }
 
     //EFFECTS: Returns the key for this task
@@ -106,6 +110,7 @@ public class Task extends Observable implements Serializable {
     //EFFECTS: Changes this task's task content to given content.
     public void setContent(String taskContent) {
         this.taskContent = taskContent;
+        taskList.notifyObserver();
     }
 
     //EFFECTS: Returns the task content of this task.
@@ -118,6 +123,7 @@ public class Task extends Observable implements Serializable {
     public void setDueDate(LocalDate taskDueDate) {
         this.taskDueDate = taskDueDate;
         setTimeLeft();
+        taskList.notifyObserver();
     }
 
     //EFFECTS: Returns the due date of this task in the form of month/day. ie. 1/1
@@ -148,10 +154,8 @@ public class Task extends Observable implements Serializable {
     //         Creates a new timeLeftUpdater if the current timeLeftUpdater is null
     //         new timeLeftUpdater should be called after deserialization
     public void setTimeLeft() {
-        if (!completed) {
-            setChanged();
-            notifyObservers(this);
-        }
+        setChanged();
+        notifyObservers(this);
     }
 
     //EFFECTS: Returns how much time is left until the task is due
