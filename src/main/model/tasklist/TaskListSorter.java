@@ -26,6 +26,6 @@ class TaskListSorter {
                 }
             }
         });
-        taskList.notifyObserver();
+        taskList.notifyObserver(taskList.getTaskList());
     }
 }

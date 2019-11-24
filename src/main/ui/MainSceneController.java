@@ -3,10 +3,10 @@ package ui;
 import exceptions.TaskException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -17,10 +17,8 @@ import model.task.Urgency;
 import model.tasklist.TaskList;
 
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 public class MainSceneController {
 
@@ -38,12 +36,14 @@ public class MainSceneController {
     @FXML private Button settingsButton;
     @FXML private Button newListButton;
     @FXML private Button sortList;
+    @FXML private ComboBox<String> viewSelection;
 
     private TaskListHashMap taskListHashMap;
     private TaskList currentList;
 
     @FXML
     void sortListAction() {
+        System.out.println("aaaaaaa");
         currentList.sortByDueDate();
     }
 
@@ -51,17 +51,24 @@ public class MainSceneController {
     void deleteListAction() {
         if (currentList != null) {
             taskListHashMap.removeTaskList(currentList.getName());
-            System.out.println(taskListHashMap.getKeys().toString());
-            ArrayList<Object> tempList = new ArrayList<>(listBox.getChildren());
-            tempList.forEach(button -> {
-                if (button instanceof Button && ((Button) button).getText().equals(currentList.getName().toString())) {
-                    listBox.getChildren().remove(button);
-                }
-            });
-            currentList = null;
-            listNameField.clear();
-            listView.getItems().clear();
+            findCurrentListButton();
+            clearCurrentList();
         }
+    }
+
+    private void findCurrentListButton() {
+        ArrayList<Object> tempList = new ArrayList<>(listBox.getChildren());
+        tempList.forEach(button -> {
+            if (button instanceof Button && ((Button) button).getText().equals(currentList.getName().toString())) {
+                listBox.getChildren().remove(button);
+            }
+        });
+    }
+
+    private void clearCurrentList() {
+        currentList = null;
+        listNameField.clear();
+        listView.getItems().clear();
     }
 
     @FXML
@@ -95,7 +102,7 @@ public class MainSceneController {
             tempList.clear();
             tempList.addAll(listView.getSelectionModel().getSelectedItems());
 
-            displayTaskEditor(tempList);
+            displayTaskEditor(tempList.get(0));
 
         } else {
             System.out.println("one task at a time!");
@@ -104,22 +111,20 @@ public class MainSceneController {
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
-    private void displayTaskEditor(ArrayList<Task> tempList) throws IOException {
+    private void displayTaskEditor(Task task) throws IOException {
         Stage window = new Stage();
 
         //https://stackoverflow.com/questions/14370183/passing-parameters-to-a-controller-when-loading-an-fxml
         FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/TaskEditor.fxml"));
         Parent root = loader.load();
         TaskEditor taskEditor = loader.getController();
-        taskEditor.taskSetter(tempList.get(0), window);
+        taskEditor.taskSetter(task, window);
 
         window.setTitle("Hello World 2");
         window.setScene(new Scene(root, 400, 300));
         window.initModality(Modality.APPLICATION_MODAL);
         window.resizableProperty().setValue(false);
         window.getScene().getStylesheets().add(getClass().getResource("./styling/DarkTheme.css").toExternalForm());
-
-        //window.getScene().getStylesheets().add("DarkTheme.css");
 
 
         window.showAndWait();
@@ -146,12 +151,7 @@ public class MainSceneController {
         if (!(taskContentField.getText().equals("") || datePicker.getEditor().getText().equals(""))) {
             if (currentList != null) {
                 try {
-                    currentList.storeTask(new Task(
-                            currentList,
-                            taskContentField.getText(),
-                            LocalDate.of(Integer.parseInt(datePicker.getEditor().getText().split("/")[2]),
-                                    Integer.parseInt(datePicker.getEditor().getText().split("/")[0]),
-                                    Integer.parseInt(datePicker.getEditor().getText().split("/")[1])), getUrgency(urgencySelection.getValue()), false, false));
+                    createTask();
                 } catch (TaskException e) {
                     e.printStackTrace();
                 }
@@ -159,12 +159,27 @@ public class MainSceneController {
                 System.out.println("create a list first");
             }
         }
-
-        taskContentField.clear();
-        datePicker.getEditor().clear();
+        resetTaskFields();
     }
 
-    public static Urgency getUrgency(String urgencySelection) {
+    private void resetTaskFields() {
+        taskContentField.clear();
+        datePicker.getEditor().clear();
+        urgencySelection.setValue("Mid Urgency");
+    }
+
+    private void createTask() throws TaskException {
+        currentList.storeTask(new Task(currentList, taskContentField.getText(), createLocalDate(datePicker),
+                getUrgency(urgencySelection.getValue()), false, false));
+    }
+
+    static LocalDate createLocalDate(DatePicker datePicker) {
+        return LocalDate.of(Integer.parseInt(datePicker.getEditor().getText().split("/")[2]),
+                Integer.parseInt(datePicker.getEditor().getText().split("/")[0]),
+                Integer.parseInt(datePicker.getEditor().getText().split("/")[1]));
+    }
+
+    static Urgency getUrgency(String urgencySelection) {
         switch (urgencySelection) {
             case "High Urgency":
                 return Urgency.HIGH;
@@ -180,26 +195,33 @@ public class MainSceneController {
     @FXML
     void nameUpdaterAction() {
         if (!listNameField.getText().equals("") && !taskListHashMap.getTaskListMap().isEmpty()) {
-
             listBox.getChildren().forEach(button -> {
-                if ((button instanceof Button) && !((Button) button).getText().equals("Settings")) {
-
-                    //replaceFirst("\\s++$", "") inspired by https://stackoverflow.com/questions/48052726/remove-whitespaces-only-at-the-end-of-a-string-java
-                    if (((Button) button).getText().equals(currentList.getName().toString()) && !currentList.getName().toString().equals(listNameField.getText().replaceFirst("\\s++$", ""))) {
-
-                        String name = listNameField.getText();
-                        Name newName = new Name(name, nameGenerator(name));
-
-                        taskListHashMap.remap(currentList.getName(), newName);
-                        currentList.setName(newName);
-                        ((Button) button).setText(currentList.getName().toString());
-                        ((Button) button).getTooltip().setText(((Button) button).getText());
-                        listNameField.setText(currentList.getName().toString());
-
-                        System.out.println(taskListHashMap.getKeys());
+                if (isListButton(button)) {
+                    if (isSameName((Button) button)) {
+                        Name newName = new Name(listNameField.getText(), nameGenerator(listNameField.getText()));
+                        updateNames((Button) button, newName);
                     }
-                }});
+                }
+            });
         }
+    }
+
+    private void updateNames(Button button, Name newName) {
+        taskListHashMap.remap(currentList.getName(), newName);
+        currentList.setName(newName);
+        button.setText(currentList.getName().toString());
+        button.getTooltip().setText(button.getText());
+        listNameField.setText(currentList.getName().toString());
+    }
+
+    private boolean isListButton(Node button) {
+        return (button instanceof Button) && !((Button) button).getText().equals("Settings");
+    }
+
+    //replaceFirst("\\s++$", "") inspired by https://stackoverflow.com/questions/48052726/remove-whitespaces-only-at-the-end-of-a-string-java
+    private boolean isSameName(Button button) {
+        return button.getText().equals(currentList.getName().toString())
+                && !currentList.getName().toString().equals(listNameField.getText().replaceFirst("\\s++$", ""));
     }
 
     @FXML
@@ -207,31 +229,45 @@ public class MainSceneController {
         TaskList taskList = new TaskList(new Name("Untitled List", nameGenerator("Untitled List")));
         taskListHashMap.storeTaskList(taskList);
 
-        System.out.println(taskListHashMap.getKeys().toString());
         Button button = new Button(taskList.getName().toString());
         button.setPrefSize(135,35);
-        button.setOnAction(event -> {
-            currentList = taskList;
-            listView.setItems(taskList.getObservableListObserver().getObservableList());
-            listNameField.setText(taskList.getName().toString());
-
-            listBox.getChildren().forEach(tempButton -> {
-                if (tempButton instanceof Button) {
-                    ((Button) tempButton).getStylesheets().clear();
-                    ((Button) tempButton).getStylesheets().addAll(getClass().getResource("./styling/ListUnHighlight.css").toExternalForm());
-                }
-            });
-
-            button.setTooltip(new Tooltip(button.getText()));
-
-            button.getStylesheets().clear();
-            button.getStylesheets().addAll(getClass().getResource("./styling/listHighlight.css").toExternalForm());
-
-        });
+        setListButtonAction(taskList, button);
         listBox.getChildren().add(listBox.getChildren().size(), button);
     }
 
-    int nameGenerator(String name) {
+    private void setListButtonAction(TaskList taskList, Button button) {
+        button.setOnAction(event -> {
+            setCurrentList(taskList);
+
+            unHighLightAllButtons();
+            highLightButton(button);
+
+            button.setTooltip(new Tooltip(button.getText()));
+        });
+    }
+
+    private void setCurrentList(TaskList taskList) {
+        currentList = taskList;
+        listView.setItems(currentList.getObservableListObserver().getObservableList());
+        listNameField.setText(currentList.getName().toString());
+    }
+
+    private void highLightButton(Button button) {
+        button.getStylesheets().clear();
+        button.getStylesheets().addAll(getClass().getResource("./styling/listHighlight.css").toExternalForm());
+    }
+
+    private void unHighLightAllButtons() {
+        listBox.getChildren().forEach(tempButton -> {
+            if (tempButton instanceof Button) {
+                ((Button) tempButton).getStylesheets().clear();
+                ((Button) tempButton).getStylesheets().addAll(
+                        getClass().getResource("./styling/ListUnHighlight.css").toExternalForm());
+            }
+        });
+    }
+
+    private int nameGenerator(String name) {
         int largest = 0;
         for (Name key : taskListHashMap.getKeys()) {
             if (key.getRootName().equals(name) && checkRoot(key, name)) {
@@ -241,21 +277,38 @@ public class MainSceneController {
         return largest + 1;
     }
 
-    Boolean checkRoot(Name name, String str) {
+    private Boolean checkRoot(Name name, String str) {
         return name.getCount() == 0 || !name.toString().equals(str);
     }
 
     @FXML
     public void initialize() {
-        System.out.println("initialize");
-        setUrgencySelection();
-
         taskListHashMap = new TaskListHashMap();
+        setUrgencySelection();
+        setListView();
+        generateTestTasks();
 
+        viewSelection.getItems().addAll("View All", "High Urgency", "Mid Urgency", "Low Urgency");
+        viewSelection.setValue("View All");
+        viewSelection.setOnAction(event -> {
+            if (viewSelection.getValue().equals("View All")) {
+                currentList.notifyObserver(currentList.getTaskList());
+            } else if (viewSelection.getValue().equals("High Urgency")) {
+                currentList.notifyObserver(currentList.getTaskByUrgency("high"));
+            } else if (viewSelection.getValue().equals("Mid Urgency")) {
+                currentList.notifyObserver(currentList.getTaskByUrgency("mid"));
+            } else {
+                currentList.notifyObserver(currentList.getTaskByUrgency("low"));
+            }
+        });
+    }
+
+    private void setListView() {
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
         listView.setCellFactory(cell -> new CellController());
+    }
 
+    private void generateTestTasks() {
         newListButtonAction();
         ((Button) listBox.getChildren().get(0)).fire();
 
@@ -269,7 +322,11 @@ public class MainSceneController {
     }
 
     private void setUrgencySelection() {
-        urgencySelection.getItems().addAll("High Urgency", "Mid Urgency", "Low Urgency");
+        addUrgencyItems(urgencySelection);
         urgencySelection.setValue("Mid Urgency");
+    }
+
+    static void addUrgencyItems(ChoiceBox<String> urgencySelection) {
+        urgencySelection.getItems().addAll("High Urgency", "Mid Urgency", "Low Urgency");
     }
 }

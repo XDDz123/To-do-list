@@ -41,10 +41,15 @@ public class TimeLeftObserver implements Observer, Serializable {
         if (dueDate.equals(LocalDate.now())) {
             return "due today";
         } else if (dueDate.isAfter(LocalDate.now())) {
-            if (difference.getMonths() == 0) {
-                return Math.abs(difference.getDays()) + " days";
+            if (difference.getYears() == 0) {
+                if (difference.getMonths() == 0) {
+                    return Math.abs(difference.getDays()) + " day(s)";
+                } else {
+                    return Math.abs(difference.getMonths()) + " month(s) " + Math.abs(difference.getDays()) + " day(s)";
+                }
             } else {
-                return Math.abs(difference.getMonths()) + " months " + Math.abs(difference.getDays()) + " days";
+                return Math.abs(difference.getYears()) + " year(s) " + Math.abs(difference.getMonths())
+                        + " month(s) " + Math.abs(difference.getDays()) + " day(s)";
             }
         } else {
             return "past due";

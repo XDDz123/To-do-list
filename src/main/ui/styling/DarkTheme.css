@@ -267,3 +267,43 @@ https://www.smiffysplace.com/stars.html
 #vbox {
     -fx-background-color: rgba(18, 18, 18, 0.95);
 }
+
+
+/*
+https://stackoverflow.com/questions/12299162/how-to-style-menu-button-and-menu-items
+*/
+
+.menu-item .label {
+    -fx-text-fill: rgba(255, 255, 255, 0.87);
+    -fx-background-radius: 4;
+}
+
+.menu-item:focused {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 4;
+}
+
+.context-menu {
+    -fx-background-color: rgba(20, 20, 20);
+    -fx-background-radius: 4;
+}
+
+
+/*
+https://stackoverflow.com/questions/19343531/javafx-combobox-styling
+*/
+
+.combo-box .list-cell {
+    -fx-font-size: 12;
+    -fx-text-fill: rgba(255, 255,255, 0.87);
+}
+
+.combo-box {
+    -fx-background-color: rgba(18, 18, 18, 0.95);
+    -fx-border-color: rgba(255, 255,255, 0.3);
+    -fx-border-radius: 4;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: rgba(255, 111, 0, 0.7);
+}

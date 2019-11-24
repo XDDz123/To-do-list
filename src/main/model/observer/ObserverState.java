@@ -1,4 +1,3 @@
-/*
 package model.observer;
 
 //inspired by https://docs.oracle.com/javase/tutorial/java/generics/types.html
@@ -26,4 +25,4 @@ public class ObserverState<T1,T2> {
         return stateTwo;
     }
 }
-*/
+

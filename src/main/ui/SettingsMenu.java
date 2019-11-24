@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 
 public class SettingsMenu {
 
-    Stage window;
+    private Stage window;
 
     void windowSetter(Stage window) {
         this.window = window;

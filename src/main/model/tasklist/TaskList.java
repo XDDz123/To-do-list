@@ -5,6 +5,7 @@ import model.Name;
 
 import model.observer.ObservableListObserver;
 
+import model.observer.ObserverState;
 import model.task.Task;
 import java.util.*;
 
@@ -41,7 +42,7 @@ public class TaskList extends Observable {
             } else {
                 taskList.add(task);
                 task.setTaskList(this);
-                notifyObserver();
+                notifyObserver(task);
             }
         }
     }
@@ -60,7 +61,7 @@ public class TaskList extends Observable {
         try {
             task = taskList.get(index - 1);
             taskList.remove(index - 1);
-            notifyObserver();
+            notifyObserver(new ObserverState<>("remove", task));
         } catch (IndexOutOfBoundsException e) {
             throw new TaskDoesNotExistException();
         }
@@ -69,20 +70,30 @@ public class TaskList extends Observable {
 
     public void deleteTask(Task task) throws TaskException {
         taskList.remove(task);
-        notifyObserver();
+        notifyObserver(new ObserverState<>("remove", task));
         task.setTaskList(null);
     }
 
-    public void notifyObserver() {
+    public void notifyObserver(Task task) {
+        setChanged();
+        notifyObservers(new ObserverState<>("edit", task));
+    }
+
+    public void notifyObserver(ArrayList<Task> taskList) {
         setChanged();
         notifyObservers(taskList);
+    }
+
+    public void notifyObserver(ObserverState observerState) {
+        setChanged();
+        notifyObservers(observerState);
     }
 
     //MODIFIES: this, listSizeObserver
     //EFFECTS: Removes all tasks in the current task list
     public void clearTaskList() {
         taskList.clear();
-        notifyObserver();
+        notifyObserver(taskList);
     }
 
     //EFFECTS: Returns the name of this list
