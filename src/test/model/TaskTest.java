@@ -58,13 +58,13 @@ class TaskTest {
     @Test
     void testGetDueDate() {
         LocalDate localDate = LocalDate.now();
-        assertEquals(task.getDueDate(), localDate.getMonthValue() + "/" + localDate.getDayOfMonth());
+        assertEquals(task.getDueDate(), localDate.getMonthValue() + "/" + localDate.getDayOfMonth() + "/" + localDate.getYear());
     }
 
     @Test
     void testPrintTaskContentAndDate() {
         assertEquals(task.printTaskContentAndDate(), "empty task"  + "   " + "Due: " + LocalDate.now().getMonthValue()
-                + "/" + LocalDate.now().getDayOfMonth() + "  ");
+                + "/" + LocalDate.now().getDayOfMonth() + "/" + LocalDate.now().getYear() + "  ");
     }
 
     @Test

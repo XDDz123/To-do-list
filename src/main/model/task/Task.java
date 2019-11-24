@@ -127,7 +127,7 @@ public class Task extends Observable implements Serializable {
 
     //EFFECTS: Returns the due date of this task as the LocalDate object
     public String getDate(LocalDate localDate) {
-        return localDate.getMonthValue() + "/" + localDate.getDayOfMonth();
+        return localDate.getMonthValue() + "/" + localDate.getDayOfMonth() + "/" + localDate.getYear();
     }
 
     //EFFECTS: Returns the due date of this task in the form of object LocalDate.

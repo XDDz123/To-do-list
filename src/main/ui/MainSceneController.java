@@ -140,11 +140,8 @@ public class MainSceneController {
 
     @FXML
     void storeTaskAction() {
-
         if (!(taskContentField.getText().equals("") || datePicker.getEditor().getText().equals(""))) {
-
             if (currentList != null) {
-
                 try {
                     currentList.storeTask(new Task(
                             currentList,
@@ -158,7 +155,6 @@ public class MainSceneController {
             } else {
                 System.out.println("create a list first");
             }
-
         }
 
         taskContentField.clear();

@@ -165,6 +165,12 @@ https://stackoverflow.com/questions/46659660/date-picker-popup-window
     -fx-border-color: rgba(18, 18, 18, 0.93);
 }
 
+.date-picker .cell:hover {
+    -fx-background-color: rgba(18, 18, 18, 0.75);
+    -fx-text-fill: rgba(255, 255,255, 0.87);
+    -fx-border-color: rgba(18, 18, 18, 0.93);
+}
+
 .date-picker .arrow-button{
     -fx-border-color: rgba(255, 255, 255, 0.3);
     -fx-border-radius: 4;
@@ -174,6 +180,19 @@ https://stackoverflow.com/questions/46659660/date-picker-popup-window
 
 .date-picker .arrow-button .arrow {
     -fx-background-color: rgba(255, 255, 255, 0.75);
+}
+
+.date-picker-popup > * > .today {
+    -fx-text-fill: rgba(255, 111, 0, 0.7);
+}
+
+.date-picker-popup > * > .today:focused {
+    -fx-text-fill: rgba(255, 111, 0, 0.7);
+}
+
+.date-picker-popup > * > .today:hover {
+    -fx-text-fill: rgba(255, 111, 0, 0.7);
+
 }
 
 /*
@@ -209,4 +228,32 @@ https://stackoverflow.com/questions/43530178/style-choicebox-list-with-css-in-ja
 
 .choice-box .menu-item:focused > .label {
     -fx-text-fill: rgba(255, 255,255, 0.87);
+}
+
+/*
+https://www.smiffysplace.com/stars.html
+*/
+#star .box {
+    -fx-border-width: 2;
+    -fx-border-color: rgba(255, 255, 255, 0.38);
+    -fx-background-color: transparent;
+    -fx-shape: "M 240.000 260.000 L 263.511 272.361 L 259.021 246.180 L 278.042 227.639 L 251.756 223.820 L 240.000 200.000 L 228.244 223.820 L 201.958 227.639 L 220.979 246.180 L 216.489 272.361 L 240.000 260.000";
+}
+
+#star:selected .box {
+    -fx-border-width: 0;
+    -fx-background-color: #94d694;
+}
+
+#star:hover .box {
+    -fx-border-width: 2;
+    -fx-border-color: #94d694;
+}
+
+#star:selected > .box > .mark {
+    -fx-background-color: transparent;
+}
+
+#star:hover > .box > .mark {
+    -fx-background-color: transparent;
 }

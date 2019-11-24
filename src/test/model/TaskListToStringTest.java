@@ -1,7 +1,6 @@
 package model;
 
 import exceptions.TaskException;
-//import model.task.CompletedTask;
 import model.task.Task;
 import model.task.Urgency;
 import org.junit.jupiter.api.BeforeEach;
