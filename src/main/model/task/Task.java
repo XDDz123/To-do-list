@@ -136,7 +136,8 @@ public class Task extends Observable implements Serializable {
     }
 
     //EFFECTS: Prints the properties of this task in the following format.
-    public String printTask() {
+    @Override
+    public String toString() {
         return printTaskContentAndDate()
                 + "Urgency: " + getUrgency().getString() + "  "
                 + "Time left: " + getTimeLeft() + "  "

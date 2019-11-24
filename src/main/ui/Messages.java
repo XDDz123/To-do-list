@@ -136,12 +136,12 @@ public class Messages {
         System.out.println("Type in '0' to return to the previous menu.");
     }
 
-    //EFFECTS: Prints the following.
+/*    //EFFECTS: Prints the following.
     void printTask(Task task) {
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println(task.printTask());
         System.out.println("-----------------------------------------------------------------------------------------");
-    }
+    }*/
 
     //EFFECTS: Prints the current task list in the following format.
     void printList(TaskList taskList) {

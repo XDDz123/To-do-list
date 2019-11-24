@@ -1,0 +1,7 @@
+.label .text {
+    -fx-strikethrough: true;
+}
+
+.label {
+    -fx-text-fill: rgba(255, 255, 255, 0.38);
+}

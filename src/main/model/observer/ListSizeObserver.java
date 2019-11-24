@@ -25,7 +25,8 @@ public class ListSizeObserver implements Observer {
     public void clearSize() {
         size = 0;
     }
-}*/
+}*//*
+
 
 package model.observer;
 
@@ -44,7 +45,7 @@ public class ListSizeObserver implements Observer {
     @Override
     public void update(Observable observable, Object o) {
         size = size + (int) ((ObserverState) o).getStateOne();
-        messages.listSizeObserverMessage(size, ((ObserverState) o).getStateTwo().toString());
+        messages.listSizeObserverMessage(size, (String) ((ObserverState) o).getStateTwo().toString());
     }
 
     //EFFECTS: Returns size
@@ -60,3 +61,4 @@ public class ListSizeObserver implements Observer {
 
 
 }
+*/

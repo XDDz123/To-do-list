@@ -28,7 +28,7 @@ public class TaskListHashMap {
     }
 
     //EFFECTS: returns a set of key values stored in the HashMap
-    public Set getKeys() {
+    public Set<Name> getKeys() {
         return taskListHashMap.keySet();
     }
 
@@ -39,7 +39,22 @@ public class TaskListHashMap {
     }
 
     //EFFECTS: returns this HashMap
-    LinkedHashMap<Name, TaskList> getTaskListMap() {
+    public LinkedHashMap<Name, TaskList> getTaskListMap() {
         return taskListHashMap;
+    }
+
+    public void remap(Name oldKey, Name newKey) {
+        LinkedHashMap<Name, TaskList> newMap = new LinkedHashMap<>();
+
+        taskListHashMap.forEach((key, list) -> {
+            if (key.toString().equals(oldKey.toString())) {
+                newMap.put(newKey, list);
+            } else {
+                newMap.put(key, list);
+            }
+        });
+
+        taskListHashMap.clear();
+        taskListHashMap.putAll(newMap);
     }
 }

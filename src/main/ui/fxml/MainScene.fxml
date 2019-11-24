@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="mainPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainSceneController">
+    <center>
+        <BorderPane fx:id="center" BorderPane.alignment="CENTER">
+            <bottom>
+                <HBox prefWidth="800.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <TextField fx:id="taskContentField" prefHeight="25.0" prefWidth="360.0" promptText="Enter task content" HBox.hgrow="ALWAYS" />
+                        <Region prefHeight="25.0" prefWidth="5.0" />
+                        <DatePicker fx:id="datePicker" promptText="Select due date" HBox.hgrow="ALWAYS" />
+                        <Region layoutX="336.0" layoutY="10.0" prefHeight="25.0" prefWidth="5.0" />
+                        <ChoiceBox fx:id="urgencySelection" prefHeight="25.0" prefWidth="115.0" />
+                        <Region layoutX="520.0" layoutY="10.0" prefHeight="25.0" prefWidth="15.0" />
+                        <Button fx:id="storeTask" minHeight="25.0" minWidth="72.0" mnemonicParsing="false" onAction="#storeTaskAction" text="Add Task" />
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                </HBox>
+            </bottom>
+            <top>
+                <HBox prefHeight="0.0" prefWidth="848.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <TextField fx:id="listNameField" prefHeight="25.0" prefWidth="300.0" HBox.hgrow="ALWAYS" />
+                        <Region prefHeight="25.0" prefWidth="5.0" />
+                        <Button fx:id="nameUpdater" mnemonicParsing="false" onAction="#nameUpdaterAction" prefHeight="25.0" prefWidth="91.0" text="Update Name" />
+                        <Region layoutX="375.0" layoutY="16.0" prefHeight="25.0" prefWidth="5.0" />
+                        <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" text="Sort List" />
+                        <Region layoutX="473.0" layoutY="16.0" prefHeight="25.0" prefWidth="5.0" />
+                        <Button fx:id="clearList" mnemonicParsing="false" onAction="#clearListAction" prefHeight="25.0" prefWidth="65.0" text="Clear List" />
+                        <Region layoutX="542.0" layoutY="16.0" prefHeight="25.0" prefWidth="5.0" />
+                        <ChoiceBox prefHeight="25.0" prefWidth="115.0" />
+                        <Region layoutX="611.0" layoutY="16.0" prefHeight="25.0" prefWidth="15.0" />
+                        <Button fx:id="deleteList" minHeight="25.0" minWidth="72.0" mnemonicParsing="false" onAction="#deleteListAction" text="Delete List" />
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="6.0" />
+                    </padding>
+                </HBox>
+            </top>
+            <padding>
+                <Insets left="2.0" right="2.0" />
+            </padding>
+            <center>
+                <ListView fx:id="listView" BorderPane.alignment="CENTER">
+                    <contextMenu>
+                        <ContextMenu fx:id="TaskOptions">
+                            <items>
+                                <MenuItem fx:id="deleteTask" mnemonicParsing="false" onAction="#deleteTaskAction" text="Delete Task" />
+                                <MenuItem fx:id="editTask" mnemonicParsing="false" onAction="#editTaskAction" text="Edit Task" />
+                                <MenuItem fx:id="starTask" mnemonicParsing="false" onAction="#starTaskAction" text="Star Task" />
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                    <BorderPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </BorderPane.margin>
+                </ListView>
+            </center>
+        </BorderPane>
+    </center>
+    <left>
+        <VBox fx:id="leftBox" prefHeight="200.0" prefWidth="135.0" spacing="8.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="settingsButton" minHeight="35.0" mnemonicParsing="false" onAction="#settingsAction" prefHeight="35.0" prefWidth="135.0" text="Settings" VBox.vgrow="SOMETIMES" />
+                <Button fx:id="newListButton" minHeight="35.0" mnemonicParsing="false" onAction="#newListButtonAction" prefHeight="35.0" prefWidth="135.0" text="+ New List" VBox.vgrow="SOMETIMES" />
+                <ScrollPane fx:id="listScrollPane" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="listBox" spacing="8.0">
+                            <padding>
+                                <Insets bottom="3.0" left="5.0" right="5.0" top="5.0" />
+                            </padding></VBox>
+                    </content>
+                </ScrollPane>
+            </children>
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+        </VBox>
+    </left>
+</BorderPane>

@@ -1,3 +1,4 @@
+/*
 package ui;
 
 import exceptions.*;
@@ -180,11 +181,13 @@ class UserInputDecisions {
     //         Prompts the user to modify incomplete task if taskList.get(index) is a IncompleteTask.
     //         Else return cannot modify completed task error message.
     private void attemptModifyTask(TaskList taskList, int index) throws UIException {
+*/
 /*        if (taskList.getTask(index).isCompleted()) {
             modifyIncompleteTask(taskList, index);
         } else {
             throw new ModifyCompletedTaskException();
-        }*/
+        }*//*
+
         modifyIncompleteTask(taskList, index);
     }
 
@@ -195,6 +198,7 @@ class UserInputDecisions {
     private void setTaskComplete(TaskList taskList, int index) {
         //Task task = taskList.getTask(index);
         taskList.getTask(index).setCompleted(true);
+*/
 /*        try {
             new CompletedTask(
                     taskList,
@@ -203,7 +207,8 @@ class UserInputDecisions {
                     task.getDate(LocalDate.now()));
         } catch (TaskException e) {
             messages.exceptionErrorMessage(e);
-        }*/
+        }*//*
+
         try {
             taskList.deleteTask(index);
         } catch (TaskDoesNotExistException | TaskException e) {
@@ -468,3 +473,4 @@ class UserInputDecisions {
         System.setOut(dummyStream);
     }
 }
+*/

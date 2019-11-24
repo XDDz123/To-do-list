@@ -32,7 +32,7 @@ public class TaskListToString {
             throw new EmptyListException();
         } else {
             for (int i = 0; i < list.size(); i++) {
-                taskListPrint.append(i + 1).append(" : ").append((list.get(i)).printTask()).append("\n");
+                taskListPrint.append(i + 1).append(" : ").append((list.get(i)).toString()).append("\n");
             }
             //substring to -1 to remove the last line break
             return taskListPrint.substring(0, taskListPrint.length() - 1);

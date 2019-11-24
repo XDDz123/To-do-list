@@ -2,8 +2,9 @@ package model.tasklist;
 
 import exceptions.*;
 import model.Name;
-import model.observer.ListSizeObserver;
-import model.observer.ObserverState;
+
+import model.observer.ObservableListObserver;
+
 import model.task.Task;
 import java.util.*;
 
@@ -12,7 +13,8 @@ public class TaskList extends Observable {
     private final TaskListSorter taskListSorter = new TaskListSorter();
     private final TaskListFilter taskListFilter = new TaskListFilter();
     private final TaskListToString taskListToString = new TaskListToString();
-    private final ListSizeObserver listSizeObserver = new ListSizeObserver();
+
+    private final ObservableListObserver observableListObserver = new ObservableListObserver();
     private ArrayList<Task> taskList;
     private Name name;
     public static final int maxSize = 15;
@@ -22,7 +24,7 @@ public class TaskList extends Observable {
     public TaskList(Name name) {
         taskList = new ArrayList<>();
         this.name = name;
-        addObserver(listSizeObserver);
+        addObserver(observableListObserver);
     }
 
     //MODIFIES: this, task, listSizeObserver
@@ -34,14 +36,18 @@ public class TaskList extends Observable {
     //         When an incomplete task is added, notify ListSizeObserver to add one to its size
     public void storeTask(Task task) throws TaskException {
         if (!taskList.contains(task)) {
-            if (!task.isCompleted() && listSizeObserver.getSize() > maxSize) {
+            if (!task.isCompleted() && filterOutCompleted().size() > maxSize) {
                 throw new TooManyIncompleteTasksException();
             } else {
                 taskList.add(task);
                 task.setTaskList(this);
-                notify(task, 1);
+                notifyObserver();
             }
         }
+    }
+
+    public ObservableListObserver getObservableListObserver() {
+        return observableListObserver;
     }
 
     //REQUIRES: index must refer to an existing index in the list of tasks
@@ -54,32 +60,47 @@ public class TaskList extends Observable {
         try {
             task = taskList.get(index - 1);
             taskList.remove(index - 1);
-            notify(task, -1);
+            notifyObserver();
         } catch (IndexOutOfBoundsException e) {
             throw new TaskDoesNotExistException();
         }
         task.setTaskList(null);
     }
 
-    //MODIFIES: listSizeObserver
+    public void deleteTask(Task task) throws TaskException {
+        taskList.remove(task);
+        notifyObserver();
+        task.setTaskList(null);
+    }
+
+/*    //MODIFIES: listSizeObserver
     //EFFECTS: Notifies the timeLeftObserver of the changes to its size if the given task is an incomplete task
     private void notify(Task task, int i) {
         if (!task.isCompleted()) {
             setChanged();
             notifyObservers(new ObserverState<>(i, name));
         }
+    }*/
+
+    private void notifyObserver() {
+        setChanged();
+        notifyObservers(taskList);
     }
 
     //MODIFIES: this, listSizeObserver
     //EFFECTS: Removes all tasks in the current task list
     public void clearTaskList() {
-        listSizeObserver.clearSize();
         taskList.clear();
+        notifyObserver();
     }
 
     //EFFECTS: Returns the name of this list
     public Name getName() {
         return name;
+    }
+
+    public void setName(Name name) {
+        this.name = name;
     }
 
     //EFFECTS: Returns the ArrayList that stores the current task list

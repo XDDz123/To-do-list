@@ -1,0 +1,212 @@
+.button {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-background-radius: 4;
+    -fx-transition-duration: 2;
+}
+
+.button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.25);
+}
+
+#settingsButton {
+    -fx-background-color: rgba(255, 255, 255, 0.10);
+}
+
+#settingsButton:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+}
+
+#newListButton {
+    -fx-background-color: rgba(255, 255, 255, 0.10);
+}
+
+#newListButton:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+}
+
+/*#textInfo {
+    -fx-text-fill: white;
+}*/
+
+/*
+https://community.oracle.com/thread/2350619
+*/
+
+.check-box .box {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-background-radius: 13;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #94d694;
+}
+
+
+.check-box:selected > .box > .mark {
+    -fx-background-color: rgba(18, 18, 18, 0.75);
+}
+
+.check-box:hover > .box > .mark {
+    -fx-background-color: rgba(18, 18, 18, 0.75);
+}
+
+/*
+https://stackoverflow.com/questions/12670137/how-to-hide-the-horizontal-scrollbar-of-a-listview-in-javafx
+*/
+.list-view .scroll-bar:vertical .increment-arrow,
+.list-view .scroll-bar:vertical .decrement-arrow,
+.list-view .scroll-bar:vertical .increment-button,
+.list-view .scroll-bar:vertical .decrement-button {
+    -fx-padding:0;
+}
+
+/*
+https://stackoverflow.com/questions/23412068/removing-javafx-listview-borders
+*/
+.list-view .list-cell:filled {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-padding: 10px;
+    -fx-background-insets: 5;
+    -fx-background-radius: 3;
+    -fx-text-fill: white;
+}
+
+.list-view .list-cell:empty {
+    -fx-background-color: rgba(18, 18, 18, 0.8);
+    -fx-padding: 2px;
+    -fx-text-fill: white;
+}
+
+.list-view .list-cell:filled:selected {
+    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+    -fx-text-fill: white;
+}
+
+
+.list-view .list-cell:filled:selected:hover {
+    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+    -fx-text-fill: white;
+}
+
+.list-view .list-cell:filled:hover {
+    -fx-background-color: linear-gradient(#595959 0%, #666666 50%, #595959 100%);
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-text-fill: white;
+}
+
+.list-view {
+    -fx-font-size: 13;
+    -fx-background-color: rgba(18, 18, 18, 0.8);
+    -fx-background-radius: 4;
+}
+
+
+.scroll-pane {
+   -fx-background: rgba(18, 18, 18, 0.6);
+   -fx-background-radius: 4;
+}
+
+/*#listBox {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}*/
+
+#leftBox {
+    -fx-background-color: rgba(18, 18, 18, 0.9);
+}
+
+#listScrollPane {
+    -fx-background-color: rgba(18, 18, 18, 0.6);
+}
+
+#center {
+    -fx-background: rgba(18, 18, 18, 0.8);
+    -fx-background-color: rgba(18, 18, 18, 0.95);
+}
+
+
+.text-field {
+    -fx-background-color: rgba(18, 18, 18, 0.95);
+    -fx-border-color: rgba(255, 255,255, 0.3);
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-text-fill: rgba(255, 255,255, 0.87);
+}
+
+
+/*
+https://stackoverflow.com/questions/46659660/date-picker-popup-window
+*/
+
+.date-picker {
+    -fx-background-color: rgba(18, 18, 18, 0.95);
+}
+
+.date-picker-popup > .month-year-pane {
+
+    -fx-background-color: rgba(255, 255, 255, 0.02);
+}
+
+.date-picker-popup {
+    -fx-background-color: rgba(18, 18, 18, 0.95);
+    -fx-border-color: rgba(18, 18, 18, 0.93);
+}
+
+.date-picker .cell {
+    -fx-background-color: rgba(18, 18, 18, 0.93);
+    -fx-text-fill: rgba(255, 255,255, 0.87);
+    -fx-border-color: rgba(18, 18, 18, 0.93);
+}
+
+.date-picker .cell:focused {
+    -fx-background-color: rgba(18, 18, 18, 0.75);
+    -fx-text-fill: rgba(255, 255,255, 0.87);
+    -fx-border-color: rgba(18, 18, 18, 0.93);
+}
+
+.date-picker .arrow-button{
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-background-color: transparent;
+}
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: rgba(255, 255, 255, 0.75);
+}
+
+/*
+https://stackoverflow.com/questions/43530178/style-choicebox-list-with-css-in-javafx
+*/
+
+.choice-box {
+    -fx-background-color: rgba(18, 18, 18, 0.95);
+    -fx-border-color: rgba(255, 255,255, 0.3);
+    -fx-border-radius: 4;
+    -fx-text-fill: rgba(255, 255,255, 0.87);
+    -fx-mark-color: rgba(18, 18, 18, 0.25);
+}
+
+.choice-box > .label {
+    -fx-text-fill: rgba(255, 255,255, 0.87);
+}
+
+.choice-box .context-menu {
+    -fx-background-radius: 4;
+    -fx-background-color: rgba(18, 18, 18, 0.95);
+}
+
+.choice-box .menu-item:focused {
+    -fx-background-radius: 4;
+    -fx-background-color: rgba(255, 111, 0, 0.7);
+}
+
+.choice-box .menu-item > .label {
+    -fx-background-radius: 4;
+    -fx-text-fill: rgba(255, 255,255, 0.87);
+}
+
+.choice-box .menu-item:focused > .label {
+    -fx-text-fill: rgba(255, 255,255, 0.87);
+}
