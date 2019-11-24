@@ -35,7 +35,6 @@ public class MainSceneController {
     @FXML private Button clearList;
     @FXML private MenuItem deleteTask;
     @FXML private MenuItem editTask;
-    @FXML private MenuItem starTask;
     @FXML private Button settingsButton;
     @FXML private Button newListButton;
     @FXML private Button sortList;
@@ -81,6 +80,8 @@ public class MainSceneController {
         window.initModality(Modality.APPLICATION_MODAL);
         window.resizableProperty().setValue(false);
 
+        window.getScene().getStylesheets().add(getClass().getResource("./styling/DarkTheme.css").toExternalForm());
+
         window.showAndWait();
     }
 
@@ -116,16 +117,12 @@ public class MainSceneController {
         window.setScene(new Scene(root, 400, 300));
         window.initModality(Modality.APPLICATION_MODAL);
         window.resizableProperty().setValue(false);
+        window.getScene().getStylesheets().add(getClass().getResource("./styling/DarkTheme.css").toExternalForm());
 
         //window.getScene().getStylesheets().add("DarkTheme.css");
 
 
         window.showAndWait();
-    }
-
-    @FXML
-    void starTaskAction() {
-        (new ArrayList<>(listView.getSelectionModel().getSelectedItems())).forEach(task -> task.setStarred(!task.isStarred()));
     }
 
     @FXML

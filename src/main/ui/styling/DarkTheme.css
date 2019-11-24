@@ -262,3 +262,8 @@ https://www.smiffysplace.com/stars.html
 #star:hover > .box > .mark {
     -fx-background-color: transparent;
 }
+
+
+#vbox {
+    -fx-background-color: rgba(18, 18, 18, 0.95);
+}

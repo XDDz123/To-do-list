@@ -27,7 +27,19 @@ public class TaskEditor {
         this.task = task;
         taskContent.setText(task.getContent());
         datePicker.getEditor().setText(task.getTaskDueDate().getMonthValue() + "/" + task.getTaskDueDate().getDayOfMonth() + "/" + task.getTaskDueDate().getYear());
-        urgencySelection.setValue(task.getUrgency().getString());
+        urgencySelection.setValue(convertUrgency(task.getUrgency().getString()));
+    }
+
+    private String convertUrgency(String urgency) {
+        if (urgency.equals("high")) {
+            return "High Urgency";
+        } else if (urgency.equals("mid")) {
+            return "Mid Urgency";
+        } else if (urgency.equals("low")) {
+            return "Low Urgency";
+        } else {
+            return "";
+        }
     }
 
     private void setUrgencySelection() {

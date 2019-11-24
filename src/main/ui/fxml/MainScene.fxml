@@ -63,7 +63,6 @@
                             <items>
                                 <MenuItem fx:id="deleteTask" mnemonicParsing="false" onAction="#deleteTaskAction" text="Delete Task" />
                                 <MenuItem fx:id="editTask" mnemonicParsing="false" onAction="#editTaskAction" text="Edit Task" />
-                                <MenuItem fx:id="starTask" mnemonicParsing="false" onAction="#starTaskAction" text="Star Task" />
                             </items>
                         </ContextMenu>
                     </contextMenu>
