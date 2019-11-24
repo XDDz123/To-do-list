@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.time.MonthDay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -24,11 +23,11 @@ class TaskListToStringTest extends TaskListTestSetup {
     @Test
     void testPrintTaskList() {
         assertEquals(taskList.printTaskList(),
-                        "1 : a  Due: " + taskList.getTask(1).getDueDate() + "  Urgency: unassigned  Time left: due today  Starred: false\n" +
-                        "2 : b  Due: " + taskList.getTask(2).getDueDate() + "  Urgency: high  Time left: due today  Starred: false\n" +
-                        "3 : c  Due: " + taskList.getTask(3).getDueDate() + "  Urgency: mid  Time left: due today  Starred: false\n" +
-                        "4 : d  Due: " + taskList.getTask(4).getDueDate() + "  Urgency: high  Time left: due today  Starred: false\n" +
-                        "5 : e  Due: " + taskList.getTask(5).getDueDate() + "  Urgency: low  Time left: due today  Starred: false");
+                        "1 : a   Due: " + taskList.getTask(1).getDueDate() + "   Urgency: unassigned   Time left: due today\n" +
+                        "2 : b   Due: " + taskList.getTask(2).getDueDate() + "   Urgency: high   Time left: due today\n" +
+                        "3 : c   Due: " + taskList.getTask(3).getDueDate() + "   Urgency: mid   Time left: due today\n" +
+                        "4 : d   Due: " + taskList.getTask(4).getDueDate() + "   Urgency: high   Time left: due today\n" +
+                        "5 : e   Due: " + taskList.getTask(5).getDueDate() + "   Urgency: low   Time left: due today");
     }
 
     @Test
@@ -50,11 +49,11 @@ class TaskListToStringTest extends TaskListTestSetup {
         //fix time left to be dynamic or static...
         //System.out.println(taskList.printIncompleteTasks());
         assertEquals(taskList.printIncompleteTasks(),
-                "1 : a  Due: " + taskList.getTask(1).getDueDate() + "  Urgency: unassigned  Time left: due today  Starred: false\n" +
-                        "2 : b  Due: " + taskList.getTask(2).getDueDate() + "  Urgency: high  Time left: due today  Starred: false\n" +
-                        "3 : c  Due: " + taskList.getTask(3).getDueDate() + "  Urgency: mid  Time left: due today  Starred: false\n" +
-                        "4 : d  Due: " + taskList.getTask(4).getDueDate() + "  Urgency: high  Time left: due today  Starred: false\n" +
-                        "5 : e  Due: " + taskList.getTask(5).getDueDate() + "  Urgency: low  Time left: due today  Starred: false");
+                "1 : a   Due: " + taskList.getTask(1).getDueDate() + "   Urgency: unassigned   Time left: due today\n" +
+                        "2 : b   Due: " + taskList.getTask(2).getDueDate() + "   Urgency: high   Time left: due today\n" +
+                        "3 : c   Due: " + taskList.getTask(3).getDueDate() + "   Urgency: mid   Time left: due today\n" +
+                        "4 : d   Due: " + taskList.getTask(4).getDueDate() + "   Urgency: high   Time left: due today\n" +
+                        "5 : e   Due: " + taskList.getTask(5).getDueDate() + "   Urgency: low   Time left: due today");
 
         taskList.clearTaskList();
         assertEquals(taskList.printIncompleteTasks(), "No tasks found.");

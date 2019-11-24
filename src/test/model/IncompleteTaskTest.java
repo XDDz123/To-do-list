@@ -50,9 +50,8 @@ class IncompleteTaskTest {
 
     @Test
     void testPrintTask() {
-        assertEquals(task.toString(), "empty task"  + "  " + "Due: " + LocalDate.now().getMonthValue()
-                + "/" + LocalDate.now().getDayOfMonth() + "  " + "Urgency: " + "unassigned" + "  " + "Time left: due today"
-                + "  " + "Starred: false");
+        assertEquals(task.toString(), "empty task"  + "   " + "Due: " + LocalDate.now().getMonthValue()
+                + "/" + LocalDate.now().getDayOfMonth() + "   " + "Urgency: " + "unassigned" + "   " + "Time left: due today");
     }
 
     @Test

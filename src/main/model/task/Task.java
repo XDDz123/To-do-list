@@ -166,7 +166,7 @@ public class Task extends Observable implements Serializable {
 
     //EFFECTS: Prints the task content and due date in the following format
     public String printTaskContentAndDate() {
-        return getContent() + "  " + "Due: " + getDueDate() + "  ";
+        return getContent() + "   " + "Due: " + getDueDate() + "  ";
     }
 
     //EFFECTS: checks whether the given task is identical to this task

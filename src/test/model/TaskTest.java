@@ -63,7 +63,7 @@ class TaskTest {
 
     @Test
     void testPrintTaskContentAndDate() {
-        assertEquals(task.printTaskContentAndDate(), "empty task"  + "  " + "Due: " + LocalDate.now().getMonthValue()
+        assertEquals(task.printTaskContentAndDate(), "empty task"  + "   " + "Due: " + LocalDate.now().getMonthValue()
                 + "/" + LocalDate.now().getDayOfMonth() + "  ");
     }
 
