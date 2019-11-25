@@ -1,6 +1,8 @@
 package ui;
 
 import exceptions.TaskException;
+import io.Load;
+import io.Save;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -8,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Stop;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Name;
@@ -43,7 +46,6 @@ public class MainSceneController {
 
     @FXML
     void sortListAction() {
-        System.out.println("aaaaaaa");
         currentList.sortByDueDate();
     }
 
@@ -76,7 +78,7 @@ public class MainSceneController {
         Stage window = new Stage();
 
         //https://stackoverflow.com/questions/14370183/passing-parameters-to-a-controller-when-loading-an-fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/SettingsMenu.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/SettingsMenu.fxml"));
         Parent root = loader.load();
 
         SettingsMenu settingsMenu = loader.getController();
@@ -87,7 +89,7 @@ public class MainSceneController {
         window.initModality(Modality.APPLICATION_MODAL);
         window.resizableProperty().setValue(false);
 
-        window.getScene().getStylesheets().add(getClass().getResource("./styling/DarkTheme.css").toExternalForm());
+        window.getScene().getStylesheets().add(getClass().getResource("styling/DarkTheme.css").toExternalForm());
 
         window.showAndWait();
     }
@@ -95,17 +97,14 @@ public class MainSceneController {
     @FXML
     void editTaskAction() throws IOException {
         ArrayList<Task> tempList = new ArrayList<>(listView.getSelectionModel().getSelectedItems());
-
         if (tempList.size() == 1) {
-
             listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             tempList.clear();
             tempList.addAll(listView.getSelectionModel().getSelectedItems());
 
             displayTaskEditor(tempList.get(0));
-
         } else {
-            System.out.println("one task at a time!");
+            (new AlertBox()).display("One task at a time!");
         }
 
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -115,7 +114,7 @@ public class MainSceneController {
         Stage window = new Stage();
 
         //https://stackoverflow.com/questions/14370183/passing-parameters-to-a-controller-when-loading-an-fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("./fxml/TaskEditor.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/TaskEditor.fxml"));
         Parent root = loader.load();
         TaskEditor taskEditor = loader.getController();
         taskEditor.taskSetter(task, window);
@@ -124,7 +123,7 @@ public class MainSceneController {
         window.setScene(new Scene(root, 400, 300));
         window.initModality(Modality.APPLICATION_MODAL);
         window.resizableProperty().setValue(false);
-        window.getScene().getStylesheets().add(getClass().getResource("./styling/DarkTheme.css").toExternalForm());
+        window.getScene().getStylesheets().add(getClass().getResource("styling/DarkTheme.css").toExternalForm());
 
 
         window.showAndWait();
@@ -141,7 +140,7 @@ public class MainSceneController {
             try {
                 currentList.deleteTask(task);
             } catch (TaskException e) {
-                e.printStackTrace();
+                (new AlertBox()).display(e.getMessage() + "!");
             }
         });
     }
@@ -153,10 +152,10 @@ public class MainSceneController {
                 try {
                     createTask();
                 } catch (TaskException e) {
-                    e.printStackTrace();
+                    (new AlertBox()).display(e.getMessage());
                 }
             } else {
-                System.out.println("create a list first");
+                (new AlertBox()).display("Select a list first!");
             }
         }
         resetTaskFields();
@@ -169,8 +168,13 @@ public class MainSceneController {
     }
 
     private void createTask() throws TaskException {
-        currentList.storeTask(new Task(currentList, taskContentField.getText(), createLocalDate(datePicker),
-                getUrgency(urgencySelection.getValue()), false, false));
+        LocalDate dueDate = createLocalDate(datePicker);
+        if (dueDate.isBefore(LocalDate.now())) {
+            (new AlertBox()).display("Selected due date is in the past!");
+        } else {
+            currentList.storeTask(new Task(currentList, taskContentField.getText(), dueDate,
+                    getUrgency(urgencySelection.getValue()), false, false));
+        }
     }
 
     static LocalDate createLocalDate(DatePicker datePicker) {
@@ -254,7 +258,7 @@ public class MainSceneController {
 
     private void highLightButton(Button button) {
         button.getStylesheets().clear();
-        button.getStylesheets().addAll(getClass().getResource("./styling/listHighlight.css").toExternalForm());
+        button.getStylesheets().addAll(getClass().getResource("styling/listHighlight.css").toExternalForm());
     }
 
     private void unHighLightAllButtons() {
@@ -262,7 +266,7 @@ public class MainSceneController {
             if (tempButton instanceof Button) {
                 ((Button) tempButton).getStylesheets().clear();
                 ((Button) tempButton).getStylesheets().addAll(
-                        getClass().getResource("./styling/ListUnHighlight.css").toExternalForm());
+                        getClass().getResource("styling/ListUnHighlight.css").toExternalForm());
             }
         });
     }
@@ -282,11 +286,14 @@ public class MainSceneController {
     }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws ClassNotFoundException, IOException, TaskException {
         taskListHashMap = new TaskListHashMap();
         setUrgencySelection();
         setListView();
-        generateTestTasks();
+        //generateTestTasks();
+
+        new Load().load(taskListHashMap, "data/save");
+        listButtonReCreator();
 
         viewSelection.getItems().addAll("View All", "High Urgency", "Mid Urgency", "Low Urgency");
         viewSelection.setValue("View All");
@@ -300,6 +307,25 @@ public class MainSceneController {
             } else {
                 currentList.notifyObserver(currentList.getTaskByUrgency("low"));
             }
+        });
+    }
+
+    void save() {
+        try {
+            new Save().save(taskListHashMap, "data/save");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void listButtonReCreator() {
+        taskListHashMap.getKeys().forEach(name -> {
+            TaskList taskList = taskListHashMap.getTaskList(name);
+            Button button = new Button(taskList.getName().toString());
+            button.setPrefSize(135,35);
+            setListButtonAction(taskList, button);
+            listBox.getChildren().add(listBox.getChildren().size(), button);
         });
     }
 

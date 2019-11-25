@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.TaskListHashMap;
 
 public class Main extends Application {
 
@@ -16,12 +17,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("fxml/MainScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/MainScene.fxml"));
+        Parent root = loader.load();
+        MainSceneController mainSceneController = loader.getController();
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 900, 600));
-        primaryStage.getScene().getStylesheets().add(getClass().getResource("./styling/DarkTheme.css").toExternalForm());
+        primaryStage.getScene().getStylesheets().add(getClass().getResource("styling/DarkTheme.css").toExternalForm());
         primaryStage.setMinWidth(900);
         primaryStage.setMinHeight(600);
+        primaryStage.setOnCloseRequest(event -> mainSceneController.save());
         primaryStage.show();
     }
 
