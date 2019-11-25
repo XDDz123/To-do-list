@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.TaskListHashMap;
 
+import java.util.Locale;
+
 public class Main extends Application {
 
 /*    //EFFECTS: Main method. Starts the program.

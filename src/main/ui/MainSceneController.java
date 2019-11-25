@@ -10,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Stop;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Name;
@@ -21,7 +20,9 @@ import model.tasklist.TaskList;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.chrono.Chronology;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainSceneController {
 
@@ -124,7 +125,6 @@ public class MainSceneController {
         window.initModality(Modality.APPLICATION_MODAL);
         window.resizableProperty().setValue(false);
         window.getScene().getStylesheets().add(getClass().getResource("styling/DarkTheme.css").toExternalForm());
-
 
         window.showAndWait();
     }
@@ -237,6 +237,7 @@ public class MainSceneController {
         button.setPrefSize(135,35);
         setListButtonAction(taskList, button);
         listBox.getChildren().add(listBox.getChildren().size(), button);
+        button.setTooltip(new Tooltip(button.getText()));
     }
 
     private void setListButtonAction(TaskList taskList, Button button) {
@@ -326,6 +327,7 @@ public class MainSceneController {
             button.setPrefSize(135,35);
             setListButtonAction(taskList, button);
             listBox.getChildren().add(listBox.getChildren().size(), button);
+            button.setTooltip(new Tooltip(button.getText()));
         });
     }
 
