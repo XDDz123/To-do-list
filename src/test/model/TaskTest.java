@@ -14,12 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TaskTest {
     private Task task;
+    private TaskList taskList;
     private LocalDate taskDueDate = LocalDate.now();
 
     @BeforeEach
     void runBefore() {
         try {
-            task = new Task(null,"empty task", taskDueDate, Urgency.UNASSIGNED, false, false);
+            taskList = new TaskList(new Name(""));
+            task = new Task(taskList,"empty task", taskDueDate, Urgency.UNASSIGNED, false, false);
         } catch (TaskException e) {
             fail();
         }
@@ -69,10 +71,10 @@ class TaskTest {
 
     @Test
     void testGetTaskList() {
-        assertNull(task.getTaskList());
+        assertEquals(task.getTaskList(), taskList);
     }
-
     @Test
+
     void testSetTaskList() {
         TaskList taskList = new TaskList(new Name("list"));
         try {
@@ -136,10 +138,9 @@ class TaskTest {
 
     @Test
     void testHashCode() {
-        TaskList taskList = null;
         String taskContent = "empty task";
 
-        int result = taskList != null ? taskList.hashCode() : 0;
+        int result = task.getTaskList() != null ? task.getTaskList().hashCode() : 0;
         result = 31 * result + (taskContent != null ? taskContent.hashCode() : 0);
         result = 31 * result + (taskDueDate != null ? taskDueDate.hashCode() : 0);
 
@@ -154,8 +155,11 @@ class TaskTest {
         int result = taskList != null ? taskList.hashCode() : 0;
         result = 31 * result + (taskContent != null ? taskContent.hashCode() : 0);
         result = 31 * result + (taskDueDate != null ? taskDueDate.hashCode() : 0);
-
-        assertEquals(task.hashCode(), result);
+        try {
+            assertEquals((new Task(null, taskContent, taskDueDate, Urgency.UNASSIGNED, false, false)).hashCode(), result);
+        } catch (TaskException e) {
+            fail();
+        }
     }
 
     @Test

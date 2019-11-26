@@ -8,21 +8,21 @@ import java.time.Period;
 import java.util.Observable;
 import java.util.Observer;
 
-public class TimeLeftObserver implements Observer, Serializable {
+public class TimeLeftObserver implements Serializable {
 
-    private String timeLeft;
+    private String timeLeft = "tbd";
 
     //MODIFIES: this
     //EFFECTS: Updates time left until due to the most recent time left until due
-    @Override
-    public void update(Observable observable, Object o) {
-        if (((Task) o).getDueDateObj() != null) {
-            if (((Task) o).isCompleted()) {
+    public void update(Task task) {
+        if (task.getDueDateObj() != null) {
+            if (task.isCompleted()) {
                 timeLeft = "Completed";
             } else {
-                timeLeft = computeTimeLeft(((Task) o).getDueDateObj());
+                timeLeft = computeTimeLeft(task.getDueDateObj());
             }
         }
+        System.out.println("AAAAAAAAAAA");
     }
 
     //EFFECTS: Returns how much time is left until the task is due

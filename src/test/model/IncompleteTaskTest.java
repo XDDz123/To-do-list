@@ -78,14 +78,14 @@ class IncompleteTaskTest {
     void testComputeTimeLeftInDays() {
         task.setDueDate(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth() + 1));
         //task.setTimeLeft();
-        assertEquals(task.getTimeLeft(),1 + " days");
+        assertEquals(task.getTimeLeft(),1 + " day(s)");
     }
 
     @Test
     void testComputeTimeLeftInMonths() {
         task.setDueDate(LocalDate.of(LocalDate.now().getYear(),LocalDate.now().getMonthValue() + 1, LocalDate.now().getDayOfMonth()));
         //task.setTimeLeft();
-        assertEquals(task.getTimeLeft(),1 + " months " + 0 + " days");
+        assertEquals(task.getTimeLeft(),1 + " month(s) " + 0 + " day(s)");
     }
 
     @Test
@@ -93,7 +93,7 @@ class IncompleteTaskTest {
         task.setDueDate(LocalDate.of(LocalDate.now().getYear(),LocalDate.now().getMonthValue() + 1,
                 LocalDate.now().getDayOfMonth() + 1));
         //task.setTimeLeft();
-        assertEquals(task.getTimeLeft(),1 + " months " + 1 + " days");
+        assertEquals(task.getTimeLeft(),1 + " month(s) " + 1 + " day(s)");
     }
 
     @Test

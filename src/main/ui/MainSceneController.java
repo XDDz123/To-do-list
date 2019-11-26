@@ -169,12 +169,14 @@ public class MainSceneController {
 
     private void createTask() throws TaskException {
         LocalDate dueDate = createLocalDate(datePicker);
-        if (dueDate.isBefore(LocalDate.now())) {
+/*        if (dueDate.isBefore(LocalDate.now())) {
             (new AlertBox()).display("Selected due date is in the past!");
         } else {
             currentList.storeTask(new Task(currentList, taskContentField.getText(), dueDate,
                     getUrgency(urgencySelection.getValue()), false, false));
-        }
+        }*/
+        currentList.storeTask(new Task(currentList, taskContentField.getText(), dueDate,
+                getUrgency(urgencySelection.getValue()), false, false));
     }
 
     static LocalDate createLocalDate(DatePicker datePicker) {

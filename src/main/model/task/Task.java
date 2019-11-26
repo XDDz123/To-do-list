@@ -8,9 +8,8 @@ import model.tasklist.TaskList;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Observable;
 
-public class Task extends Observable implements Serializable {
+public class Task implements Serializable {
 
     protected transient TaskList taskList;
     private TimeLeftObserver timeLeftObserver = new TimeLeftObserver();
@@ -39,9 +38,11 @@ public class Task extends Observable implements Serializable {
             key = taskList.getName();
         }
 
-        addObserver(timeLeftObserver);
-        setChanged();
-        notifyObservers(this);
+        setTimeLeft();
+    }
+
+    public TimeLeftObserver getTimeLeftObserver() {
+        return timeLeftObserver;
     }
 
     //EFFECTS: Returns whether this task is starred.
@@ -153,8 +154,7 @@ public class Task extends Observable implements Serializable {
     //         Creates a new timeLeftUpdater if the current timeLeftUpdater is null
     //         new timeLeftUpdater should be called after deserialization
     public void setTimeLeft() {
-        setChanged();
-        notifyObservers(this);
+        timeLeftObserver.update(this);
     }
 
     //EFFECTS: Returns how much time is left until the task is due

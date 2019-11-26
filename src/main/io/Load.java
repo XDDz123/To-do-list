@@ -19,7 +19,6 @@ public class Load {
     //inspired by https://drive.google.com/open?id=1hA9g_u-N0K0ZEzxBMYXl6IzEyoXSo4m3 (example given on edx)
     public void load(TaskListHashMap taskListHashMap, String saveFile)
             throws IOException, TaskException, NumberFormatException, ClassNotFoundException {
-
         FileInputStream fileInputStream = new FileInputStream(saveFile);
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 

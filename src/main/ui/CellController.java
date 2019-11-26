@@ -41,9 +41,19 @@ public class CellController extends ListCell<Task> {
         } else {
             textInfo.setText(task.toString());
             taskContent.setText(task.toString());
+
             setCompletionStatus(task);
+            setPastDueHighLight(task);
             setStarStatus(task);
+
             setGraphic(cell);
+        }
+    }
+
+    private void setPastDueHighLight(Task task) {
+        if (!task.isCompleted() && task.getTimeLeft().equals("past due")) {
+            textInfo.getStylesheets().addAll(
+                    getClass().getResource("styling/PastDueHighLight.css").toExternalForm());
         }
     }
 
