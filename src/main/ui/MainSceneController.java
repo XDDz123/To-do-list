@@ -29,6 +29,7 @@ public class MainSceneController {
     private TaskListHashMap taskListHashMap;
     private TaskList currentList;
 
+    //
     @FXML
     void sortListAction() {
         currentList.sortByDueDate();
