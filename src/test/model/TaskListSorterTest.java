@@ -60,4 +60,17 @@ class TaskListSorterTest extends TaskListTestSetup{
         taskList.sortByDueDate();
         assertTrue(taskList.getTask(taskList.getTaskListSize()).isCompleted());
     }
+
+    @Test
+    void testSortByDueDateInCompletedBeforeCompleted() {
+        try {
+            new Task(taskList, "k", LocalDate.now(), Urgency.UNASSIGNED, false, false);
+            new Task(taskList, "l", LocalDate.of(2019,3,4), Urgency.UNASSIGNED, false, true);
+        } catch (TaskException e) {
+            fail();
+        }
+
+        taskList.sortByDueDate();
+        assertTrue(taskList.getTask(taskList.getTaskListSize()).isCompleted());
+    }
 }

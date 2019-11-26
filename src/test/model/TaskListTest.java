@@ -133,5 +133,17 @@ class TaskListTest {
         taskList.setName(new Name("new name"));
         assertEquals(taskList.getName().getRootName(), "new name");
     }
+
+    @Test
+    void testDeleteTaskOverload() {
+        try {
+            taskList.deleteTask(task);
+        } catch (TaskException e) {
+            fail();
+        }
+        assertTrue(taskList.isTaskListEmpty());
+        assertNull(task.getTaskList());
+        assertTrue(taskList.getTaskListObserver().getObservableList().isEmpty());
+    }
 }
 
