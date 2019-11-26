@@ -26,6 +26,7 @@ class TaskEditor {
     private Stage window;
     private Parent root;
 
+    //MODIFIES: this
     //EFFECTS: Constructs a new TaskEditor
     //         Loads TaskEditor.fxml and sets its controller to this
     TaskEditor(Task task) {
