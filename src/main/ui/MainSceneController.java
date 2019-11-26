@@ -33,7 +33,9 @@ public class MainSceneController {
     //EFFECTS: Calls sortByDueDate on the currentList upon button press
     @FXML
     void sortListAction() {
-        currentList.sortByDueDate();
+        if (currentList != null) {
+            currentList.sortByDueDate();
+        }
     }
 
     //MODIFIES: currentList, listView, listNameField
@@ -47,7 +49,8 @@ public class MainSceneController {
         }
     }
 
-    //EFFECTS: Searches all children of listBox for a button with the name of the current
+    //MODIFIES: listBox
+    //EFFECTS: Searches all children of listBox for a button with the name of the currentList and removes said button
     private void findToRemoveCurrentListButton() {
         ArrayList<Object> tempList = new ArrayList<>(listBox.getChildren());
         tempList.forEach(button -> {
@@ -57,12 +60,18 @@ public class MainSceneController {
         });
     }
 
+    //MODIFIES: currentList, listNameField, listView
+    //EFFECTS: Sets currentList to null, clears contents of listView and listNameField
     private void clearCurrentList() {
         currentList = null;
         listNameField.clear();
         listView.getItems().clear();
     }
 
+    //MODIFIES: listView.getSelectionModel().getSelectedItems()
+    //EFFECTS: Displays the task editor scene loaded with information from the selected task
+    //         If selected one and only one item, then pass this item into displayTaskEditor
+    //         else alert the user to select one task of a time or select a task
     @FXML
     void editTaskAction() {
         ArrayList<Task> tempList = new ArrayList<>(listView.getSelectionModel().getSelectedItems());
@@ -77,15 +86,24 @@ public class MainSceneController {
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
+    //MODIFIES: task
+    //EFFECTS: Creates a new task editor with information from the given task
     private void displayTaskEditor(Task task) {
         new TaskEditor(task).displayWindow();
     }
 
+    //MODIFIES: currentList
+    //EFFECTS: Clears all tasks from the current list upon button press
     @FXML
     void clearListAction() {
-        currentList.clearTaskList();
+        if (currentList != null) {
+            currentList.clearTaskList();
+        }
     }
 
+    //MODIFIES: currentList
+    //EFFECTS: Searches listView's children for the selected task(s) and removes them from
+    //         currentList when found upon button press
     @FXML
     void deleteTaskAction() {
         (new ArrayList<>(listView.getSelectionModel().getSelectedItems())).forEach(task -> {
@@ -97,6 +115,12 @@ public class MainSceneController {
         });
     }
 
+    //MODIFIES: currentList
+    //EFFECTS: If taskContentField and datePicker are not empty and currentList is not null,
+    //         then create a task and add it to the current list
+    //         else alert the users that a list must be selected first
+    //         Alert the user when the number of tasks stored in one list exceeds the limit
+    //         resets/clears text fields
     @FXML
     void storeTaskAction() {
         if (!(taskContentField.getText().equals("") || datePicker.getEditor().getText().equals(""))) {
@@ -113,12 +137,21 @@ public class MainSceneController {
         resetTaskFields();
     }
 
+    //MODIFIES: taskContentField, datePicker, urgencySelection
+    //EFFECTS: Clears text fields of taskContentField and datePicker, sets value of datePicker to current date
+    //         resets urgencySelection to its default value
     private void resetTaskFields() {
         taskContentField.clear();
+        datePicker.setValue(LocalDate.now());
         datePicker.getEditor().clear();
         urgencySelection.setValue("Mid Urgency");
     }
 
+    //MODIFIES: currentList
+    //EFFECTS: If the selected date of the date picker is before the current date
+    //         then alert the user that selected due date cannot be in the past
+    //         else create a new task with values from currentList, taskContentField and urgencySelection
+    //         and add this task to currentList
     private void createTask() throws TaskException {
         LocalDate dueDate = datePicker.getValue();
         if (dueDate.isBefore(LocalDate.now())) {
@@ -127,9 +160,9 @@ public class MainSceneController {
             currentList.storeTask(new Task(currentList, taskContentField.getText(), dueDate,
                     getUrgency(urgencySelection.getValue()), false, false));
         }
-
     }
 
+    //EFFECTS: Takes a string from urgencySelection's choices, returns corresponding Enum Urgency
     static Urgency getUrgency(String urgencySelection) {
         switch (urgencySelection) {
             case "High Urgency":
@@ -143,6 +176,9 @@ public class MainSceneController {
         }
     }
 
+    //MODIFIES: listBox.getChildren()
+    //EFFECTS: Searches through the children of listBox and and update its name to the text contents in listNameField
+    //         upon pressing the enter key
     @FXML
     void nameUpdaterAction() {
         if (currentList != null) {
@@ -159,6 +195,11 @@ public class MainSceneController {
         }
     }
 
+    //REQUIRES: != null
+    //MODIFIES: taskListHashMap, currentList, button, listNameField
+    //EFFECTS: Sets the names of currentList, button, and listNameField to the given name
+    //         Remaps the currentList in taskListHashMap with a new key as the given name
+    //         while preserving the order of the taskListHashMap
     private void updateNames(Button button, Name newName) {
         taskListHashMap.remap(currentList.getName(), newName);
         currentList.setName(newName);
@@ -167,16 +208,22 @@ public class MainSceneController {
         listNameField.setText(currentList.getName().toString());
     }
 
+    //EFFECTS: Returns whether the given node is a button and its text is not "Settings"
     private boolean isListButton(Node button) {
         return (button instanceof Button) && !((Button) button).getText().equals("Settings");
     }
 
     //replaceFirst("\\s++$", "") inspired by https://stackoverflow.com/questions/48052726/remove-whitespaces-only-at-the-end-of-a-string-java
+    //EFFECTS: Returns whether the given button's text field is the same as the name of the current list after removing
+    //         Spaces at the end of the string in the given button's text field
     private boolean isSameName(Button button) {
         return button.getText().equals(currentList.getName().toString())
                 && !currentList.getName().toString().equals(listNameField.getText().replaceFirst("\\s++$", ""));
     }
 
+    //MODIFIES: taskListHashMap, listBox
+    //EFFECTS: Upon on button press creates and stores a new TaskList with the name "Untitled List" + #
+    //         Creates a button with the name of this list and sets its action and tooltip
     @FXML
     void newListButtonAction() {
         TaskList taskList = new TaskList(new Name("Untitled List", nameGenerator("Untitled List")));
@@ -189,6 +236,10 @@ public class MainSceneController {
         button.setTooltip(new Tooltip(button.getText()));
     }
 
+    //MODIFIES: button
+    //EFFECTS: On button press, set current list to the given taskList, set style of all list buttons to unHighLighted,
+    //         then set the style of this given button to highLightButton
+    //         Updates the too tip of this button to its text field
     private void setListButtonAction(TaskList taskList, Button button) {
         button.setOnAction(event -> {
             setCurrentList(taskList);
@@ -200,17 +251,24 @@ public class MainSceneController {
         });
     }
 
+    //EFFECTS: currentList, listView, listNameField
+    //MODIFIES: Sets the currentList to the given taskList, sets listView to the given taskList, set listNameField to
+    //          the name of the currentList
     private void setCurrentList(TaskList taskList) {
         currentList = taskList;
         listView.setItems(currentList.getTaskListObserver().getObservableList());
         listNameField.setText(currentList.getName().toString());
     }
 
+    //MODIFIES: button
+    //EFFECTS: Sets the styling of this button to ListHighlight.css
     private void highLightButton(Button button) {
         button.getStylesheets().clear();
         button.getStylesheets().addAll(getClass().getResource("styling/ListHighlight.css").toExternalForm());
     }
 
+    //MODIFIES: listBox.getChildren()
+    //EFFECTS: Sets all buttons in listBox.getChildren() to the style of ListUnHighlight.css
     private void unHighLightAllButtons() {
         listBox.getChildren().forEach(tempButton -> {
             if (tempButton instanceof Button) {
@@ -221,6 +279,8 @@ public class MainSceneController {
         });
     }
 
+    //EFFECTS: If the given string is an existing room name, then return the a string in the form of
+    //         the given name + (the largest count of existing names + 1)
     private int nameGenerator(String name) {
         int largest = 0;
         for (Name key : taskListHashMap.getKeys()) {
@@ -231,10 +291,13 @@ public class MainSceneController {
         return largest + 1;
     }
 
+    //EFFECTS: Checks if the given string is a root name for the given name
+    //         return true if the given name is a root name or the given string is not equal to the given name
     private Boolean checkRoot(Name name, String str) {
         return name.getCount() == 0 || !name.toString().equals(str);
     }
 
+    //EFFECTS: initializes fields, loads data from data/save
     @FXML
     public void initialize() throws ClassNotFoundException, IOException, TaskException {
         taskListHashMap = new TaskListHashMap();
@@ -247,6 +310,11 @@ public class MainSceneController {
         setViewSelection();
     }
 
+    //MODIFIES: currentList
+    //EFFECTS: If view selection is "View All", then display all tasks in the current list
+    //         If view selection is "High Urgency", then display high urgency tasks in the current list
+    //         If view selection is "Mid Urgency", then display mid urgency tasks in the current list
+    //         else display low urgency tasks in the current list
     @FXML
     void viewSelectionAction() {
         if (currentList != null) {
@@ -268,11 +336,16 @@ public class MainSceneController {
         }
     }
 
+    //MODIFIES: viewSelection
+    //EFFECTS: Adds the following menu items into the viewSelection combo box
+    //         Sets the default value of viewSelection to View All
     private void setViewSelection() {
         viewSelection.getItems().addAll("View All", "High Urgency", "Mid Urgency", "Low Urgency");
         viewSelection.setValue("View All");
     }
 
+    //MODIFIES: data/save
+    //EFFECTS: Saves the current taskListHashMap into data/save
     void save() {
         try {
             new Save().save(taskListHashMap, "data/save");
@@ -281,6 +354,10 @@ public class MainSceneController {
         }
     }
 
+    //MODIFIES: listBox.getChildren()
+    //EFFECTS: Creates buttons with the names of each list in taskListHashMap linked to its respective list
+    //         Adds this new button to the listBox and creates a new tooltip for this button with its contents
+    //         being the name of this button
     @FXML
     private void listButtonReCreator() {
         taskListHashMap.getKeys().forEach(name -> {
@@ -293,16 +370,23 @@ public class MainSceneController {
         });
     }
 
+    //MODIFIES: listView
+    //EFFECTS: Sets the selection mode of listView to multiple
+    //         Sets the cell factory of listView to CellController
     private void setListView() {
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         listView.setCellFactory(cell -> new CellController());
     }
 
+    //MODIFIES: urgencySelection
+    //EFFECTS: Adds choices to urgencySelection and set its default value to Mid Urgency
     private void setUrgencySelection() {
         addUrgencyItems(urgencySelection);
         urgencySelection.setValue("Mid Urgency");
     }
 
+    //MODIFIES: urgencySelection
+    //EFFECTS: Adds the following choices to urgencySelection
     static void addUrgencyItems(ChoiceBox<String> urgencySelection) {
         urgencySelection.getItems().addAll("High Urgency", "Mid Urgency", "Low Urgency");
     }
