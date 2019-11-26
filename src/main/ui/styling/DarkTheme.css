@@ -314,3 +314,7 @@ https://stackoverflow.com/questions/19343531/javafx-combobox-styling
 .tooltip {
     -fx-font-size: 13;
 }
+
+.context-menu {
+    -fx-font-size: 13;
+}

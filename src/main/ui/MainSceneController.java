@@ -19,9 +19,7 @@ import model.task.Urgency;
 import model.tasklist.TaskList;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-
 
 public class MainSceneController {
 
@@ -94,6 +92,7 @@ public class MainSceneController {
         window.setScene(new Scene(root, 400, 300));
         window.initModality(Modality.APPLICATION_MODAL);
         window.resizableProperty().setValue(false);
+        window.setTitle("Edit Task");
         window.getScene().getStylesheets().add(getClass().getResource("styling/DarkTheme.css").toExternalForm());
 
         window.showAndWait();
@@ -138,21 +137,15 @@ public class MainSceneController {
     }
 
     private void createTask() throws TaskException {
-        LocalDate dueDate = createLocalDate(datePicker);
+        //LocalDate dueDate = createLocalDate(datePicker);
 /*        if (dueDate.isBefore(LocalDate.now())) {
             (new AlertBox()).display("Selected due date is in the past!");
         } else {
             currentList.storeTask(new Task(currentList, taskContentField.getText(), dueDate,
                     getUrgency(urgencySelection.getValue()), false, false));
         }*/
-        currentList.storeTask(new Task(currentList, taskContentField.getText(), dueDate,
+        currentList.storeTask(new Task(currentList, taskContentField.getText(), datePicker.getValue(),
                 getUrgency(urgencySelection.getValue()), false, false));
-    }
-
-    static LocalDate createLocalDate(DatePicker datePicker) {
-        return LocalDate.of(Integer.parseInt(datePicker.getEditor().getText().split("/")[2]),
-                Integer.parseInt(datePicker.getEditor().getText().split("/")[0]),
-                Integer.parseInt(datePicker.getEditor().getText().split("/")[1]));
     }
 
     static Urgency getUrgency(String urgencySelection) {
@@ -233,7 +226,7 @@ public class MainSceneController {
 
     private void highLightButton(Button button) {
         button.getStylesheets().clear();
-        button.getStylesheets().addAll(getClass().getResource("styling/listHighlight.css").toExternalForm());
+        button.getStylesheets().addAll(getClass().getResource("styling/ListHighlight.css").toExternalForm());
     }
 
     private void unHighLightAllButtons() {
@@ -309,19 +302,6 @@ public class MainSceneController {
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         listView.setCellFactory(cell -> new CellController());
     }
-
-/*    private void generateTestTasks() {
-        newListButtonAction();
-        ((Button) listBox.getChildren().get(0)).fire();
-
-        for (int i = 1; i <= 50; i++) {
-            try {
-                currentList.storeTask(new Task(currentList, "task " + i, LocalDate.now(), Urgency.MID, false, false));
-            } catch (TaskException e) {
-                e.printStackTrace();
-            }
-        }
-    }*/
 
     private void setUrgencySelection() {
         addUrgencyItems(urgencySelection);

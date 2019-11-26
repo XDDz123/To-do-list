@@ -48,7 +48,7 @@ public class TaskEditor {
     @FXML
     void saveAction() {
         task.setContent(taskContent.getText());
-        task.setDueDate(MainSceneController.createLocalDate(datePicker));
+        task.setDueDate(datePicker.getValue());
         task.setUrgency(MainSceneController.getUrgency(urgencySelection.getValue()));
         window.close();
     }

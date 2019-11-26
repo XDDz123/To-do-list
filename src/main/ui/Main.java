@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Locale;
+
 public class Main extends Application {
 
     @Override
@@ -14,13 +16,15 @@ public class Main extends Application {
         Parent root = loader.load();
         MainSceneController mainSceneController = loader.getController();
         setStage(primaryStage, root, mainSceneController);
+        Locale.setDefault(Locale.US);
+        primaryStage.show();
     }
 
     private void setStage(Stage primaryStage, Parent root, MainSceneController mainSceneController) {
         setStageDimensions(primaryStage, root);
         setStageStyling(primaryStage);
         setStageOnCloseRequest(primaryStage, mainSceneController);
-        primaryStage.show();
+        primaryStage.setTitle("To Do List");
     }
 
     private void setStageOnCloseRequest(Stage primaryStage, MainSceneController mainSceneController) {
