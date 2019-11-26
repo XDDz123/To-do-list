@@ -6,30 +6,35 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import model.TaskListHashMap;
-
-import java.util.Locale;
-
 public class Main extends Application {
-
-/*    //EFFECTS: Main method. Starts the program.
-    public static void main(String[] args) {
-        UserInputDecisions userInputDecisions = new UserInputDecisions();
-        userInputDecisions.run();
-    }*/
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/MainScene.fxml"));
         Parent root = loader.load();
         MainSceneController mainSceneController = loader.getController();
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 900, 600));
+        setStage(primaryStage, root, mainSceneController);
+    }
+
+    private void setStage(Stage primaryStage, Parent root, MainSceneController mainSceneController) {
+        setStageDimensions(primaryStage, root);
+        setStageStyling(primaryStage);
+        setStageOnCloseRequest(primaryStage, mainSceneController);
+        primaryStage.show();
+    }
+
+    private void setStageOnCloseRequest(Stage primaryStage, MainSceneController mainSceneController) {
+        primaryStage.setOnCloseRequest(event -> mainSceneController.save());
+    }
+
+    private void setStageStyling(Stage primaryStage) {
         primaryStage.getScene().getStylesheets().add(getClass().getResource("styling/DarkTheme.css").toExternalForm());
+    }
+
+    private void setStageDimensions(Stage primaryStage, Parent root) {
+        primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.setMinWidth(900);
         primaryStage.setMinHeight(600);
-        primaryStage.setOnCloseRequest(event -> mainSceneController.save());
-        primaryStage.show();
     }
 
     public static void main(String[] args) {

@@ -20,9 +20,8 @@ import model.tasklist.TaskList;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.chrono.Chronology;
 import java.util.ArrayList;
-import java.util.Locale;
+
 
 public class MainSceneController {
 
@@ -30,16 +29,8 @@ public class MainSceneController {
     @FXML private ListView<Task> listView;
     @FXML private TextField taskContentField;
     @FXML private TextField listNameField;
-    @FXML private Button storeTask;
     @FXML private DatePicker datePicker;
     @FXML private ChoiceBox<String> urgencySelection;
-    @FXML private Button nameUpdater;
-    @FXML private Button clearList;
-    @FXML private MenuItem deleteTask;
-    @FXML private MenuItem editTask;
-    @FXML private Button settingsButton;
-    @FXML private Button newListButton;
-    @FXML private Button sortList;
     @FXML private ComboBox<String> viewSelection;
 
     private TaskListHashMap taskListHashMap;
@@ -72,27 +63,6 @@ public class MainSceneController {
         currentList = null;
         listNameField.clear();
         listView.getItems().clear();
-    }
-
-    @FXML
-    void settingsAction() throws IOException {
-        Stage window = new Stage();
-
-        //https://stackoverflow.com/questions/14370183/passing-parameters-to-a-controller-when-loading-an-fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/SettingsMenu.fxml"));
-        Parent root = loader.load();
-
-        SettingsMenu settingsMenu = loader.getController();
-        settingsMenu.windowSetter(window);
-
-        window.setTitle("Hello World 3");
-        window.setScene(new Scene(root, 400, 300));
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.resizableProperty().setValue(false);
-
-        window.getScene().getStylesheets().add(getClass().getResource("styling/DarkTheme.css").toExternalForm());
-
-        window.showAndWait();
     }
 
     @FXML
@@ -200,15 +170,17 @@ public class MainSceneController {
 
     @FXML
     void nameUpdaterAction() {
-        if (!listNameField.getText().equals("") && !taskListHashMap.getTaskListMap().isEmpty()) {
-            listBox.getChildren().forEach(button -> {
-                if (isListButton(button)) {
-                    if (isSameName((Button) button)) {
-                        Name newName = new Name(listNameField.getText(), nameGenerator(listNameField.getText()));
-                        updateNames((Button) button, newName);
+        if (currentList != null) {
+            if (!listNameField.getText().equals("") && !taskListHashMap.getTaskListMap().isEmpty()) {
+                listBox.getChildren().forEach(button -> {
+                    if (isListButton(button)) {
+                        if (isSameName((Button) button)) {
+                            Name newName = new Name(listNameField.getText(), nameGenerator(listNameField.getText()));
+                            updateNames((Button) button, newName);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 
@@ -338,7 +310,7 @@ public class MainSceneController {
         listView.setCellFactory(cell -> new CellController());
     }
 
-    private void generateTestTasks() {
+/*    private void generateTestTasks() {
         newListButtonAction();
         ((Button) listBox.getChildren().get(0)).fire();
 
@@ -349,7 +321,7 @@ public class MainSceneController {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
     private void setUrgencySelection() {
         addUrgencyItems(urgencySelection);

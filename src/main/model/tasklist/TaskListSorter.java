@@ -1,7 +1,5 @@
 package model.tasklist;
 
-//import model.task.CompletedTask;
-
 class TaskListSorter {
 
     //inspired by post by user zb226 @ https://stackoverflow.com/questions/16252269/how-to-sort-an-arraylist

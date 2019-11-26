@@ -4,6 +4,7 @@
     -fx-cursor: hand;
     -fx-background-radius: 4;
     -fx-transition-duration: 2;
+    -fx-font-size: 13;
 }
 
 .button:hover {
@@ -146,6 +147,7 @@ https://stackoverflow.com/questions/46659660/date-picker-popup-window
 
 .date-picker {
     -fx-background-color: rgba(18, 18, 18, 0.95);
+    -fx-font-size: 13;
 }
 
 .date-picker-popup > .month-year-pane {
@@ -210,6 +212,7 @@ https://stackoverflow.com/questions/43530178/style-choicebox-list-with-css-in-ja
     -fx-border-radius: 4;
     -fx-text-fill: rgba(255, 255,255, 0.87);
     -fx-mark-color: rgba(18, 18, 18, 0.25);
+    -fx-font-size: 13;
 }
 
 .choice-box > .label {
@@ -294,7 +297,7 @@ https://stackoverflow.com/questions/19343531/javafx-combobox-styling
 */
 
 .combo-box .list-cell {
-    -fx-font-size: 12;
+    -fx-font-size: 13;
     -fx-text-fill: rgba(255, 255,255, 0.87);
 }
 
@@ -306,4 +309,8 @@ https://stackoverflow.com/questions/19343531/javafx-combobox-styling
 
 .combo-box-popup .list-view .list-cell:filled:selected {
     -fx-background-color: rgba(255, 111, 0, 0.7);
+}
+
+.tooltip {
+    -fx-font-size: 13;
 }
