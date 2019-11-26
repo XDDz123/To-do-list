@@ -4,14 +4,9 @@ import exceptions.TaskException;
 import io.Load;
 import io.Save;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import model.Name;
 import model.TaskListHashMap;
 import model.task.Task;
@@ -19,6 +14,7 @@ import model.task.Urgency;
 import model.tasklist.TaskList;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class MainSceneController {
@@ -64,38 +60,21 @@ public class MainSceneController {
     }
 
     @FXML
-    void editTaskAction() throws IOException {
+    void editTaskAction() {
         ArrayList<Task> tempList = new ArrayList<>(listView.getSelectionModel().getSelectedItems());
         if (tempList.size() == 1) {
             listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             tempList.clear();
             tempList.addAll(listView.getSelectionModel().getSelectedItems());
-
             displayTaskEditor(tempList.get(0));
         } else {
-            (new AlertBox()).display("One task at a time!");
+            (new AlertBox()).display("Select one task at a time! \n(Or select a task first)");
         }
-
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
-    private void displayTaskEditor(Task task) throws IOException {
-        Stage window = new Stage();
-
-        //https://stackoverflow.com/questions/14370183/passing-parameters-to-a-controller-when-loading-an-fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/TaskEditor.fxml"));
-        Parent root = loader.load();
-        TaskEditor taskEditor = loader.getController();
-        taskEditor.taskSetter(task, window);
-
-        window.setTitle("Hello World 2");
-        window.setScene(new Scene(root, 400, 300));
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.resizableProperty().setValue(false);
-        window.setTitle("Edit Task");
-        window.getScene().getStylesheets().add(getClass().getResource("styling/DarkTheme.css").toExternalForm());
-
-        window.showAndWait();
+    private void displayTaskEditor(Task task) {
+        new TaskEditor(task).displayWindow();
     }
 
     @FXML
@@ -137,15 +116,14 @@ public class MainSceneController {
     }
 
     private void createTask() throws TaskException {
-        //LocalDate dueDate = createLocalDate(datePicker);
-/*        if (dueDate.isBefore(LocalDate.now())) {
+        LocalDate dueDate = datePicker.getValue();
+        if (dueDate.isBefore(LocalDate.now())) {
             (new AlertBox()).display("Selected due date is in the past!");
         } else {
             currentList.storeTask(new Task(currentList, taskContentField.getText(), dueDate,
                     getUrgency(urgencySelection.getValue()), false, false));
-        }*/
-        currentList.storeTask(new Task(currentList, taskContentField.getText(), datePicker.getValue(),
-                getUrgency(urgencySelection.getValue()), false, false));
+        }
+
     }
 
     static Urgency getUrgency(String urgencySelection) {
@@ -220,7 +198,7 @@ public class MainSceneController {
 
     private void setCurrentList(TaskList taskList) {
         currentList = taskList;
-        listView.setItems(currentList.getObservableListObserver().getObservableList());
+        listView.setItems(currentList.getTaskListObserver().getObservableList());
         listNameField.setText(currentList.getName().toString());
     }
 
@@ -258,24 +236,37 @@ public class MainSceneController {
         taskListHashMap = new TaskListHashMap();
         setUrgencySelection();
         setListView();
-        //generateTestTasks();
 
         new Load().load(taskListHashMap, "data/save");
         listButtonReCreator();
 
+        setViewSelection();
+    }
+
+    @FXML
+    void viewSelectionAction() {
+        if (currentList != null) {
+            String view = viewSelection.getValue();
+            switch (view) {
+                case "View All":
+                    currentList.notifyObserver(currentList.getTaskList());
+                    break;
+                case "High Urgency":
+                    currentList.notifyObserver(currentList.getTaskByUrgency("high"));
+                    break;
+                case "Mid Urgency":
+                    currentList.notifyObserver(currentList.getTaskByUrgency("mid"));
+                    break;
+                default:
+                    currentList.notifyObserver(currentList.getTaskByUrgency("low"));
+                    break;
+            }
+        }
+    }
+
+    private void setViewSelection() {
         viewSelection.getItems().addAll("View All", "High Urgency", "Mid Urgency", "Low Urgency");
         viewSelection.setValue("View All");
-        viewSelection.setOnAction(event -> {
-            if (viewSelection.getValue().equals("View All")) {
-                currentList.notifyObserver(currentList.getTaskList());
-            } else if (viewSelection.getValue().equals("High Urgency")) {
-                currentList.notifyObserver(currentList.getTaskByUrgency("high"));
-            } else if (viewSelection.getValue().equals("Mid Urgency")) {
-                currentList.notifyObserver(currentList.getTaskByUrgency("mid"));
-            } else {
-                currentList.notifyObserver(currentList.getTaskByUrgency("low"));
-            }
-        });
     }
 
     void save() {
@@ -287,7 +278,7 @@ public class MainSceneController {
     }
 
     @FXML
-    void listButtonReCreator() {
+    private void listButtonReCreator() {
         taskListHashMap.getKeys().forEach(name -> {
             TaskList taskList = taskListHashMap.getTaskList(name);
             Button button = new Button(taskList.getName().toString());

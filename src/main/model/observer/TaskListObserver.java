@@ -6,7 +6,7 @@ import model.task.Task;
 
 import java.util.*;
 
-public class ObservableListObserver implements Observer {
+public class TaskListObserver implements Observer {
     private ObservableList<Task> observableList = FXCollections.observableArrayList();
 
     @Override

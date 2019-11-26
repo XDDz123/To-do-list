@@ -3,7 +3,7 @@ package model.tasklist;
 import exceptions.*;
 import model.Name;
 
-import model.observer.ObservableListObserver;
+import model.observer.TaskListObserver;
 
 import model.observer.ObserverState;
 import model.task.Task;
@@ -15,7 +15,7 @@ public class TaskList extends Observable {
     private final TaskListFilter taskListFilter = new TaskListFilter();
     private final TaskListToString taskListToString = new TaskListToString();
 
-    private final ObservableListObserver observableListObserver = new ObservableListObserver();
+    private final TaskListObserver taskListObserver = new TaskListObserver();
     private ArrayList<Task> taskList;
     private Name name;
     public static final int maxSize = 30;
@@ -25,7 +25,7 @@ public class TaskList extends Observable {
     public TaskList(Name name) {
         taskList = new ArrayList<>();
         this.name = name;
-        addObserver(observableListObserver);
+        addObserver(taskListObserver);
     }
 
     //MODIFIES: this, task, listSizeObserver
@@ -47,8 +47,8 @@ public class TaskList extends Observable {
         }
     }
 
-    public ObservableListObserver getObservableListObserver() {
-        return observableListObserver;
+    public TaskListObserver getTaskListObserver() {
+        return taskListObserver;
     }
 
     //REQUIRES: index must refer to an existing index in the list of tasks

@@ -5,8 +5,6 @@ import model.task.Task;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Observable;
-import java.util.Observer;
 
 public class TimeLeftObserver implements Serializable {
 
@@ -22,7 +20,6 @@ public class TimeLeftObserver implements Serializable {
                 timeLeft = computeTimeLeft(task.getDueDateObj());
             }
         }
-        System.out.println("AAAAAAAAAAA");
     }
 
     //EFFECTS: Returns how much time is left until the task is due
