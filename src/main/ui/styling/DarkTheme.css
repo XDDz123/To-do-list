@@ -27,9 +27,6 @@
     -fx-background-color: rgba(255, 255, 255, 0.3);
 }
 
-/*#textInfo {
-    -fx-text-fill: white;
-}*/
 
 /*
 https://community.oracle.com/thread/2350619
@@ -81,17 +78,12 @@ https://stackoverflow.com/questions/23412068/removing-javafx-listview-borders
 }
 
 .list-view .list-cell:filled:selected {
-/*
-    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
-*/
     -fx-background-color: linear-gradient(#2e344c 0%, #2c3457 50%, #2e344c 100%);
     -fx-text-fill: white;
 }
 
 
 .list-view .list-cell:filled:selected:hover {
-/*    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
-    -fx-background-color: #272933;*/
     -fx-background-color: linear-gradient(#2e344c 0%, #2c3457 50%, #2e344c 100%);
     -fx-text-fill: white;
 }
@@ -114,9 +106,6 @@ https://stackoverflow.com/questions/23412068/removing-javafx-listview-borders
    -fx-background-radius: 4;
 }
 
-/*#listBox {
-    -fx-background-color: rgba(255, 255, 255, 0.1);
-}*/
 
 #leftBox {
     -fx-background-color: rgba(18, 18, 18, 0.9);

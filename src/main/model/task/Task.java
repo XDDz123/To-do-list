@@ -90,6 +90,7 @@ public class Task implements Serializable {
 
     //MODIFIES: this, taskList
     //EFFECTS: Sets the taskList of this task to the given taskList
+    //         If the given taskList is null, set the taskList and key of this task to null
     public void setTaskList(TaskList taskList) throws TaskException {
         try {
             if (!taskList.equals(this.taskList)) {
@@ -126,7 +127,7 @@ public class Task implements Serializable {
         taskList.notifyObserver(this);
     }
 
-    //EFFECTS: Returns the due date of this task in the form of month/day. ie. 1/1
+    //EFFECTS: Returns the due date of this task in the form of a string. ie. 1/1/2019
     public String getDueDate() {
         return getDate(taskDueDate);
     }
@@ -141,7 +142,7 @@ public class Task implements Serializable {
         return taskDueDate;
     }
 
-    //EFFECTS: Prints the properties of this task in the following format.
+    //EFFECTS: Returns the properties of this task in the following format as a string
     @Override
     public String toString() {
         return printTaskContentAndDate()

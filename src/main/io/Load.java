@@ -35,8 +35,7 @@ public class Load {
     //MODIFIES: taskList
     //EFFECTS: Loops until save file is out of tasks to de-serialize or errors are encountered during de-serialization
     private void populateTaskList(ArrayList<Task> taskList, ObjectInputStream objectInputStream,
-                                  ArrayList<Name> listOfKeys)
-            throws TaskException, ClassNotFoundException {
+                                  ArrayList<Name> listOfKeys) throws ClassNotFoundException {
         boolean run = true;
         while (run) {
             run = createTask(taskList, objectInputStream, listOfKeys);
@@ -52,8 +51,7 @@ public class Load {
     //inspired by https://www.mkyong.com/java/how-to-read-and-write-java-object-to-a-file/
     //inspired by https://www.geeksforgeeks.org/customized-serialization-and-deserialization-in-java/
     private boolean createTask(ArrayList<Task> taskList, ObjectInputStream objectInputStream,
-                               ArrayList<Name> listOfKeys)
-            throws ClassNotFoundException {
+                               ArrayList<Name> listOfKeys) throws ClassNotFoundException {
         try {
             readTaskObject(taskList, objectInputStream, listOfKeys);
         } catch (NullPointerException | IOException e) {
@@ -69,8 +67,7 @@ public class Load {
     //         completed task to taskList. If this task is an incomplete task, set/update time left
     //         for this task.
     private void readTaskObject(ArrayList<Task> taskList, ObjectInputStream objectInputStream,
-                                ArrayList<Name> listOfKeys)
-            throws IOException, ClassNotFoundException {
+                                ArrayList<Name> listOfKeys) throws IOException, ClassNotFoundException {
         Task task = (Task) objectInputStream.readObject();
 
         task.setTimeLeft();

@@ -47,6 +47,7 @@ public class TaskList extends Observable {
         }
     }
 
+    //EFFECTS: returns this taskListObserver
     public TaskListObserver getTaskListObserver() {
         return taskListObserver;
     }
@@ -56,6 +57,7 @@ public class TaskList extends Observable {
     //EFFECTS: Removes a task in the current task list based on an index that starts at 1.
     //         Sets this task's TaskList to null
     //         Notify ListSizeObserver to remove one from its size
+    //         Sets the given task's TaskList to null
     public void deleteTask(int index) throws TaskDoesNotExistException, TaskException {
         Task task;
         try {
@@ -68,25 +70,33 @@ public class TaskList extends Observable {
         task.setTaskList(null);
     }
 
+    //REQUIRES: taskList contains the given task
+    //MODIFIES: this
+    //EFFECTS: Removes the given task from this list of tasks
+    //         Sets the given task's TaskList to null
     public void deleteTask(Task task) throws TaskException {
         taskList.remove(task);
         notifyObserver(new ObserverState<>("remove", task));
         task.setTaskList(null);
     }
 
+    //EFFECTS: Notifies the TaskListObserver of the given observerState
+    public void notifyObserver(ObserverState observerState) {
+        setChanged();
+        notifyObservers(observerState);
+    }
+
+    //EFFECTS: Notifies the TaskListObserver of to edit the given task in the observableList
     public void notifyObserver(Task task) {
         setChanged();
         notifyObservers(new ObserverState<>("edit", task));
     }
 
+    //EFFECTS: Notifies the TaskListObserver to replace all elements of the observableList with all elements of
+    //         the given ArrayList
     public void notifyObserver(ArrayList<Task> taskList) {
         setChanged();
         notifyObservers(taskList);
-    }
-
-    public void notifyObserver(ObserverState observerState) {
-        setChanged();
-        notifyObservers(observerState);
     }
 
     //MODIFIES: this, listSizeObserver
@@ -101,6 +111,8 @@ public class TaskList extends Observable {
         return name;
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sets the name of this task list to the given name
     public void setName(Name name) {
         this.name = name;
     }

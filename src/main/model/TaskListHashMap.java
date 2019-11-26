@@ -1,8 +1,6 @@
 package model;
 
 import model.tasklist.TaskList;
-
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
@@ -43,6 +41,11 @@ public class TaskListHashMap {
         return taskListHashMap;
     }
 
+    //MODIFIES: this
+    //EFFECTS: replaces the key in this LinkedHashMap identical to the given oldKey with the newKey while
+    //         preserving the order of the LinkedHashMap.
+    //Given oldKey is searched for in the LinkedHashMap while key value pairs are added to a temporary LinkedHashMap
+    //When done this LinkedHashMap is cleared and all key value pairs are added to the temporary LinkedHashMap
     public void remap(Name oldKey, Name newKey) {
         LinkedHashMap<Name, TaskList> newMap = new LinkedHashMap<>();
 

@@ -31,6 +31,8 @@ public class TimeLeftObserver implements Serializable {
     //         Returns due today if the due date matches the current date
     //         Returns the number of days left until due if due date is within a month from current date
     //         Returns the number of months and days otherwise.
+    //         Returns the number of years, months and days until due if the given due date is more than
+    //         a year from the current date
     private String computeTimeLeft(LocalDate dueDate) {
 
         Period difference = Period.between(dueDate, LocalDate.now());

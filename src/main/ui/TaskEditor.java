@@ -26,6 +26,8 @@ class TaskEditor {
     private Stage window;
     private Parent root;
 
+    //EFFECTS: Constructs a new TaskEditor
+    //         Loads TaskEditor.fxml and sets its controller to this
     TaskEditor(Task task) {
         this.task = task;
         window = new Stage();
@@ -40,8 +42,8 @@ class TaskEditor {
         }
     }
 
-    public void displayWindow() {
-        window.setTitle("Hello World 2");
+    //EFFECTS: Sets up and displays the window for task editor based on the loaded fxml file
+    void displayWindow() {
         window.setScene(new Scene(root, 400, 300));
         window.initModality(Modality.APPLICATION_MODAL);
         window.resizableProperty().setValue(false);
@@ -51,12 +53,17 @@ class TaskEditor {
         window.showAndWait();
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sets the values of taskContent, datePicker, and urgencySelection to the values of corresponding fields
+    //         in task
     private void setTaskFields() {
         taskContent.setText(task.getContent());
-        datePicker.getEditor().setText(task.getDueDate());
+        datePicker.setValue(task.getDueDateObj());
         urgencySelection.setValue(convertUrgency(task.getUrgency().getString()));
     }
 
+    //EFFECTS: Given a string, if given "high", "mid", or "low", return "High Urgency", "Mid Urgency", and
+    //         "Low Urgency" respectively, else return empty string ""
     private String convertUrgency(String urgency) {
         switch (urgency) {
             case "high":
@@ -70,13 +77,29 @@ class TaskEditor {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: Adds items to the urgencySelection choice box
     private void setUrgencySelection() {
         MainSceneController.addUrgencyItems(urgencySelection);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Updates the fields in task in correspondence to the values of taskContent, the given dueDate and
+    //         urgencySelection
+    private void updateTask(LocalDate dueDate) {
+        task.setContent(taskContent.getText());
+        task.setDueDate(dueDate);
+        task.setUrgency(MainSceneController.getUrgency(urgencySelection.getValue()));
+    }
+
+    //EFFECTS: Event action of the save button
+    //         If taskContent is not empty and the selected due date is not in the past, then update corresponding
+    //         fields of task, else if the selected due date is in the past,  display
+    //         "Selected due date is in the past!" in an alert box.
+    //         If taskContent is empty, alert the user with an alert box of "Fields can't be empty!"
     @FXML
     void saveAction() {
-        if (taskContent.getText() != null && datePicker.getValue() != null) {
+        if (taskContent.getText() != null) {
             LocalDate dueDate = datePicker.getValue();
             if (dueDate.isBefore(LocalDate.now())) {
                 (new AlertBox()).display("Selected due date is in the past!");
@@ -89,17 +112,14 @@ class TaskEditor {
         }
     }
 
-    private void updateTask(LocalDate dueDate) {
-        task.setContent(taskContent.getText());
-        task.setDueDate(dueDate);
-        task.setUrgency(MainSceneController.getUrgency(urgencySelection.getValue()));
-    }
-
+    //EFFECTS: Event action of the cancel button
+    //         Closes the current window
     @FXML
     void cancelAction() {
         window.close();
     }
 
+    //EFFECTS: initializes by calling setUrgencySelection
     @FXML
     private void initialize() {
         setUrgencySelection();

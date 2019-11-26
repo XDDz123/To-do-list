@@ -8,9 +8,6 @@ import model.task.Task;
 
 import java.io.IOException;
 
-//https://stackoverflow.com/questions/40507262/javafx-listview-with-custom-cell-factory-not-retaining-the-selected-cell
-//https://stackoverflow.com/questions/19588029/customize-listview-in-javafx-with-fxml
-
 public class CellController extends ListCell<Task> {
 
     private final String strikeThroughTrue = "styling/StrikeThroughTrue.css";
@@ -22,6 +19,8 @@ public class CellController extends ListCell<Task> {
     @FXML private CheckBox star;
     @FXML private Tooltip taskContent;
 
+    //EFFECTS: Constructs a new CellController
+    //         Loads Cell.fxml and sets its controller to this
     CellController() {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/Cell.fxml"));
         fxmlLoader.setController(this);
@@ -32,6 +31,13 @@ public class CellController extends ListCell<Task> {
         }
     }
 
+    //Partially inspired by the following,
+    //https://stackoverflow.com/questions/40507262/javafx-listview-with-custom-cell-factory-not-retaining-the-selected-cell
+    //https://stackoverflow.com/questions/19588029/customize-listview-in-javafx-with-fxml
+    //MODIFIES: this
+    //EFFECTS: If the given task is not null or empty, set values of fields in this to corresponding fields
+    //         of the given task and graphic to this cell
+    //         Else set text and graphic to null
     @Override
     public void updateItem(Task task, boolean empty) {
         super.updateItem(task, empty);
@@ -39,17 +45,25 @@ public class CellController extends ListCell<Task> {
             setText(null);
             setGraphic(null);
         } else {
-            textInfo.setText(task.toString());
-            taskContent.setText(task.toString());
-
-            setCompletionStatus(task);
-            setPastDueHighLight(task);
-            setStarStatus(task);
+            setElements(task);
 
             setGraphic(cell);
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sets value and/or style of checkBox, textInfo, star and taskContent according to values of corresponding
+    //         fields in task
+    private void setElements(Task task) {
+        textInfo.setText(task.toString());
+        taskContent.setText(task.toString());
+        setCompletionStatus(task);
+        setPastDueHighLight(task);
+        setStarStatus(task);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: If the given task is not completed and past due, then set textInfo to the style of PastDueHighLight.css
     private void setPastDueHighLight(Task task) {
         if (!task.isCompleted() && task.getTimeLeft().equals("past due")) {
             textInfo.getStylesheets().addAll(
@@ -57,6 +71,10 @@ public class CellController extends ListCell<Task> {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sets the state of star depending on the value of starred in the given task
+    //         If task is starred, the check/select star
+    //         else uncheck/deselect star
     private void setStarStatus(Task task) {
         if (task.isStarred()) {
             star.setSelected(true);
@@ -65,6 +83,9 @@ public class CellController extends ListCell<Task> {
         }
     }
 
+    //MODIFIES: this
+    //EFFECTS: If task is completed, then set label style as strikeThroughTrue and select checkbox
+    //         Else set label style as strikeThroughFalse and deselect checkbox
     private void setCompletionStatus(Task task) {
         if (task.isCompleted()) {
             setStrikeThrough(strikeThroughTrue);
@@ -75,17 +96,24 @@ public class CellController extends ListCell<Task> {
         }
     }
 
-    private void setStrikeThrough(String s) {
+    //MODIFIES: this
+    //EFFECTS: Clears the style sheet of textInfo and applies the new style sheet at the given path
+    private void setStrikeThrough(String path) {
         textInfo.getStylesheets().clear();
         textInfo.getStylesheets().addAll(getClass().getResource(
-                s).toExternalForm());
+                path).toExternalForm());
     }
 
+    //MODIFIES: task
+    //EFFECTS: Upon star check/uncheck, sets the starred field in task to its negated value
     @FXML
     public void starAction() {
         this.getItem().setStarred(!this.getItem().isStarred());
     }
 
+    //MODIFIES: this, task
+    //EFFECTS: Upon check box check/uncheck, if task is completed, then set label's styling to strikeThroughFalse
+    //         and set task to incomplete, else then set label's styling to strikeThroughTrue and set task as completed
     @FXML
     public void checkBoxAction() {
         if (this.getItem().isCompleted()) {

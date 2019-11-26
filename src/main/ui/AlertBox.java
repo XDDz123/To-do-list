@@ -8,9 +8,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
 class AlertBox {
 
+    //EFFECTS: Displays a pop-up alert box that contains a vBox and a label that contains the given message
     void display(String message) {
         Stage window = new Stage();
         VBox vbox = new VBox();
@@ -25,16 +25,29 @@ class AlertBox {
         window.showAndWait();
     }
 
+    //MODIFIES: vbox
+    //EFFECTS: Sets the contents of a new label with the given message and adds this new label to the given vBox
     private void setContents(String message, VBox vbox) {
         Label label = new Label(message);
 
-        vbox.setStyle("-fx-background-color: rgba(18, 18, 18, 0.95);");
-        label.setStyle("-fx-text-fill: rgba(255, 255, 255, 0.87); -fx-font-size: 15;");
+        setStyling(vbox, label);
+        setAlignment(vbox, label);
 
+        vbox.getChildren().add(label);
+    }
+
+    //MODIFIES: vbox, label
+    //EFFECTS: Sets the text alignment of the given vBox and label
+    private void setAlignment(VBox vbox, Label label) {
         label.wrapTextProperty().setValue(true);
         label.setTextAlignment(TextAlignment.CENTER);
         vbox.setAlignment(Pos.CENTER);
+    }
 
-        vbox.getChildren().add(label);
+    //MODIFIES: vbox, label
+    //EFFECTS: Sets the styling of the given vBox and label
+    private void setStyling(VBox vbox, Label label) {
+        vbox.setStyle("-fx-background-color: rgba(18, 18, 18, 0.95);");
+        label.setStyle("-fx-text-fill: rgba(255, 255, 255, 0.87); -fx-font-size: 15;");
     }
 }
