@@ -83,6 +83,12 @@ public class Task implements Serializable {
         return key;
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sets the key of this task to the given key
+    public void setKey(Name key) {
+        this.key = key;
+    }
+
     //EFFECTS: Returns the taskList of this task
     public TaskList getTaskList() {
         return taskList;

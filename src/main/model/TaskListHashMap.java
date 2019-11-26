@@ -52,6 +52,7 @@ public class TaskListHashMap {
         taskListHashMap.forEach((key, list) -> {
             if (key.toString().equals(oldKey.toString())) {
                 newMap.put(newKey, list);
+
             } else {
                 newMap.put(key, list);
             }

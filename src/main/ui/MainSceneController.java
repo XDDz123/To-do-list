@@ -29,22 +29,26 @@ public class MainSceneController {
     private TaskListHashMap taskListHashMap;
     private TaskList currentList;
 
-    //
+    //MODIFIES: currentList
+    //EFFECTS: Calls sortByDueDate on the currentList upon button press
     @FXML
     void sortListAction() {
         currentList.sortByDueDate();
     }
 
+    //MODIFIES: currentList, listView, listNameField
+    //EFFECTS: Deletes and clears the currentList and the current list view
     @FXML
     void deleteListAction() {
         if (currentList != null) {
             taskListHashMap.removeTaskList(currentList.getName());
-            findCurrentListButton();
+            findToRemoveCurrentListButton();
             clearCurrentList();
         }
     }
 
-    private void findCurrentListButton() {
+    //EFFECTS: Searches all children of listBox for a button with the name of the current
+    private void findToRemoveCurrentListButton() {
         ArrayList<Object> tempList = new ArrayList<>(listBox.getChildren());
         tempList.forEach(button -> {
             if (button instanceof Button && ((Button) button).getText().equals(currentList.getName().toString())) {

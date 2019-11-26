@@ -4,7 +4,7 @@ import exceptions.EmptyListException;
 import model.task.Task;
 import java.util.ArrayList;
 
-public class TaskListToString {
+class TaskListToString {
 
     //EFFECTS: Prints the contents of incomplete tasks in the list
     String printIncompleteTasks(TaskList taskList) {
@@ -16,7 +16,7 @@ public class TaskListToString {
     }
 
     //EFFECTS: Prints the contents of the current task list
-    public String printTaskList(ArrayList<Task> list) {
+    String printTaskList(ArrayList<Task> list) {
         try {
             return printList(list);
         } catch (EmptyListException e) {

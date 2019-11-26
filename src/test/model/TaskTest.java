@@ -205,4 +205,10 @@ class TaskTest {
     void testGetTimeLeftObserver() {
         assertEquals(task.getTimeLeftObserver().getTimeLeft(), "due today");
     }
+
+    @Test
+    void testSetKey() {
+        task.setKey(new Name("test key"));
+        assertEquals(task.getKey(), new Name("test key"));
+    }
 }

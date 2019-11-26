@@ -145,5 +145,11 @@ class TaskListTest {
         assertNull(task.getTaskList());
         assertTrue(taskList.getTaskListObserver().getObservableList().isEmpty());
     }
+
+    @Test
+    void testUpdateKeys() {
+        taskList.setName(new Name("new name"));
+        assertEquals(taskList.getTask(1).getKey(), new Name("new name"));
+    }
 }
 

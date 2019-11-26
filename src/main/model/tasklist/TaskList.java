@@ -81,7 +81,7 @@ public class TaskList extends Observable {
     }
 
     //EFFECTS: Notifies the TaskListObserver of the given observerState
-    public void notifyObserver(ObserverState observerState) {
+    private void notifyObserver(ObserverState observerState) {
         setChanged();
         notifyObservers(observerState);
     }
@@ -115,6 +115,7 @@ public class TaskList extends Observable {
     //EFFECTS: Sets the name of this task list to the given name
     public void setName(Name name) {
         this.name = name;
+        updateKeys();
     }
 
     //EFFECTS: Returns the ArrayList that stores the current task list
@@ -164,5 +165,11 @@ public class TaskList extends Observable {
     //EFFECTS: Takes in an list of tasks, returns a new list with only incomplete tasks.
     ArrayList<Task> filterOutCompleted() {
         return taskListFilter.filterOutCompleted(this);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Updates the key of every task in this list to the current name
+    public void updateKeys() {
+        taskList.forEach(task -> task.setKey(name));
     }
 }
