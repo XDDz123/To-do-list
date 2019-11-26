@@ -1,7 +1,6 @@
 package model;
 
 import exceptions.TaskException;
-//import model.task.IncompleteTask;
 import model.task.Task;
 import model.task.Urgency;
 import model.tasklist.TaskList;
@@ -57,34 +56,29 @@ class IncompleteTaskTest {
 
     @Test
     void testSetTimeLeft() {
-        //task.setTimeLeft();
         assertEquals(task.getTimeLeft(), "due today");
     }
 
     @Test
     void testGetTimeLeft() {
         assertEquals(task.getTimeLeft(), "due today");
-        //task.setTimeLeft();
         assertEquals(task.getTimeLeft(), "due today");
     }
 
     @Test
     void testComputeTimeLeftDueToday() {
-        //task.setTimeLeft();
         assertEquals(task.getTimeLeft(),"due today");
     }
 
     @Test
     void testComputeTimeLeftInDays() {
         task.setDueDate(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth() + 1));
-        //task.setTimeLeft();
         assertEquals(task.getTimeLeft(),1 + " day(s)");
     }
 
     @Test
     void testComputeTimeLeftInMonths() {
         task.setDueDate(LocalDate.of(LocalDate.now().getYear(),LocalDate.now().getMonthValue() + 1, LocalDate.now().getDayOfMonth()));
-        //task.setTimeLeft();
         assertEquals(task.getTimeLeft(),1 + " month(s) " + 0 + " day(s)");
     }
 
@@ -92,8 +86,14 @@ class IncompleteTaskTest {
     void testComputeTimeLeftInDaysAndMonths() {
         task.setDueDate(LocalDate.of(LocalDate.now().getYear(),LocalDate.now().getMonthValue() + 1,
                 LocalDate.now().getDayOfMonth() + 1));
-        //task.setTimeLeft();
         assertEquals(task.getTimeLeft(),1 + " month(s) " + 1 + " day(s)");
+    }
+
+    @Test
+    void testComputeTimeLeftInDaysAndMonthsAndYears() {
+        task.setDueDate(LocalDate.of(LocalDate.now().getYear() + 1,LocalDate.now().getMonthValue() + 1,
+                LocalDate.now().getDayOfMonth() + 1));
+        assertEquals(task.getTimeLeft(),1 + " year(s) " + 1 + " month(s) " + 1 + " day(s)");
     }
 
     @Test

@@ -18,7 +18,7 @@ public class TaskList extends Observable {
     private final TaskListObserver taskListObserver = new TaskListObserver();
     private ArrayList<Task> taskList;
     private Name name;
-    public static final int maxSize = 30;
+    public static final int maxSize = 100;
 
     //MODIFIES: this
     //EFFECTS: Constructs a new taskList as an ArrayList.

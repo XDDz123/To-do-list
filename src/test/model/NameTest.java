@@ -31,6 +31,11 @@ class NameTest {
     }
 
     @Test
+    void testToString() {
+        assertEquals(name.toString(), "name (1)");
+    }
+
+    @Test
     void testEquals() {
         assertNotEquals(name, new Name("name 1", 0));
         assertNotEquals(name, new Name("name", 2));

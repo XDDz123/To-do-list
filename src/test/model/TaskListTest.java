@@ -121,5 +121,17 @@ class TaskListTest {
             fail();
         }
     }
+
+    @Test
+    void testGetTaskListObserver() {
+        assertFalse(taskList.getTaskListObserver().getObservableList().isEmpty());
+        assertEquals(taskList.getTaskListObserver().getObservableList().get(0), taskList.getTask(1));
+    }
+
+    @Test
+    void testSetName() {
+        taskList.setName(new Name("new name"));
+        assertEquals(taskList.getName().getRootName(), "new name");
+    }
 }
 

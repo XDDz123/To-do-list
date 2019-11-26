@@ -200,4 +200,9 @@ class TaskTest {
 
         assertEquals(task1.hashCode(), result);
     }
+
+    @Test
+    void testGetTimeLeftObserver() {
+        assertEquals(task.getTimeLeftObserver().getTimeLeft(), "due today");
+    }
 }

@@ -16,7 +16,7 @@ public class ObserverState<T1,T2> {
     }
 
     //EFFECTS: Return state one of type one
-    T1 getStateOne() {
+    public T1 getStateOne() {
         return stateOne;
     }
 
