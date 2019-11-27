@@ -142,8 +142,8 @@ public class MainSceneController {
     //         resets urgencySelection to its default value
     private void resetTaskFields() {
         taskContentField.clear();
-        datePicker.setValue(LocalDate.now());
         datePicker.getEditor().clear();
+        datePicker.setValue(null);
         urgencySelection.setValue("Mid Urgency");
     }
 
