@@ -83,6 +83,7 @@ public class MainSceneController {
         } else {
             (new AlertBox()).display("Select one task at a time! \n(Or select a task first)");
         }
+        listView.getSelectionModel().clearSelection();
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
@@ -113,6 +114,7 @@ public class MainSceneController {
                 (new AlertBox()).display(e.getMessage() + "!");
             }
         });
+        listView.getSelectionModel().clearSelection();
     }
 
     //MODIFIES: currentList
