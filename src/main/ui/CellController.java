@@ -124,4 +124,5 @@ public class CellController extends ListCell<Task> {
             this.getItem().setCompleted(true);
         }
     }
+
 }
