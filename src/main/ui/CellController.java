@@ -19,6 +19,7 @@ public class CellController extends ListCell<Task> {
     @FXML private CheckBox star;
     @FXML private Tooltip taskContent;
 
+
     //EFFECTS: Constructs a new CellController
     //         Loads Cell.fxml and sets its controller to this
     CellController() {
