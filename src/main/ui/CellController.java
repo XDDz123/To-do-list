@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import model.task.Task;
-
 import java.io.IOException;
 
 public class CellController extends ListCell<Task> {
