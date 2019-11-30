@@ -13,6 +13,7 @@ public class CellController extends ListCell<Task> {
     private final String strikeThroughTrue = "styling/StrikeThroughTrue.css";
     private final String strikeThroughFalse = "styling/StrikeThroughFalse.css";
 
+
     @FXML private HBox cell;
     @FXML private CheckBox checkBox;
     @FXML private Label textInfo;
