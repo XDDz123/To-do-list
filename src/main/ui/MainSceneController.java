@@ -62,6 +62,12 @@ public class MainSceneController {
                 new FadeIn(listView).setSpeed(1.5).play();
             }
         }
+
+        if (listView.getItems().contains(selectedTask)) {
+            listView.getSelectionModel().select(selectedTask);
+        } else {
+            cancelAction();
+        }
     }
 
     //MODIFIES: currentList
@@ -91,6 +97,7 @@ public class MainSceneController {
                 clearCurrentList();
             }
         }
+        cancelAction();
     }
 
     //MODIFIES: listBox
@@ -118,22 +125,28 @@ public class MainSceneController {
     //         else alert the user to select one task of a time
     @FXML
     void editTaskAction() {
-        ArrayList<Task> tempList = new ArrayList<>(listView.getSelectionModel().getSelectedItems());
-        if (tempList.size() == 1) {
+        //ArrayList<Task> tempList = new ArrayList<>(listView.getSelectionModel().getSelectedItems());
+/*        if (tempList.size() == 1) {
             tempList.clear();
-            tempList.addAll(listView.getSelectionModel().getSelectedItems());
+            //tempList.addAll(listView.getSelectionModel().getSelectedItems());
 
             editPane.setVisible(true);
             //editPane.setPrefWidth(239);
 
             new SlideInRight(editPane).setSpeed(2.5).play();
 
-            setTaskFields(tempList.get(0));
+            //setTaskFields(tempList.get(0));
 
             //displayTaskEditor(tempList.get(0));
         } else {
             (new AlertBox()).display("Select one task at a time!");
-        }
+        }*/
+
+        editPane.setVisible(true);
+        new SlideInRight(editPane).setSpeed(2.5).play();
+
+        setTaskFields(listView.getSelectionModel().getSelectedItem());
+
         listView.getSelectionModel().clearSelection();
         //listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
@@ -166,6 +179,7 @@ public class MainSceneController {
             }
         });
         listView.getSelectionModel().clearSelection();
+        cancelAction();
     }
 
     //MODIFIES: currentList
@@ -535,7 +549,6 @@ public class MainSceneController {
     //EFFECTS: Sets the selection mode of listView to multiple
     //         Sets the cell factory of listView to CellController
     private void setListView() {
-        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         listView.setCellFactory(cell -> new CellController(listView));
     }
 
@@ -602,6 +615,10 @@ public class MainSceneController {
         task.setContent(taskContent1.getText());
         task.setDueDate(datePicker1.getValue());
         task.setUrgency(MainSceneController.getUrgency(urgencySelection1.getValue()));
+
+        listView.refresh();
+
+        //currentList.notifyObserver(currentList.getTaskList());
     }
 
     //EFFECTS: Event action of the save button
@@ -627,9 +644,11 @@ public class MainSceneController {
 /*        AnimationFX slideOut = new SlideOutRight(editPane);
         slideOut.setOnFinished(event -> editPane.setVisible(false));
         slideOut.setSpeed(16).play();*/
-        editPane.setVisible(false);
 
         updateTask(selectedTask);
+        editPane.setVisible(false);
+
+        selectedTask = null;
         listView.getSelectionModel().clearSelection();
     }
 
@@ -643,6 +662,7 @@ public class MainSceneController {
         slideOut.setOnFinished(event -> editPane.setVisible(false));
         slideOut.setSpeed(16).play();*/
         //editPane.setPrefWidth(0);
+        selectedTask = null;
         listView.getSelectionModel().clearSelection();
 
     }
