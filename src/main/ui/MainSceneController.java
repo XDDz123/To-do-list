@@ -369,8 +369,6 @@ public class MainSceneController {
         return name.getCount() == 0 || !name.toString().equals(str);
     }
 
-
-
     //EFFECTS: initializes fields, loads data from data/save
     @FXML
     public void initialize() throws ClassNotFoundException, IOException, TaskException {
