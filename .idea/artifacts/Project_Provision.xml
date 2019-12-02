@@ -18,6 +18,7 @@
       <element id="directory" name="data">
         <element id="dir-copy" path="$PROJECT_DIR$/data" />
       </element>
+      <element id="library" level="project" name="io.github.typhon0:AnimateFX:1.2.1" />
     </root>
   </artifact>
 </component>

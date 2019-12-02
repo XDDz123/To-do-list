@@ -1,11 +1,14 @@
 package ui;
 
+import animatefx.animation.FadeInUp;
+import animatefx.animation.Pulse;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import model.task.Task;
 import java.io.IOException;
+import java.util.List;
 
 public class CellController extends ListCell<Task> {
 
@@ -18,12 +21,14 @@ public class CellController extends ListCell<Task> {
     @FXML private CheckBox star;
     @FXML private Tooltip taskContent;
 
+    private ListView<Task> listView;
 
     //EFFECTS: Constructs a new CellController
     //         Loads Cell.fxml and sets its controller to this
-    CellController() {
+    CellController(ListView<Task> listView) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/Cell.fxml"));
         fxmlLoader.setController(this);
+        this.listView = listView;
         try {
             fxmlLoader.load();
         } catch (IOException e) {
@@ -46,7 +51,6 @@ public class CellController extends ListCell<Task> {
             setGraphic(null);
         } else {
             setElements(task);
-
             setGraphic(cell);
         }
     }
@@ -108,6 +112,7 @@ public class CellController extends ListCell<Task> {
     //EFFECTS: Upon star check/uncheck, sets the starred field in task to its negated value
     @FXML
     public void starAction() {
+        new Pulse(star).setSpeed(5).play();
         this.getItem().setStarred(!this.getItem().isStarred());
     }
 
@@ -116,12 +121,20 @@ public class CellController extends ListCell<Task> {
     //         and set task to incomplete, else then set label's styling to strikeThroughTrue and set task as completed
     @FXML
     public void checkBoxAction() {
+        boolean isSelected;
+        isSelected = listView.getSelectionModel().getSelectedItems().contains(this.getItem());
+        new Pulse(checkBox).setSpeed(5).play();
+
         if (this.getItem().isCompleted()) {
             setStrikeThrough(strikeThroughFalse);
             this.getItem().setCompleted(false);
         } else {
             setStrikeThrough(strikeThroughTrue);
             this.getItem().setCompleted(true);
+        }
+
+        if (isSelected) {
+            this.listView.getSelectionModel().select(this.getItem());
         }
     }
 

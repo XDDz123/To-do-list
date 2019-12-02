@@ -139,7 +139,7 @@ public class Task implements Serializable {
     }
 
     //EFFECTS: Returns the due date of this task as the LocalDate object
-    public String getDate(LocalDate localDate) {
+    private String getDate(LocalDate localDate) {
         return localDate.getMonthValue() + "/" + localDate.getDayOfMonth() + "/" + localDate.getYear();
     }
 

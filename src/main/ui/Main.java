@@ -1,9 +1,11 @@
 package ui;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.util.Locale;
@@ -18,6 +20,7 @@ public class Main extends Application {
         Parent root = loader.load();
         MainSceneController mainSceneController = loader.getController();
         setStage(primaryStage, root, mainSceneController);
+
         Locale.setDefault(Locale.US);
         primaryStage.show();
     }
@@ -46,9 +49,9 @@ public class Main extends Application {
     //MODIFIES: primaryStage
     //EFFECTS: Sets the scene and dimensions of the given stage
     private void setStageDimensions(Stage primaryStage, Parent root) {
-        primaryStage.setScene(new Scene(root, 900, 600));
-        primaryStage.setMinWidth(900);
-        primaryStage.setMinHeight(600);
+        primaryStage.setScene(new Scene(root, 1250, 800));
+        primaryStage.setMinWidth(1250);
+        primaryStage.setMinHeight(800);
     }
 
     //EFFECTS: Launches the application

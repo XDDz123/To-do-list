@@ -8,19 +8,11 @@
 }
 
 .button:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.25);
-}
-
-#settingsButton {
-    -fx-background-color: rgba(255, 255, 255, 0.10);
-}
-
-#settingsButton:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-background-color: rgba(255, 255, 255, 0.2);
 }
 
 #newListButton {
-    -fx-background-color: rgba(255, 255, 255, 0.10);
+    -fx-background-color: rgba(255, 255, 255, 0.08);
 }
 
 #newListButton:hover {
@@ -60,6 +52,13 @@ https://stackoverflow.com/questions/12670137/how-to-hide-the-horizontal-scrollba
     -fx-padding:0;
 }
 
+.list-view .scroll-bar:horizontal .increment-arrow,
+.list-view .scroll-bar:horizontal .decrement-arrow,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
+}
+
 /*
 https://stackoverflow.com/questions/23412068/removing-javafx-listview-borders
 */
@@ -72,7 +71,7 @@ https://stackoverflow.com/questions/23412068/removing-javafx-listview-borders
 }
 
 .list-view .list-cell:empty {
-    -fx-background-color: rgba(20, 20, 20, 0.05);
+    -fx-background-color: rgba(18, 18, 18, 1);
     -fx-padding: 2px;
     -fx-text-fill: white;
 }
@@ -270,8 +269,14 @@ https://stackoverflow.com/questions/12299162/how-to-style-menu-button-and-menu-i
     -fx-background-radius: 4;
 }
 
+.menu-item .hover {
+    -fx-font-size: 13;
+    -fx-background-color: rgba(255, 111, 0, 0.7);
+    -fx-background-radius: 4;
+}
+
 .menu-item:focused {
-    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-color: rgba(255, 111, 0, 0.7);
     -fx-background-radius: 4;
 }
 
@@ -286,18 +291,22 @@ https://stackoverflow.com/questions/19343531/javafx-combobox-styling
 */
 
 .combo-box .list-cell {
-    -fx-font-size: 13;
-    -fx-text-fill: rgba(255, 255,255, 0.87);
+    -fx-font-size: 14;
+    -fx-text-fill: rgba(255, 255, 255, 0.87);
 }
 
 .combo-box {
-    -fx-background-color: rgba(18, 18, 18, 0.95);
-    -fx-border-color: rgba(255, 255,255, 0.3);
+/*    -fx-border-color: rgba(255, 255, 255, 0.3);*/
+    -fx-background-color: rgba(255, 255, 255, 0.095);
     -fx-border-radius: 4;
 }
 
 .combo-box-popup .list-view .list-cell:filled:selected {
     -fx-background-color: rgba(255, 111, 0, 0.7);
+}
+
+.combo-box .arrow {
+    -fx-background-color: rgba(255, 255, 255, 0.68);
 }
 
 .tooltip {
@@ -306,4 +315,103 @@ https://stackoverflow.com/questions/19343531/javafx-combobox-styling
 
 .context-menu {
     -fx-font-size: 13;
+}
+
+#deleteTask {
+    -fx-background-color: rgba(242, 91, 80, 0.6);
+}
+
+#deleteTask:hover {
+    -fx-background-color: rgba(191, 52, 11, 0.8);
+}
+
+#newTaskButton:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+}
+
+#newTaskButton {
+    -fx-font-size: 14;
+    -fx-text-fill: rgba(255, 255, 255, 0.75);
+}
+
+#listNameField {
+    -fx-border-color: transparent;
+    -fx-text-fill: rgba(255, 255, 255, 0.83);
+}
+
+.split-menu-button > .label {
+    -fx-text-fill: rgba(255, 255,255, 0.87);
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+
+/*    -fx-background-color: transparent;*/
+}
+
+.split-menu-button .menu-item {
+    -fx-font-size: 14;
+    -fx-background-color: rgba(255, 255, 255, 0.093);
+    -fx-background-radius: 4;
+    -fx-background-insets: 4;
+    -fx-padding: 10;
+}
+
+.split-menu-button .menu-item:focused {
+    -fx-background-color: #4f2403;
+}
+
+.split-menu-button .menu{
+    -fx-padding: 10;
+}
+
+.split-menu-button > .arrow-button {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+/*
+    -fx-background-color: transparent;
+*/
+}
+
+.split-menu-button > .arrow-button .arrow {
+    -fx-background-color: rgba(255, 255, 255, 0.68);
+}
+
+.split-menu-button {
+/*    -fx-border-color: rgba(255, 255, 255, 0.3);*/
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+    -fx-border-radius: 4;
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+/*    -fx-background-color: transparent;*/
+}
+
+#hamburger {
+    -fx-text-fill: rgba(255, 255, 255, 0.83);
+}
+
+#hamburgerBox {
+    -fx-background-color: rgb(28, 28, 28);
+}
+
+#listScrollPane {
+    -fx-background-color: rgba(11, 11, 11, 1);
+}
+
+#rootPane {
+    -fx-background-color: rgba(18, 18, 18, 1);
+}
+
+#editBox {
+    -fx-background-radius: 4;
+}
+
+#editPane {
+    -fx-background-radius: 4;
+    -fx-background-color: rgba(12, 12, 12, 1);
+}
+
+#deleteListItem {
+    -fx-background-color: rgba(242, 91, 80, 0.7);
+}
+
+#deleteListItem:focused {
+    -fx-background-color: rgba(191, 52, 11, 0.8);
 }

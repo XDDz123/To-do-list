@@ -4,122 +4,184 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.151" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainSceneController">
-    <center>
-        <BorderPane fx:id="center" BorderPane.alignment="CENTER">
-            <bottom>
-                <HBox prefHeight="43.0" prefWidth="800.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <TextField fx:id="taskContentField" prefHeight="35.0" promptText="Enter task content" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font size="13.0" />
-                     </font></TextField>
-                        <Region prefHeight="25.0" prefWidth="5.0" />
-                        <DatePicker fx:id="datePicker" editable="false" prefHeight="35.0" prefWidth="155.0" promptText="Select due date" HBox.hgrow="ALWAYS" />
-                        <Region layoutX="336.0" layoutY="10.0" prefHeight="25.0" prefWidth="5.0" />
-                        <ChoiceBox fx:id="urgencySelection" prefHeight="35.0" prefWidth="125.0" />
-                        <Region layoutX="520.0" layoutY="10.0" prefHeight="25.0" prefWidth="10.0" />
-                        <Button fx:id="storeTask" minHeight="25.0" minWidth="75.0" mnemonicParsing="false" onAction="#storeTaskAction" prefHeight="35.0" prefWidth="75.0" text="Add Task">
-                     <tooltip>
-                        <Tooltip text="Press to add task to current list" />
-                     </tooltip></Button>
-                    </children>
-                    <padding>
+<BorderPane fx:id="rootPane" prefHeight="800.0" prefWidth="1250.0" xmlns="http://javafx.com/javafx/8.0.151" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainSceneController">
+   <center>
+      <BorderPane fx:id="mainPane" prefHeight="800.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+         <center>
+            <BorderPane fx:id="center" BorderPane.alignment="CENTER">
+               <top>
+                  <HBox fx:id="s" alignment="CENTER" prefHeight="60.0" prefWidth="1061.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <TextField fx:id="listNameField" onAction="#nameUpdaterAction" onInputMethodTextChanged="#nameUpdaterAction" prefHeight="50.0" prefWidth="460.0" promptText="No list selected | Select a list from the side menu" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font name="System Bold" size="23.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Press Enter to set edit" />
+                           </tooltip>
+                        </TextField>
+                        <Region layoutX="473.0" layoutY="16.0" prefHeight="25.0" prefWidth="10.0" HBox.hgrow="NEVER" />
+                        <ComboBox fx:id="viewSelection" onAction="#viewSelectionAction" prefHeight="35.0" prefWidth="125.0">
+                           <tooltip>
+                              <Tooltip text="View list by" />
+                           </tooltip>
+                        </ComboBox>
+                        <Region layoutX="611.0" layoutY="16.0" prefHeight="25.0" prefWidth="10.0" HBox.hgrow="NEVER" />
+                        <SplitMenuButton fx:id="listEditor" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Edit List">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#sortListAction" text="⬆  Sort List" />
+                              <MenuItem mnemonicParsing="false" onAction="#hideCompletedAction" text="✅  Hide/Show Completed" />
+                              <MenuItem fx:id="deleteListItem" mnemonicParsing="false" onAction="#deleteListAction" text="⌦ Delete List" />
+                           </items>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </SplitMenuButton>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+               </top>
+               <padding>
+                  <Insets left="2.0" right="2.0" />
+               </padding>
+               <center>
+                  <ListView fx:id="listView" BorderPane.alignment="CENTER">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <BorderPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </BorderPane.margin>
+                  </ListView>
+               </center>
+               <bottom>
+                  <StackPane prefHeight="45.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Button fx:id="newTaskButton" alignment="BASELINE_LEFT" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#newTaskButtonAction" prefHeight="35.0" prefWidth="1051.0" text="+ New Task" VBox.vgrow="ALWAYS">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </VBox>
+                        <HBox fx:id="createTaskBox" alignment="CENTER" prefHeight="0.0" prefWidth="1061.0">
+                           <children>
+                              <TextField fx:id="taskContentField" prefHeight="35.0" promptText="Enter task content" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </TextField>
+                              <Region prefHeight="25.0" prefWidth="5.0" />
+                              <DatePicker fx:id="datePicker" editable="false" prefHeight="35.0" prefWidth="155.0" promptText="Select due date" HBox.hgrow="ALWAYS" />
+                              <Region layoutX="336.0" layoutY="10.0" prefHeight="25.0" prefWidth="5.0" />
+                              <ChoiceBox fx:id="urgencySelection" prefHeight="35.0" prefWidth="125.0" />
+                              <Region layoutX="520.0" layoutY="10.0" prefHeight="25.0" prefWidth="10.0" />
+                              <Button fx:id="storeTask" minHeight="25.0" minWidth="75.0" mnemonicParsing="false" onAction="#storeTaskAction" prefHeight="35.0" prefWidth="75.0" text="Add Task">
+                                 <tooltip>
+                                    <Tooltip text="Press to add task to current list" />
+                                 </tooltip>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="3.0" />
-                    </padding>
-                </HBox>
-            </bottom>
-            <top>
-                <HBox prefHeight="43.0" prefWidth="761.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <TextField fx:id="listNameField" onAction="#nameUpdaterAction" onInputMethodTextChanged="#nameUpdaterAction" prefHeight="35.0" prefWidth="360.0" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Press Enter to set edit" />
-                     </tooltip></TextField>
-                        <Region layoutX="375.0" layoutY="16.0" prefHeight="25.0" prefWidth="5.0" />
-                        <Button fx:id="sortList" mnemonicParsing="false" onAction="#sortListAction" prefHeight="35.0" prefWidth="75.0" text="Sort List">
-                     <tooltip>
-                        <Tooltip text="Sort Incomplete tasks in chronological order" />
-                     </tooltip></Button>
-                        <Region layoutX="473.0" layoutY="16.0" prefHeight="25.0" prefWidth="5.0" />
-                        <Button fx:id="clearList" mnemonicParsing="false" onAction="#clearListAction" prefHeight="35.0" prefWidth="75.0" text="Clear List">
-                     <tooltip>
-                        <Tooltip text="Clear all tasks from the current list" />
-                     </tooltip></Button>
-                        <Region layoutX="542.0" layoutY="16.0" prefHeight="25.0" prefWidth="5.0" />
-                  <ComboBox fx:id="viewSelection" onAction="#viewSelectionAction" prefHeight="35.0" prefWidth="125.0">
-                     <tooltip>
-                        <Tooltip text="View list by" />
-                     </tooltip></ComboBox>
-                        <Region layoutX="611.0" layoutY="16.0" prefHeight="25.0" prefWidth="10.0" />
-                        <Button fx:id="deleteList" minHeight="35.0" minWidth="75.0" mnemonicParsing="false" onAction="#deleteListAction" text="Delete List">
-                     <tooltip>
-                        <Tooltip text="Delete current list" />
-                     </tooltip></Button>
-                    </children>
-                    <padding>
-                        <Insets left="5.0" right="5.0" top="5.0" />
-                    </padding>
-                </HBox>
-            </top>
-            <padding>
-                <Insets left="2.0" right="2.0" />
-            </padding>
-            <center>
-                <ListView fx:id="listView" BorderPane.alignment="CENTER">
-                    <contextMenu>
-                        <ContextMenu fx:id="TaskOptions">
-                            <items>
-                                <MenuItem fx:id="deleteTask" mnemonicParsing="false" onAction="#deleteTaskAction" text="Delete Task" />
-                                <MenuItem fx:id="editTask" mnemonicParsing="false" onAction="#editTaskAction" text="Edit Task" />
-                            </items>
-                        </ContextMenu>
-                    </contextMenu>
-                    <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </padding>
-                    <BorderPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                    </BorderPane.margin>
-                </ListView>
-            </center>
-        </BorderPane>
-    </center>
-    <left>
-        <VBox fx:id="leftBox" prefHeight="200.0" prefWidth="135.0" spacing="8.0" BorderPane.alignment="CENTER">
-            <children>
-                <Button fx:id="newListButton" minHeight="35.0" mnemonicParsing="false" onAction="#newListButtonAction" prefHeight="35.0" prefWidth="135.0" text="+ New List" VBox.vgrow="SOMETIMES">
-               <tooltip>
-                  <Tooltip text="Create a new list" />
-               </tooltip></Button>
-                <ScrollPane fx:id="listScrollPane" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
-                    <content>
+                     </padding>
+                  </StackPane>
+               </bottom>
+            </BorderPane>
+         </center>
+         <left>
+            <VBox fx:id="leftBox" prefHeight="800.0" prefWidth="230.0" spacing="8.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ScrollPane fx:id="listScrollPane" fitToWidth="true" hbarPolicy="NEVER" prefHeight="765.0" prefWidth="136.0" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                     <content>
                         <VBox fx:id="listBox" spacing="8.0">
-                            <padding>
-                                <Insets bottom="3.0" left="5.0" right="5.0" top="5.0" />
-                            </padding></VBox>
-                    </content>
-                </ScrollPane>
-            </children>
-            <padding>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </padding>
-        </VBox>
-    </left>
+                           <padding>
+                              <Insets bottom="3.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                           <children>
+                              <Button fx:id="newListButton" minHeight="35.0" mnemonicParsing="false" onAction="#newListButtonAction" prefHeight="35.0" prefWidth="382.0" text="+ New List" VBox.vgrow="SOMETIMES">
+                                 <tooltip>
+                                    <Tooltip text="Create a new list" />
+                                 </tooltip>
+                              </Button>
+                           </children>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </left>
+         <right>
+            <ScrollPane fx:id="editPane" fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+               <content>
+                  <VBox fx:id="editBox" prefWidth="239.0">
+                     <children>
+                        <Region layoutX="30.0" layoutY="44.0" prefHeight="70.0" prefWidth="199.0" VBox.vgrow="NEVER" />
+                        <TextField fx:id="taskContent1" prefHeight="25.0" VBox.vgrow="NEVER">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </TextField>
+                        <Region prefHeight="60.0" VBox.vgrow="NEVER" />
+                        <DatePicker fx:id="datePicker1" editable="false" prefHeight="25.0" prefWidth="199.0" VBox.vgrow="NEVER" />
+                        <Region layoutX="30.0" layoutY="55.0" prefHeight="60.0" prefWidth="400.0" VBox.vgrow="NEVER" />
+                        <ChoiceBox fx:id="urgencySelection1" prefHeight="25.0" prefWidth="199.0" VBox.vgrow="ALWAYS" />
+                        <Region layoutX="30.0" layoutY="140.0" prefHeight="60.0" prefWidth="199.0" VBox.vgrow="NEVER" />
+                        <HBox fx:id="hbox" prefHeight="41.0" prefWidth="360.0">
+                           <children>
+                              <Button fx:id="save" mnemonicParsing="false" onAction="#saveAction" prefHeight="25.0" prefWidth="150.0" text="Save" HBox.hgrow="ALWAYS" />
+                              <Region prefHeight="200.0" prefWidth="80.0" HBox.hgrow="ALWAYS" />
+                              <Button fx:id="cancel" mnemonicParsing="false" onAction="#cancelAction" prefHeight="25.0" prefWidth="150.0" text="Cancel" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <Region prefHeight="60.0" prefWidth="400.0" VBox.vgrow="NEVER" />
+                        <Button fx:id="deleteTask" mnemonicParsing="false" onAction="#deleteTaskAction" prefHeight="25.0" prefWidth="218.0" text="Delete Task" />
+                        <Region layoutX="30.0" layoutY="239.0" prefHeight="349.0" prefWidth="199.0" />
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="20.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </content>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" top="5.0" />
+               </BorderPane.margin>
+            </ScrollPane>
+         </right>
+      </BorderPane>
+   </center>
+   <left>
+      <HBox fx:id="hamburgerBox" prefHeight="800.0" prefWidth="40.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="hamburger" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" text="☰">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </left>
 </BorderPane>

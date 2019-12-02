@@ -162,8 +162,14 @@ public class TaskList extends Observable {
         taskListSorter.sortByDueDate(this);
     }
 
+    //MODIFIES: this
+    //EFFECTS: Sorts the current task list chronologically based on due dates. Starts from most recently due.
+    public void sortByDueDate(ArrayList<Task> taskList) {
+        taskListSorter.sortByDueDate(this, taskList);
+    }
+
     //EFFECTS: Takes in an list of tasks, returns a new list with only incomplete tasks.
-    ArrayList<Task> filterOutCompleted() {
+    public ArrayList<Task> filterOutCompleted() {
         return taskListFilter.filterOutCompleted(this);
     }
 

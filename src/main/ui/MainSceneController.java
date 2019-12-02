@@ -1,20 +1,34 @@
 package ui;
 
+import animatefx.animation.*;
 import exceptions.TaskException;
 import io.Load;
 import io.Save;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Name;
 import model.TaskListHashMap;
 import model.task.Task;
 import model.task.Urgency;
 import model.tasklist.TaskList;
+
+import javax.jnlp.ClipboardService;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class MainSceneController {
 
@@ -25,9 +39,30 @@ public class MainSceneController {
     @FXML private DatePicker datePicker;
     @FXML private ChoiceBox<String> urgencySelection;
     @FXML private ComboBox<String> viewSelection;
+    @FXML private Button newListButton;
+    @FXML private HBox createTaskBox;
+    @FXML private Button newTaskButton;
+    @FXML private BorderPane mainPane;
+    @FXML private VBox leftBox;
+    @FXML private Button hamburger;
+    @FXML private HBox hamburgerBox;
+    @FXML private SplitMenuButton listEditor;
 
     private TaskListHashMap taskListHashMap;
     private TaskList currentList;
+
+    @FXML
+    void hideCompletedAction() {
+        if (currentList != null) {
+            if (!listView.getItems().equals(currentList.filterOutCompleted())) {
+                currentList.notifyObserver(currentList.filterOutCompleted());
+                new FadeIn(listView).setSpeed(1.5).play();
+            } else {
+                currentList.notifyObserver(currentList.getTaskList());
+                new FadeIn(listView).setSpeed(1.5).play();
+            }
+        }
+    }
 
     //MODIFIES: currentList
     //EFFECTS: Calls sortByDueDate on the currentList upon button press
@@ -35,6 +70,13 @@ public class MainSceneController {
     void sortListAction() {
         if (currentList != null) {
             currentList.sortByDueDate();
+            currentList.sortByDueDate(new ArrayList<>(listView.getItems()));
+        }
+
+        new FadeIn(listView).setSpeed(1.5).play();
+
+        if (listView.getItems().contains(selectedTask)) {
+            listView.getSelectionModel().select(selectedTask);
         }
     }
 
@@ -43,9 +85,11 @@ public class MainSceneController {
     @FXML
     void deleteListAction() {
         if (currentList != null) {
-            taskListHashMap.removeTaskList(currentList.getName());
-            findToRemoveCurrentListButton();
-            clearCurrentList();
+            if (new ConfirmationBox().display("<" + currentList.getName().toString() + ">" + "\n will be permanently deleted.")) {
+                taskListHashMap.removeTaskList(currentList.getName());
+                findToRemoveCurrentListButton();
+                clearCurrentList();
+            }
         }
     }
 
@@ -71,20 +115,27 @@ public class MainSceneController {
     //MODIFIES: listView.getSelectionModel().getSelectedItems()
     //EFFECTS: Displays the task editor scene loaded with information from the selected task
     //         If selected one and only one item, then pass this item into displayTaskEditor
-    //         else alert the user to select one task of a time or select a task
+    //         else alert the user to select one task of a time
     @FXML
     void editTaskAction() {
         ArrayList<Task> tempList = new ArrayList<>(listView.getSelectionModel().getSelectedItems());
         if (tempList.size() == 1) {
-            listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             tempList.clear();
             tempList.addAll(listView.getSelectionModel().getSelectedItems());
-            displayTaskEditor(tempList.get(0));
+
+            editPane.setVisible(true);
+            //editPane.setPrefWidth(239);
+
+            new SlideInRight(editPane).setSpeed(2.5).play();
+
+            setTaskFields(tempList.get(0));
+
+            //displayTaskEditor(tempList.get(0));
         } else {
-            (new AlertBox()).display("Select one task at a time! \n(Or select a task first)");
+            (new AlertBox()).display("Select one task at a time!");
         }
         listView.getSelectionModel().clearSelection();
-        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        //listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     //MODIFIES: task
@@ -93,14 +144,14 @@ public class MainSceneController {
         new TaskEditor(task).displayWindow();
     }
 
-    //MODIFIES: currentList
+/*    //MODIFIES: currentList
     //EFFECTS: Clears all tasks from the current list upon button press
     @FXML
     void clearListAction() {
         if (currentList != null) {
             currentList.clearTaskList();
         }
-    }
+    }*/
 
     //MODIFIES: currentList
     //EFFECTS: Searches listView's children for the selected task(s) and removes them from
@@ -137,6 +188,14 @@ public class MainSceneController {
             }
         }
         resetTaskFields();
+
+        resetNewTaskButton();
+    }
+
+    private void resetNewTaskButton() {
+        newTaskButton.setVisible(true);
+        new FadeIn(newTaskButton).setSpeed(3.5).play();
+        createTaskBox.setVisible(false);
     }
 
     //MODIFIES: taskContentField, datePicker, urgencySelection
@@ -228,14 +287,16 @@ public class MainSceneController {
     //         Creates a button with the name of this list and sets its action and tooltip
     @FXML
     void newListButtonAction() {
+
         TaskList taskList = new TaskList(new Name("Untitled List", nameGenerator("Untitled List")));
         taskListHashMap.storeTaskList(taskList);
 
         Button button = new Button(taskList.getName().toString());
-        button.setPrefSize(135,35);
+        button.setPrefSize(382,35);
         setListButtonAction(taskList, button);
         listBox.getChildren().add(listBox.getChildren().size(), button);
         button.setTooltip(new Tooltip(button.getText()));
+        resetStoreTask();
     }
 
     //MODIFIES: button
@@ -244,12 +305,21 @@ public class MainSceneController {
     //         Updates the too tip of this button to its text field
     private void setListButtonAction(TaskList taskList, Button button) {
         button.setOnAction(event -> {
+
+            if (!taskList.equals(currentList)) {
+                new FadeIn(listView).setSpeed(1.5).play();
+                new FadeIn(listNameField).setSpeed(1.5).play();
+            }
+
             setCurrentList(taskList);
 
             unHighLightAllButtons();
             highLightButton(button);
 
             button.setTooltip(new Tooltip(button.getText()));
+
+            resetStoreTask();
+            cancelAction();
         });
     }
 
@@ -307,9 +377,92 @@ public class MainSceneController {
         setListView();
 
         new Load().load(taskListHashMap, "data/save");
+
         listButtonReCreator();
 
+        editPane.setVisible(false);
+
+        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        listView.setOnMouseClicked(mouseEvent -> {
+            if (!listView.getSelectionModel().getSelectedItems().isEmpty()) {
+                int index = listView.getSelectionModel().getSelectedIndex();
+                if (!editPane.isVisible()) {
+                    resetStoreTask();
+                    editTaskAction();
+                    listView.getSelectionModel().select(index);
+                } else {
+                    if (!selectedTask.equals(listView.getSelectionModel().getSelectedItem())) {
+                        editTaskAction();
+                        listView.getSelectionModel().select(index);
+                    } else {
+                        cancelAction();
+                    }
+                }
+            } else {
+                cancelAction();
+                resetStoreTask();
+            }
+        });
+
+        newTaskButton.setVisible(true);
+        createTaskBox.setVisible(false);
+
+        leftBox.managedProperty().bind(leftBox.visibleProperty());
+        leftBox.setVisible(false);
+
+        editPane.managedProperty().bind(editPane.visibleProperty());
+
+        listEditor.setOnMouseClicked(mouseEvent -> {
+            resetStoreTask();
+        });
+
+        //https://stackoverflow.com/questions/26895534/javafx-split-menu-button-arrow-trigger-event
+        listEditor.showingProperty().addListener((obs, wasShowing, isNowShowing) -> {
+            if (isNowShowing) {
+                resetStoreTask();
+            }
+        });
+
+        hamburger.setOnAction(event -> {
+            resetStoreTask();
+            leftBox.setVisible(!leftBox.isVisible());
+            if (leftBox.isVisible()) {
+                hamburger.setText("❌");
+                new SlideInLeft(leftBox).setSpeed(2.5).play();
+            } else {
+                hamburger.setText("☰");
+            }
+            new FadeIn(hamburger).setSpeed(4).play();
+        });
+
+        listNameField.setFocusTraversable(false);
+
+        listNameField.setOnMouseClicked(mouseEvent -> {
+            resetStoreTask();
+        });
+
+        viewSelection.setOnMouseClicked(mouseEvent -> {
+            resetStoreTask();
+        });
+
         setViewSelection();
+    }
+
+    void resetStoreTask() {
+        if (createTaskBox.isVisible()) {
+            resetNewTaskButton();
+            resetTaskFields();
+        }
+    }
+
+    @FXML
+    void newTaskButtonAction() {
+        //new FadeOut(newTaskButton).setSpeed(3.5).play();
+        cancelAction();
+        newTaskButton.setVisible(false);
+        createTaskBox.setVisible(true);
+        new FadeIn(createTaskBox).setSpeed(3.5).play();
     }
 
     //MODIFIES: currentList
@@ -335,6 +488,12 @@ public class MainSceneController {
                     currentList.notifyObserver(currentList.getTaskByUrgency("low"));
                     break;
             }
+        }
+
+        new FadeIn(listView).setSpeed(1.5).play();
+
+        if (listView.getItems().contains(selectedTask)) {
+            listView.getSelectionModel().select(selectedTask);
         }
     }
 
@@ -365,7 +524,7 @@ public class MainSceneController {
         taskListHashMap.getKeys().forEach(name -> {
             TaskList taskList = taskListHashMap.getTaskList(name);
             Button button = new Button(taskList.getName().toString());
-            button.setPrefSize(135,35);
+            button.setPrefSize(382,35);
             setListButtonAction(taskList, button);
             listBox.getChildren().add(listBox.getChildren().size(), button);
             button.setTooltip(new Tooltip(button.getText()));
@@ -377,7 +536,7 @@ public class MainSceneController {
     //         Sets the cell factory of listView to CellController
     private void setListView() {
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        listView.setCellFactory(cell -> new CellController());
+        listView.setCellFactory(cell -> new CellController(listView));
     }
 
     //MODIFIES: urgencySelection
@@ -391,5 +550,100 @@ public class MainSceneController {
     //EFFECTS: Adds the following choices to urgencySelection
     static void addUrgencyItems(ChoiceBox<String> urgencySelection) {
         urgencySelection.getItems().addAll("High Urgency", "Mid Urgency", "Low Urgency");
+    }
+
+    @FXML private ScrollPane editPane;
+    @FXML private TextField taskContent1;
+    @FXML private DatePicker datePicker1;
+    @FXML private ChoiceBox<String> urgencySelection1;
+    @FXML private Button save;
+    @FXML private Button cancel;
+
+    private Task selectedTask;
+
+
+    //MODIFIES: this
+    //EFFECTS: Sets the values of taskContent, datePicker, and urgencySelection to the values of corresponding fields
+    //         in task
+    private void setTaskFields(Task task) {
+        selectedTask = task;
+        taskContent1.setText(task.getContent());
+        datePicker1.setValue(task.getDueDateObj());
+        setUrgency1Selection();
+        urgencySelection1.setValue(convertUrgency(task.getUrgency().getString()));
+    }
+
+    //EFFECTS: Given a string, if given "high", "mid", or "low", return "High Urgency", "Mid Urgency", and
+    //         "Low Urgency" respectively, else return empty string ""
+    private String convertUrgency(String urgency) {
+        switch (urgency) {
+            case "high":
+                return "High Urgency";
+            case "mid":
+                return "Mid Urgency";
+            case "low":
+                return "Low Urgency";
+            default:
+                return "";
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Adds items to the urgencySelection choice box
+    private void setUrgency1Selection() {
+        urgencySelection1.getItems().clear();
+        MainSceneController.addUrgencyItems(urgencySelection1);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: Updates the fields in task in correspondence to the values of taskContent, the given dueDate and
+    //         urgencySelection
+    private void updateTask(Task task) {
+        task.setContent(taskContent1.getText());
+        task.setDueDate(datePicker1.getValue());
+        task.setUrgency(MainSceneController.getUrgency(urgencySelection1.getValue()));
+    }
+
+    //EFFECTS: Event action of the save button
+    //         If taskContent is not empty and the selected due date is not in the past, then update corresponding
+    //         fields of task, else if the selected due date is in the past,  display
+    //         "Selected due date is in the past!" in an alert box.
+    //         If taskContent is empty, alert the user with an alert box of "Fields can't be empty!"
+    @FXML
+    void saveAction() {
+/*        if (taskContent.getText() != null) {
+            LocalDate dueDate = datePicker.getValue();
+            if (dueDate.isBefore(LocalDate.now())) {
+                (new AlertBox()).display("Selected due date is in the past!");
+            } else {
+                updateTask(dueDate);
+                window.close();
+            }
+        } else {
+            (new AlertBox()).display("Fields can't be empty!");
+        }*/
+
+
+/*        AnimationFX slideOut = new SlideOutRight(editPane);
+        slideOut.setOnFinished(event -> editPane.setVisible(false));
+        slideOut.setSpeed(16).play();*/
+        editPane.setVisible(false);
+
+        updateTask(selectedTask);
+        listView.getSelectionModel().clearSelection();
+    }
+
+    //EFFECTS: Event action of the cancel button
+    //         Closes the current window
+    @FXML
+    void cancelAction() {
+        //window.close();
+        editPane.setVisible(false);
+/*        AnimationFX slideOut = new SlideOutRight(editPane);
+        slideOut.setOnFinished(event -> editPane.setVisible(false));
+        slideOut.setSpeed(16).play();*/
+        //editPane.setPrefWidth(0);
+        listView.getSelectionModel().clearSelection();
+
     }
 }
